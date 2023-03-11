@@ -21,6 +21,17 @@
 %token EXPRART FLOAT
 %token ID SEMI COMMA ASSIGNOP RELOP PLUS MINUS STAR DIV AND OR DOT NOT TYPE LP RP LB RB LC RC STRUCT RETURN IF ELSE WHILE
 
+//declare associativity and piority for tokens
+%right ASSIGNOP
+%left  AND OR
+%left  RELOP
+%left  PLUS MINUS
+%left  STAR DIV
+%right NOT
+%left  DOT LP RP LB RB
+%nonassoc LOWER_THAN_ELSE
+%nonassoc ELSE
+
 /*
 //declare tokens
 %token <type_int> INT 
@@ -92,7 +103,7 @@ StmtList: Stmt StmtList     {}
 Stmt: Exp SEMI  {}
     | CompSt    {}
     | RETURN Exp SEMI    {}
-    | IF LP Exp RP Stmt {}
+    | IF LP Exp RP Stmt %prec LOWER_THAN_ELSE {}
     | IF LP Exp RP Stmt ELSE Stmt   {}         
     | WHILE LP Exp RP Stmt            {}                       
 ;
