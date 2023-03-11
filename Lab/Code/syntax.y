@@ -1,4 +1,5 @@
 %{
+    #define YYDEBUG 1
     #include<stdio.h>
     #include"lex.yy.c"
     int yylex(void);
@@ -28,19 +29,12 @@
 %left  PLUS MINUS
 %left  STAR DIV
 %right NOT
+%right NEG  //  define for 负号,咋用呢...
 %left  DOT LP RP LB RB
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
 
 /*
-//declare tokens
-%token <type_int> INT 
-%token <type_float> EXPRART FLOAT
-%token ID SEMI COMMA ASSIGNOP RELOP PLUS MINUS STAR DIV AND OR DOT NOT TYPE LP RP LB RB LC RC STRUCT RETURN IF ELSE WHILE
-
-//declare associativity for tokens
-%right AAI
-
 //declare non-terminals
 %type <type_double> Program ExtDefList ExtDef ExtDecList
 
@@ -95,7 +89,8 @@ ParamDec : Specifier VarDec {}
 ;
 
 //declare Statements
-CompSt: LC DefList StmtList RC          {}  
+CompSt: LC DefList StmtList RC          {} 
+    | error RC  {printf("Wrong ComSt: \n");yyerrok;}
 ;
 StmtList: Stmt StmtList     {}
     | /* empty */   {}
@@ -105,7 +100,8 @@ Stmt: Exp SEMI  {}
     | RETURN Exp SEMI    {}
     | IF LP Exp RP Stmt %prec LOWER_THAN_ELSE {}
     | IF LP Exp RP Stmt ELSE Stmt   {}         
-    | WHILE LP Exp RP Stmt            {}                       
+    | WHILE LP Exp RP Stmt            {} 
+    | error SEMI    {printf("Wrong Stmt: \n");yyerrok;}                      
 ;
 
 //declare Local Definitions 
@@ -140,6 +136,7 @@ Exp:Exp ASSIGNOP Exp    {}
     |ID {}
     |INT    {}
     |FLOAT  {}
+    |error RP   {printf("Wrong Exp: \n");yyerrok;}
 ;
 Args:Exp COMMA Args {}
     |Exp    {}
@@ -147,5 +144,5 @@ Args:Exp COMMA Args {}
 %%
 
 void yyerror(const char *s) {
-    fprintf (stderr, "%s at Line %d in position(%d-%d), \'%s\'\n", s,yylineno,yylloc.first_column,yylloc.last_column,yytext);
+    fprintf (stderr, "Error type B at Line %d in position(%d-%d), \'%s\'\n", yylineno,yylloc.first_column,yylloc.last_column,yytext);
 }
