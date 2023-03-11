@@ -40,6 +40,7 @@ test-all:
 	./parser ../Test/test2.cmm
 	./parser ../Test/test3.cmm
 	./parser ../Test/test4.cmm
+	./parser ../Test/test5.cmm
 	./parser ../Test/test6.cmm
 clean:
 	rm -f parser lex.yy.c syntax.tab.c syntax.tab.h syntax.output
