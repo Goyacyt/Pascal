@@ -1,10 +1,13 @@
 #include <stdio.h>
 
-int yylex();
+int yylex();    //词法分析
+int yyparse();  //对输入文件语法分析
+void yyrestart(FILE *file); //重置yyin指针为开头
 extern FILE* yyin;
+
 int main(int argc, char** argv){
 	if (argc==1){
-		yylex();
+		return 1;
 	}
 	if(argc>1){
 		if (!(yyin=fopen(argv[1],"r"))){
@@ -12,7 +15,8 @@ int main(int argc, char** argv){
 			return 1;
 		}
 	}
-	while (yylex()!=0){
-		return 0;
-	}
+    yyrestart(yyin);
+    yyparse();
+    fclose(yyin);
+    return 0;
 }

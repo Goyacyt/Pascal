@@ -1,3 +1,14 @@
+%{
+    #include "syntax.tab.h"
+    int yycolumn =1;
+    #define YY_USER_ACTION  \
+        yylloc.first_line=yylloc.last_line=yylineno;    \
+        yylloc.first_column=yycolumn;   \
+        yylloc.last_column=yycolumn+yyleng-1;   \
+        yycolumn+=yyleng;
+
+%}
+
 %option yylineno
 yylineno=1;
 
@@ -34,34 +45,35 @@ WHILE "while"
 
 %%
 
-{SEMI} {printf("%s\n SEMI",yytext);}
-{COMMA} {printf("%s\n COMMA",yytext);}
-{ASSIGNOP} {printf("%s\n ASSIGNOP",yytext);}
-{RELOP} {printf("%s\n RELOP",yytext);}
-{PLUS} {printf("%s\n PLUS",yytext);}
-{MINUS} {printf("%s\n MINUS",yytext);}
-{STAR} {printf("%s\n STAR",yytext);}
-{DIV} {printf("%s\n DIV",yytext);}
-{AND} {printf("%s\n AND",yytext);}
-{OR} {printf("%s\n OR",yytext);}
-{DOT} {printf("%s\n DOT",yytext);}
-{NOT} {printf("%s\n NOT",yytext);}
-{TYPE} {printf("%s\n TYPE",yytext);}
-{LP} {printf("%s\n LP",yytext);}
-{RP} {printf("%s\n RP",yytext);}
-{LB} {printf("%s\n LB",yytext);}
-{RB} {printf("%s\n RB",yytext);}
-{LC} {printf("%s\n LC",yytext);}
-{RC} {printf("%s\n RC",yytext);}
-{STRUCT} {printf("%s\n STRUCT",yytext);}
-{RETURN} {printf("%s\n RETURN",yytext);}
-{IF} {printf("%s\n IF",yytext);}
-{ELSE} {printf("%s\n ELSE",yytext);}
-{WHILE} {printf("%s\n WHILE",yytext);}
+{SEMI} {printf("\'%s\'->SEMI\n",yytext);return SEMI;}
+{COMMA} {printf("\'%s\'->COMMA\n",yytext);return COMMA;}
+{ASSIGNOP} {printf("\'%s\'->ASSIGNOP\n",yytext);return ASSIGNOP;}
+{RELOP} {printf("\'%s\'->RELOP\n",yytext);return RELOP;}
+{PLUS} {printf("\'%s\'->PLUS\n",yytext);return PLUS;}
+{MINUS} {printf("\'%s\'->MINUS\n",yytext);return MINUS;}
+{STAR} {printf("\'%s\'->STAR\n",yytext);return STAR;}
+{DIV} {printf("\'%s\'->DIV\n",yytext);return DIV;}
+{AND} {printf("\'%s\'->AND\n",yytext);return AND;}
+{OR} {printf("\'%s\'->OR\n",yytext);return OR;}
+{DOT} {printf("\'%s\'->DOT\n",yytext);return DOT;}
+{NOT} {printf("\'%s\'->NOT\n",yytext);return NOT;}
+{TYPE} {printf("\'%s\'->TYPE\n",yytext);return TYPE;}
+{LP} {printf("\'%s\'->LP\n",yytext);return LP;}
+{RP} {printf("\'%s\'->RP\n",yytext);return RP;}
+{LB} {printf("\'%s\'->LB\n",yytext);return LB;}
+{RB} {printf("\'%s\'->RB\n",yytext);return RB;}
+{LC} {printf("\'%s\'->LC\n",yytext);return LC;}
+{RC} {printf("\'%s\'->RC\n",yytext);return RC;}
+{STRUCT} {printf("\'%s\'->STRUCT\n",yytext);return STRUCT;}
+{RETURN} {printf("\'%s\'->RETRUN\n",yytext);return RETURN;}
+{IF} {printf("\'%s\'->IF\n",yytext);return IF;}
+{ELSE} {printf("\'%s\'->ELSE\n",yytext);return ELSE;}
+{WHILE} {printf("\'%s\'->WHILE\n",yytext);return WHILE;}
 
-{INT} {printf("%s\n INT",yytext);}
-{FLOAT} {printf("%s\n FLOAT",yytext);}
-{ID} {printf("%s\n ID",yytext);}
+{INT} {printf("\'%s\'->INT\n",yytext);return INT;}
+{FLOAT} {printf("\'%s\'->FLOAT\n",yytext);return FLOAT;}
+{ID} {printf("\'%s\'->ID\n",yytext);return ID;}
+\n {printf("\'%s\'->N\n",yytext);yycolumn=1;}
+[\t\f\r\v ] {printf("\'%s\'->TFRV\n",yytext);}
 .  {printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);}
-
 %%
