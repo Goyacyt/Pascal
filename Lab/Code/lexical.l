@@ -1,5 +1,6 @@
 %{
     #include "syntax.tab.h"
+    #include <stdlib.h>
     int yycolumn =1;
     extern int sim;
     #define YY_USER_ACTION  \
@@ -48,7 +49,7 @@ WHILE "while"
 
 {SEMI} {if(!sim) {printf("\'%s\'->SEMI\n",yytext);}return SEMI;}
 {COMMA} {if(!sim)  {printf("\'%s\'->COMMA\n",yytext);}return COMMA;}
-{ASSIGNOP} {if(!sim) printf("\'%s\'->ASSIGNOP\n",yytext);return ASSIGNOP;}
+{ASSIGNOP} {if(!sim) {printf("\'%s\'->ASSIGNOP\n",yytext);}return ASSIGNOP;}
 {RELOP} {if(!sim) {printf("\'%s\'->RELOP\n",yytext);}return RELOP;}
 {PLUS} {if(!sim) {printf("\'%s\'->PLUS\n",yytext);}return PLUS;}
 {MINUS} {if(!sim) {printf("\'%s\'->MINUS\n",yytext);}return MINUS;}
@@ -71,8 +72,14 @@ WHILE "while"
 {ELSE} {if(!sim) {printf("\'%s\'->ELSE\n",yytext);}return ELSE;}
 {WHILE} {if(!sim) {printf("\'%s\'->WHILE\n",yytext);}return WHILE;}
 
-{INT} {if(!sim) {printf("\'%s\'->INT\n",yytext);}return INT;}
-{FLOAT} {if(!sim) {printf("\'%s\'->FLOAT\n",yytext);}return FLOAT;}
+{INT} {
+	if(!sim) {printf("\'%s\'->INT\n",yytext);}
+	yylval.type_int=atoi(yytext);
+ 	return INT;}
+{FLOAT} {
+	if(!sim) {printf("\'%s\'->FLOAT\n",yytext);}
+	yylval.type_float=atof(yytext);
+	return FLOAT;}
 {ID} {if(!sim) {printf("\'%s\'->ID\n",yytext);}return ID;}
 \n {if(!sim) {printf("\'%s\'->N\n",yytext);}yycolumn=1;}
 [\t\f\r\v ] {if(!sim) {printf("\'%s\'->TFRV\n",yytext);}}

@@ -18,8 +18,8 @@
 }
 
 //declare tokens
-%token INT 
-%token EXPRART FLOAT
+%token <type_int> INT 
+%token <type_float> FLOAT
 %token ID SEMI COMMA ASSIGNOP RELOP PLUS MINUS STAR DIV AND OR DOT NOT TYPE LP RP LB RB LC RC STRUCT RETURN IF ELSE WHILE
 
 //declare associativity and piority for tokens
