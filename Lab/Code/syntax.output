@@ -137,28 +137,28 @@ Nonterminals, with rules where they appear
 
     $accept (32)
         on left: 0
-    Program (33)
+    Program <type_double> (33)
         on left: 1
         on right: 0
-    ExtDefList (34)
+    ExtDefList <type_double> (34)
         on left: 2 3
         on right: 1 2
-    ExtDef (35)
+    ExtDef <type_double> (35)
         on left: 4 5 6 7
         on right: 2
-    ExtDecList (36)
+    ExtDecList <type_double> (36)
         on left: 8 9
         on right: 4 9
-    Specifier (37)
+    Specifier <type_double> (37)
         on left: 10 11
         on right: 4 5 6 26 40
-    StructSpecifier (38)
+    StructSpecifier <type_double> (38)
         on left: 12 13 14
         on right: 11
-    OptTag (39)
+    OptTag <type_double> (39)
         on left: 15 16
         on right: 12
-    Tag (40)
+    Tag <type_double> (40)
         on left: 17
         on right: 13
     VarDec (41)
@@ -173,31 +173,31 @@ Nonterminals, with rules where they appear
     ParamDec (44)
         on left: 26
         on right: 24 25
-    CompSt (45)
+    CompSt <type_double> (45)
         on left: 27 28
         on right: 6 32
-    StmtList (46)
+    StmtList <type_double> (46)
         on left: 29 30
         on right: 27 29
-    Stmt (47)
+    Stmt <type_double> (47)
         on left: 31 32 33 34 35 36 37
         on right: 29 34 35 36
-    DefList (48)
+    DefList <type_double> (48)
         on left: 38 39
         on right: 12 27 38
-    Def (49)
+    Def <type_double> (49)
         on left: 40 41
         on right: 38
-    DecList (50)
+    DecList <type_double> (50)
         on left: 42 43
         on right: 40 43
-    Dec (51)
+    Dec <type_double> (51)
         on left: 44 45
         on right: 42 43
-    Exp (52)
+    Exp <type_double> (52)
         on left: 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63
         on right: 31 33 34 35 36 45 46 47 48 49 50 51 52 53 54 55 56 59 60 64 65
-    Args (53)
+    Args <type_double> (53)
         on left: 64 65
         on right: 57 64
 

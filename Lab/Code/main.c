@@ -6,11 +6,13 @@ void yyrestart(FILE *file); //重置yyin指针为开头
 extern FILE* yyin;
 int sim;
 extern int yydebug;                // bison debug mode
+int bisonsim;
 
 
 int main(int argc, char** argv){
 	yydebug=0;
 	sim=0;		//简洁打印模式
+	bisonsim=0;
 	if (argc==1){
 		return 1;
 	}
