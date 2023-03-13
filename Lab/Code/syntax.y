@@ -69,7 +69,7 @@ Specifier: TYPE     {}
 ;
 StructSpecifier: STRUCT OptTag LC DefList RC    {}
     | STRUCT Tag    {}
-    |error RC {printf("Wrong StructSpecifier\n");yyerrok;}
+    //|error RC {printf("Wrong StructSpecifier\n");yyerrok;}
 ;   
 OptTag: ID  {}
     | /* empty */   {}
@@ -80,7 +80,7 @@ Tag: ID {}
 //decalre Declarators
 VarDec: ID  {}
     | VarDec LB INT RB  {}
-    | error RB {printf("Wrong VarDec\n");yyerrok;}
+    //| error RB {printf("Wrong VarDec\n");yyerrok;}
 ;
 FunDec: ID LP VarList RP    {}
     | ID LP RP  {}
