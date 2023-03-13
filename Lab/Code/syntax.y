@@ -57,6 +57,7 @@ ExtDefList:ExtDef ExtDefList    {}
 ExtDef: Specifier ExtDecList SEMI   {}
     | Specifier SEMI    {}
     | Specifier FunDec CompSt   {}
+    | error SEMI {printf("Wrong ExtDef\n");yyerrok;}
 ;               
 ExtDecList: VarDec
     | VarDec COMMA ExtDecList   {}
@@ -68,6 +69,7 @@ Specifier: TYPE     {}
 ;
 StructSpecifier: STRUCT OptTag LC DefList RC    {}
     | STRUCT Tag    {}
+    |error RC {printf("Wrong StructSpecifier\n");yyerrok;}
 ;   
 OptTag: ID  {}
     | /* empty */   {}
@@ -78,9 +80,11 @@ Tag: ID {}
 //decalre Declarators
 VarDec: ID  {}
     | VarDec LB INT RB  {}
+    | error RB {printf("Wrong VarDec\n");yyerrok;}
 ;
 FunDec: ID LP VarList RP    {}
     | ID LP RP  {}
+    | error RP {printf("Wrong FunDec\n");yyerrok;}
 ;
 VarList: ParamDec COMMA VarList {}
     | ParamDec  {}
@@ -90,7 +94,7 @@ ParamDec : Specifier VarDec {}
 
 //declare Statements
 CompSt: LC DefList StmtList RC          {} 
-    | error RC  {printf("Wrong ComSt: \n");yyerrok;}
+    | error RC  {printf("Wrong ComSt\n");yyerrok;}
 ;
 StmtList: Stmt StmtList     {}
     | /* empty */   {}
@@ -101,7 +105,7 @@ Stmt: Exp SEMI  {}
     | IF LP Exp RP Stmt %prec LOWER_THAN_ELSE {}
     | IF LP Exp RP Stmt ELSE Stmt   {}         
     | WHILE LP Exp RP Stmt            {} 
-    | error SEMI    {printf("Wrong Stmt: \n");yyerrok;}                      
+    | error SEMI    {printf("Wrong Stmt\n");yyerrok;}                      
 ;
 
 //declare Local Definitions 
@@ -109,6 +113,7 @@ DefList: Def DefList    {}
     | /* empty */   {}
 ;
 Def: Specifier DecList SEMI {}
+   | error SEMI {printf("Wrong Def:semi exist\n");yyerrok;}
 ;
 DecList: Dec    {}
     | Dec COMMA DecList {}                     
@@ -136,8 +141,8 @@ Exp:Exp ASSIGNOP Exp    {}
     |ID {}
     |INT    {}
     |FLOAT  {}
-    |error RP   {printf("Wrong Exp: \n");yyerrok;}
 ;
+
 Args:Exp COMMA Args {}
     |Exp    {}
 ;
