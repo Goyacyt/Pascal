@@ -47,6 +47,26 @@ WHILE "while"
 
 %%
 
+"//" {
+    char c=input();
+    printf("//\n");
+    while (c!='\n') c=input();
+}
+"/*" {
+    printf("/*\n");
+    char c1=input();
+    char c2=input();
+    while(!(c1=='*'&&c2=='/')){
+        if (c1=='/'&&c2=='*') {
+        printf("ERROR TYPE B at line %d: Comment error \'%s\'\n",yylineno,yytext);
+        break;
+        }
+        c1=input();
+        c2=input();
+    }
+    printf("*/\n");
+}
+
 {SEMI} {if(!sim) {printf("\'%s\'->SEMI\n",yytext);}return SEMI;}
 {COMMA} {if(!sim)  {printf("\'%s\'->COMMA\n",yytext);}return COMMA;}
 {ASSIGNOP} {if(!sim) {printf("\'%s\'->ASSIGNOP\n",yytext);}return ASSIGNOP;}
