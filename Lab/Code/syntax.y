@@ -28,8 +28,8 @@
 %left  RELOP
 %left  PLUS MINUS
 %left  STAR DIV
-%right NOT
-%right NEG  //  define for 负号,咋用呢...
+%right NOT NEG
+//%right NEG  //  define for 负号,咋用呢...
 %left  DOT LP RP LB RB
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
