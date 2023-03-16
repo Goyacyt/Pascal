@@ -71,15 +71,9 @@ ExtDecList: VarDec  {if(!bisonsim)  {printf(YELLOW"     ExtDecList:1\n"NONE);}}
 Specifier: TYPE     {if(!bisonsim)  {printf(YELLOW"     Specifier:1\n"NONE);}}
     | StructSpecifier   {if(!bisonsim)  {printf(YELLOW"     Specifier:2\n"NONE);}}
 ;
-<<<<<<< HEAD
 StructSpecifier: STRUCT OptTag LC DefList RC    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:1\n"NONE);}}
     | STRUCT Tag    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:2\n"NONE);}}
-    |error RC {printf("Wrong StructSpecifier\n");yyerrok;}
-=======
-StructSpecifier: STRUCT OptTag LC DefList RC    {}
-    | STRUCT Tag    {}
-    //|error RC {printf("Wrong StructSpecifier\n");yyerrok;}
->>>>>>> 6167a60366b5123f99de96992d6be4d8a38646cd
+   // |error RC {printf("Wrong StructSpecifier\n");yyerrok;}
 ;   
 OptTag: ID  {if(!bisonsim)  {printf(YELLOW"     OptTag:1\n"NONE);}}
     | /* empty */   {if(!bisonsim)  {printf(YELLOW"     OptTag:2\n"NONE);}}
@@ -88,15 +82,9 @@ Tag: ID {if(!bisonsim)  {printf(YELLOW"     Tag\n"NONE);}}
 ;
 
 //decalre Declarators
-<<<<<<< HEAD
 VarDec: ID  {if(!bisonsim)  {printf(YELLOW"     VarDec:1\n"NONE);}}
     | VarDec LB INT RB  {if(!bisonsim)  {printf(YELLOW"     VarDec:2\n"NONE);}}
-    | error RB {printf("Wrong VarDec\n");yyerrok;}
-=======
-VarDec: ID  {}
-    | VarDec LB INT RB  {}
-    //| error RB {printf("Wrong VarDec\n");yyerrok;}
->>>>>>> 6167a60366b5123f99de96992d6be4d8a38646cd
+//  | error RB {printf("Wrong VarDec\n");yyerrok;}
 ;
 FunDec: ID LP VarList RP    {if(!bisonsim)  {printf(YELLOW"     FunDec:1\n"NONE);}}
     | ID LP RP  {if(!bisonsim)  {printf(YELLOW"     FunDec:2\n"NONE);}}
