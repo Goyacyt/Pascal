@@ -177,4 +177,5 @@ void yyerror(const char *s) {
         printf ("Error type B at Line %d in position(%d-%d), \'%s\'\n", yylineno,yylloc.first_column,yylloc.last_column,yytext);
         error_line=yylineno;
     }
+    //当前的错误的行和上一次不一样的时候再output错误信息，否则不输出错误信息
 }
