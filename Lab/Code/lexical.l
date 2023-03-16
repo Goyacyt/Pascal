@@ -54,17 +54,19 @@ WHILE "while"
 }
 "/*" {
     printf("/*\n");
-    char c1=input();
-    char c2=input();
-    while(!(c1=='*'&&c2=='/')){
-        if (c1=='/'&&c2=='*') {
-        printf("ERROR TYPE B at line %d: Comment error \'%s\'\n",yylineno,yytext);
-        break;
+    char c=input();
+    while(c!=EOF){
+        if (c=='*'){
+            c=input();
+            if (c=='/'){
+                break;
+            }
+            else{
+                continue;
+            }
         }
-        c1=input();
-        c2=input();
+        c=input();
     }
-    printf("*/\n");
 }
 
 {SEMI} {if(!sim) {printf("\'%s\'->SEMI\n",yytext);}return SEMI;}
