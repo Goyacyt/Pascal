@@ -80,11 +80,28 @@ Specifier: TYPE     {if(!bisonsim)  {printf(YELLOW"     Specifier:TYPE (%d)\n"NO
     | StructSpecifier   {if(!bisonsim)  {printf(YELLOW"     Specifier:StructSpecifier (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Specifier", @$.first_line, NOTTOKEN, 1,$1);}
 ;
+<<<<<<< HEAD
 StructSpecifier: STRUCT OptTag LC DefList RC    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:STRUCT OptTag LC DefList RC (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("StructSpecifier", @$.first_line, NOTTOKEN, 5,$1,$2,$3,$4,$5);}
     | STRUCT Tag    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:STRUCT Tag (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("StructSpecifier", @$.first_line, NOTTOKEN, 2,$1,$2);}
    // |error RC {printf("Wrong StructSpecifier\n");yyerrok;}
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+StructSpecifier: STRUCT OptTag LC DefList RC    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:1\n"NONE);}}
+    | STRUCT Tag    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:2\n"NONE);}}
+    |error RC {printf("Wrong StructSpecifier\n");yyerrok;}
+=======
+StructSpecifier: STRUCT OptTag LC DefList RC    {}
+    | STRUCT Tag    {}
+    //|error RC {printf("Wrong StructSpecifier\n");yyerrok;}
+>>>>>>> 6167a60366b5123f99de96992d6be4d8a38646cd
+=======
+StructSpecifier: STRUCT OptTag LC DefList RC    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:1\n"NONE);}}
+    | STRUCT Tag    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:2\n"NONE);}}
+>>>>>>> dev
+>>>>>>> 9364a9d3b001473071d411492dc97d6c794e746e
 ;   
 OptTag: ID  {if(!bisonsim)  {printf(YELLOW"     OptTag:ID (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("OptTag", @$.first_line, NOTTOKEN, 1,$1);}
@@ -95,11 +112,28 @@ Tag: ID {if(!bisonsim)  {printf(YELLOW"     Tag:ID (%d)\n"NONE,@$.first_line);}
 ;
 
 //decalre Declarators
+<<<<<<< HEAD
 VarDec: ID  {if(!bisonsim)  {printf(YELLOW"     VarDec:ID (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("VarDec", @$.first_line, NOTTOKEN, 1,$1);}
     | VarDec LB INT RB  {if(!bisonsim)  {printf(YELLOW"     VarDec:VarDec LB INT RB (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("VarDec", @$.first_line, NOTTOKEN, 4,$1,$2,$3,$4);}
 //  | error RB {printf("Wrong VarDec\n");yyerrok;}
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+VarDec: ID  {if(!bisonsim)  {printf(YELLOW"     VarDec:1\n"NONE);}}
+    | VarDec LB INT RB  {if(!bisonsim)  {printf(YELLOW"     VarDec:2\n"NONE);}}
+    | error RB {printf("Wrong VarDec\n");yyerrok;}
+=======
+VarDec: ID  {}
+    | VarDec LB INT RB  {}
+    //| error RB {printf("Wrong VarDec\n");yyerrok;}
+>>>>>>> 6167a60366b5123f99de96992d6be4d8a38646cd
+=======
+VarDec: ID  {if(!bisonsim)  {printf(YELLOW"     VarDec:1\n"NONE);}}
+    | VarDec LB INT RB  {if(!bisonsim)  {printf(YELLOW"     VarDec:2\n"NONE);}}
+>>>>>>> dev
+>>>>>>> 9364a9d3b001473071d411492dc97d6c794e746e
 ;
 FunDec: ID LP VarList RP    {if(!bisonsim)  {printf(YELLOW"     FunDec:ID LP VarList RP (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("FunDec", @$.first_line, NOTTOKEN, 4,$1,$2,$3,$4);}
