@@ -14,6 +14,8 @@
     extern int bisonsim;
     extern node* root;
     extern int haserror;
+    extern int error_line;
+    extern int errorsim;
 %}
 
 %locations  //strange
@@ -65,8 +67,9 @@ ExtDef: Specifier ExtDecList SEMI   {if(!bisonsim)  {printf(YELLOW"     ExtDef:S
     | Specifier SEMI    {if(!bisonsim)  {printf(YELLOW"     ExtDef:Specifier SEMI (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("ExtDef", @$.first_line, NOTTOKEN,2,$1,$2);}
     | Specifier FunDec CompSt   {if(!bisonsim)  {printf(YELLOW"     ExtDef:Specifier FunDec CompSt (%d)\n"NONE,@$.first_line);}
-        $$=add_nonterminal("ExtDeft", @$.first_line, NOTTOKEN, 3,$1,$2,$3);} 
-    | error SEMI {printf("Wrong ExtDef\n");yyerrok;}
+        $$=add_nonterminal("ExtDef", @$.first_line, NOTTOKEN, 3,$1,$2,$3);} 
+    | error SEMI {if (!errorsim) {printf("Wrong ExtDef\n");}yyerrok;}
+    | error Specifier {if (!errorsim) {printf("Wrong ExtDef: error Specifier\n");}yyerrok;}
 ;               
 ExtDecList: VarDec  {if(!bisonsim)  {printf(YELLOW"     ExtDecList:VarDec (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("ExtDecList", @$.first_line, NOTTOKEN, 1,$1);}
@@ -80,29 +83,13 @@ Specifier: TYPE     {if(!bisonsim)  {printf(YELLOW"     Specifier:TYPE (%d)\n"NO
     | StructSpecifier   {if(!bisonsim)  {printf(YELLOW"     Specifier:StructSpecifier (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Specifier", @$.first_line, NOTTOKEN, 1,$1);}
 ;
-<<<<<<< HEAD
 StructSpecifier: STRUCT OptTag LC DefList RC    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:STRUCT OptTag LC DefList RC (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("StructSpecifier", @$.first_line, NOTTOKEN, 5,$1,$2,$3,$4,$5);}
     | STRUCT Tag    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:STRUCT Tag (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("StructSpecifier", @$.first_line, NOTTOKEN, 2,$1,$2);}
    // |error RC {printf("Wrong StructSpecifier\n");yyerrok;}
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-StructSpecifier: STRUCT OptTag LC DefList RC    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:1\n"NONE);}}
-    | STRUCT Tag    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:2\n"NONE);}}
-    |error RC {printf("Wrong StructSpecifier\n");yyerrok;}
-=======
-StructSpecifier: STRUCT OptTag LC DefList RC    {}
-    | STRUCT Tag    {}
-    //|error RC {printf("Wrong StructSpecifier\n");yyerrok;}
->>>>>>> 6167a60366b5123f99de96992d6be4d8a38646cd
-=======
-StructSpecifier: STRUCT OptTag LC DefList RC    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:1\n"NONE);}}
-    | STRUCT Tag    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:2\n"NONE);}}
->>>>>>> dev
->>>>>>> 9364a9d3b001473071d411492dc97d6c794e746e
 ;   
+
 OptTag: ID  {if(!bisonsim)  {printf(YELLOW"     OptTag:ID (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("OptTag", @$.first_line, NOTTOKEN, 1,$1);}
     | /* empty */   {if(!bisonsim)  {printf(YELLOW"     OptTag:empty (%d)\n"NONE,@$.first_line);} $$=NULL;}
@@ -112,34 +99,18 @@ Tag: ID {if(!bisonsim)  {printf(YELLOW"     Tag:ID (%d)\n"NONE,@$.first_line);}
 ;
 
 //decalre Declarators
-<<<<<<< HEAD
 VarDec: ID  {if(!bisonsim)  {printf(YELLOW"     VarDec:ID (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("VarDec", @$.first_line, NOTTOKEN, 1,$1);}
     | VarDec LB INT RB  {if(!bisonsim)  {printf(YELLOW"     VarDec:VarDec LB INT RB (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("VarDec", @$.first_line, NOTTOKEN, 4,$1,$2,$3,$4);}
 //  | error RB {printf("Wrong VarDec\n");yyerrok;}
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-VarDec: ID  {if(!bisonsim)  {printf(YELLOW"     VarDec:1\n"NONE);}}
-    | VarDec LB INT RB  {if(!bisonsim)  {printf(YELLOW"     VarDec:2\n"NONE);}}
-    | error RB {printf("Wrong VarDec\n");yyerrok;}
-=======
-VarDec: ID  {}
-    | VarDec LB INT RB  {}
-    //| error RB {printf("Wrong VarDec\n");yyerrok;}
->>>>>>> 6167a60366b5123f99de96992d6be4d8a38646cd
-=======
-VarDec: ID  {if(!bisonsim)  {printf(YELLOW"     VarDec:1\n"NONE);}}
-    | VarDec LB INT RB  {if(!bisonsim)  {printf(YELLOW"     VarDec:2\n"NONE);}}
->>>>>>> dev
->>>>>>> 9364a9d3b001473071d411492dc97d6c794e746e
 ;
+
 FunDec: ID LP VarList RP    {if(!bisonsim)  {printf(YELLOW"     FunDec:ID LP VarList RP (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("FunDec", @$.first_line, NOTTOKEN, 4,$1,$2,$3,$4);}
     | ID LP RP  {if(!bisonsim)  {printf(YELLOW"     FunDec:ID LP RP (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("FunDec", @$.first_line, NOTTOKEN, 3,$1,$2,$3);}
-    | error RP {printf("Wrong FunDec\n");yyerrok;}
+    | error RP {if (!errorsim) {printf("Wrong FunDec\n");}yyerrok;}
 ;
 VarList: ParamDec COMMA VarList {if(!bisonsim)  {printf(YELLOW"     VarList:ParamDec COMMA VarList (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("VarList", @$.first_line, NOTTOKEN, 3,$1,$2,$3);}
@@ -153,7 +124,7 @@ ParamDec: Specifier VarDec {if(!bisonsim)  {printf(YELLOW"     ParamDec:Specifie
 //declare Statements
 CompSt: LC DefList StmtList RC          {if(!bisonsim)  {printf(YELLOW"     CompSt:LC DefList StmtList RC (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("CompSt", @$.first_line, NOTTOKEN, 4,$1,$2,$3,$4);} 
-    | error RC  {printf("Wrong ComSt\n");yyerrok;}
+   // | error RC  {printf("Wrong ComSt\n");yyerrok;}
 ;
 StmtList: Stmt StmtList     {if(!bisonsim)  {printf(YELLOW"     StmtList:Stmt StmtList (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("StmtList", @$.first_line, NOTTOKEN, 2,$1,$2);}
@@ -171,7 +142,13 @@ Stmt: Exp SEMI  {if(!bisonsim)  {printf(YELLOW"     Stmt:Exp SEMI (%d)\n"NONE,@$
         $$=add_nonterminal("Stmt", @$.first_line, NOTTOKEN, 7,$1,$2,$3,$4,$5,$6,$7);}         
     | WHILE LP Exp RP Stmt            {if(!bisonsim)  {printf(YELLOW"     Stmt:6WHILE LP Exp RP Stmt (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Stmt", @$.first_line, NOTTOKEN, 5,$1,$2,$3,$4,$5);} 
-    | error SEMI    {printf("Wrong Stmt\n");yyerrok;}                      
+    | error SEMI    {if (!errorsim) {printf("Wrong Stmt\n");}yyerrok;}                      
+    | error Exp {if (!errorsim) {printf("Wrong Stmt :error Exp\n");}yyerrok;}
+    | error RETURN {if (!errorsim) {printf("Wrong Stmt:error RETURN\n");}yyerrok;}
+    | error IF {if (!errorsim) {printf("Wrong Stmt:error IF\n");}yyerrok;}
+    | error WHILE {if (!errorsim) {printf("Wrong Stmt:error WHILE\n");}yyerrok;}
+    | error RC {if (!errorsim) {printf("Wrong Stmt:error RC\n");}yyerrok;}
+    | error Specifier {if (!errorsim) {printf("Wrong Stmt: error Specifier\n");}yyerrok;}
 ;
 
 //declare Local Definitions 
@@ -181,7 +158,13 @@ DefList: Def DefList    {if(!bisonsim)  {printf(YELLOW"     DefList:Def DefList 
 ;
 Def: Specifier DecList SEMI {if(!bisonsim)  {printf(YELLOW"     Def:Specifier DecList SEMI (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Def", @$.first_line, NOTTOKEN, 3,$1,$2,$3);}
-   | error SEMI {printf("Wrong Def:semi exist\n");yyerrok;}
+   | error SEMI {if (!errorsim) {printf("Wrong Def:semi exist\n");}yyerrok;}
+   | error Specifier{if (!errorsim) {printf("Wrong Def :error Specifier\n");}yyerrok;}
+   | error Exp {if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
+   | error RETURN {if (!errorsim) {printf("Wrong Def:error RETURN\n");}yyerrok;}
+   | error IF {if (!errorsim) {printf("Wrong Def:error IF\n");}yyerrok;}
+   | error WHILE {if (!errorsim) {printf("Wrong Def:error WHILE\n");}yyerrok;}
+   | error RC {if (!errorsim) {printf("Wrong Def:error RC\n");}yyerrok;}
 ;
 DecList: Dec    {if(!bisonsim)  {printf(YELLOW"     DecList:Dec (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("DecList", @$.first_line, NOTTOKEN, 1,$1);}
@@ -241,6 +224,9 @@ Args:Exp COMMA Args {if(!bisonsim)  {printf(YELLOW"     Args:Exp COMMA Args (%d)
 %%
 
 void yyerror(const char *s) {
-    printf ("Error type B at Line %d in position(%d-%d), \'%s\'\n", yylineno,yylloc.first_column,yylloc.last_column,yytext);
+    if (yylineno!=error_line){
+        printf ("Error type B at Line %d: in position(%d-%d), \'%s\' %s \n", yylineno,yylloc.first_column,yylloc.last_column,yytext,s);
+        error_line=yylineno;
+    }
     haserror=1;
 }
