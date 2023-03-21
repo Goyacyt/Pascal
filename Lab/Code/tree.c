@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <string.h>
 #include"tree.h"
 
 void* mem_allocate(int size)
@@ -18,12 +20,28 @@ node* add_token(char* name, int type, void* val){
     p->son_num=0;
     p->bro=NULL;
     p->son=NULL;
+    char number[128];
+    memset(number,0,sizeof(number));
+    int actual_val;
     switch(type){
         case TYPE_ID: 
             sscanf(val,"%s", p->val.id_val);
             break;
-        case TYPE_INT:    
-            sscanf(val,"%d",&(p->val.int_val));
+        case TYPE_INT:
+            sscanf(val,"%s",number);
+            if (number[0]=='0'){
+                    if(number[1]=='x'||number[1]=='X'){
+                        actual_val=strtol(number,NULL,16);
+                    }else if(number[1]<'8'&&number[1]>'0'){
+                        actual_val=strtol(number,NULL,8);
+                    }else{
+                        actual_val=strtol(number,NULL,10);
+                    }
+            }else{
+                    actual_val=strtol(number,NULL,10);
+            }
+            p->val.int_val=actual_val;
+            //sscanf(actual_val,"%d",&(p->val.int_val));
             break;
         case TYPE_FLOAT:  
             sscanf(val,"%f",&(p->val.float_val));
