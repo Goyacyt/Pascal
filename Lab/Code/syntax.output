@@ -144,7 +144,6 @@ Nonterminals, with rules where they appear
     ExtDef (35)
         on left: 4 5 6 7
         on right: 2
-<<<<<<< HEAD
     ExtDecList (36)
         on left: 8 9
         on right: 4 9
@@ -156,47 +155,10 @@ Nonterminals, with rules where they appear
         on right: 11
     OptTag (39)
         on left: 14 15
-=======
-    ExtDecList <type_double> (36)
-        on left: 9 10
-        on right: 4 10
-    Specifier <type_double> (37)
-<<<<<<< HEAD
-        on left: 10 11
-<<<<<<< HEAD
-        on right: 4 5 6 26 40
-=======
-        on left: 11 12
-        on right: 4 5 6 8 25 43 45
->>>>>>> dev
-    StructSpecifier <type_double> (38)
-        on left: 13 14
->>>>>>> 9364a9d3b001473071d411492dc97d6c794e746e
         on right: 12
     Tag (40)
         on left: 16
         on right: 13
-<<<<<<< HEAD
-=======
-    Tag <type_double> (40)
-        on left: 17
-<<<<<<< HEAD
-=======
-        on right: 4 5 6 24 38
-    StructSpecifier (38)
-        on left: 12 13
-        on right: 11
-    OptTag (39)
-        on left: 14 15
-        on right: 12
-    Tag (40)
-        on left: 16
->>>>>>> 6167a60366b5123f99de96992d6be4d8a38646cd
-        on right: 13
-=======
-        on right: 14
->>>>>>> dev
->>>>>>> 9364a9d3b001473071d411492dc97d6c794e746e
     VarDec (41)
         on left: 17 18
         on right: 8 9 18 24 42 43
@@ -207,54 +169,10 @@ Nonterminals, with rules where they appear
         on left: 22 23
         on right: 19 22
     ParamDec (44)
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-        on left: 26
-        on right: 24 25
-    CompSt <type_double> (45)
-        on left: 27 28
-        on right: 6 32
-    StmtList <type_double> (46)
-        on left: 29 30
-        on right: 27 29
-    Stmt <type_double> (47)
-        on left: 31 32 33 34 35 36 37
-        on right: 29 34 35 36
-    DefList <type_double> (48)
-        on left: 38 39
-        on right: 12 27 38
-    Def <type_double> (49)
-        on left: 40 41
-        on right: 38
-    DecList <type_double> (50)
-        on left: 42 43
-        on right: 40 43
-    Dec <type_double> (51)
-        on left: 44 45
-        on right: 42 43
-    Exp <type_double> (52)
-        on left: 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63
-        on right: 31 33 34 35 36 45 46 47 48 49 50 51 52 53 54 55 56 59 60 64 65
-    Args <type_double> (53)
-        on left: 64 65
-        on right: 57 64
-=======
->>>>>>> 9364a9d3b001473071d411492dc97d6c794e746e
         on left: 24
         on right: 22 23
     CompSt (45)
         on left: 25 26
-<<<<<<< HEAD
-=======
-=======
-        on left: 25
-        on right: 23 24
-    CompSt <type_double> (45)
-        on left: 26
->>>>>>> dev
->>>>>>> 9364a9d3b001473071d411492dc97d6c794e746e
         on right: 6 30
     StmtList (46)
         on left: 27 28
@@ -262,10 +180,6 @@ Nonterminals, with rules where they appear
     Stmt (47)
         on left: 29 30 31 32 33 34 35
         on right: 27 32 33 34
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 9364a9d3b001473071d411492dc97d6c794e746e
     DefList (48)
         on left: 36 37
         on right: 12 25 36
@@ -284,30 +198,6 @@ Nonterminals, with rules where they appear
     Args (53)
         on left: 62 63
         on right: 55 62
-<<<<<<< HEAD
-=======
->>>>>>> 6167a60366b5123f99de96992d6be4d8a38646cd
-=======
-    DefList <type_double> (48)
-        on left: 41 42
-        on right: 13 26 41
-    Def <type_double> (49)
-        on left: 43 44 45 46 47 48 49 50
-        on right: 41
-    DecList <type_double> (50)
-        on left: 51 52
-        on right: 43 52
-    Dec <type_double> (51)
-        on left: 53 54
-        on right: 51 52
-    Exp <type_double> (52)
-        on left: 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72
-        on right: 29 31 32 33 34 36 46 54 55 56 57 58 59 60 61 62 63 64 65 68 69 73 74
-    Args <type_double> (53)
-        on left: 73 74
-        on right: 66 73
->>>>>>> dev
->>>>>>> 9364a9d3b001473071d411492dc97d6c794e746e
 
 
 State 0
