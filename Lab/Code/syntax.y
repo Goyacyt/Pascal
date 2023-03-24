@@ -124,11 +124,7 @@ ParamDec: Specifier VarDec {if(!bisonsim)  {printf(YELLOW"     ParamDec:Specifie
 //declare Statements
 CompSt: LC DefList StmtList RC          {if(!bisonsim)  {printf(YELLOW"     CompSt:LC DefList StmtList RC (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("CompSt", @$.first_line, NOTTOKEN, 4,$1,$2,$3,$4);} 
-<<<<<<< HEAD
-    //| error RC  {printf("Wrong ComSt\n");yyerrok;}
-=======
 //   | error RC  {printf("error CompSt:Wrong ComSt\n");yyerrok;}
->>>>>>> b60f2f220537b8a38579fa0d9cad3a58aa5836dc
 ;
 StmtList: Stmt StmtList     {if(!bisonsim)  {printf(YELLOW"     StmtList:Stmt StmtList (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("StmtList", @$.first_line, NOTTOKEN, 2,$1,$2);}
@@ -146,7 +142,6 @@ Stmt: Exp SEMI  {if(!bisonsim)  {printf(YELLOW"     Stmt:Exp SEMI (%d)\n"NONE,@$
         $$=add_nonterminal("Stmt", @$.first_line, NOTTOKEN, 7,$1,$2,$3,$4,$5,$6,$7);}         
     | WHILE LP Exp RP Stmt            {if(!bisonsim)  {printf(YELLOW"     Stmt:6WHILE LP Exp RP Stmt (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Stmt", @$.first_line, NOTTOKEN, 5,$1,$2,$3,$4,$5);} 
-<<<<<<< HEAD
     | error SEMI    {if (!errorsim) {printf("Wrong Stmt\n");}yyerrok;}                      
     //| error Exp {if (!errorsim) {printf("Wrong Stmt :error Exp\n");}yyerrok;}
    | error LP {if (!errorsim) {printf("Wrong stmt :error lp\n");}yyerrok;}
@@ -156,12 +151,6 @@ Stmt: Exp SEMI  {if(!bisonsim)  {printf(YELLOW"     Stmt:Exp SEMI (%d)\n"NONE,@$
    | error INT {if (!errorsim) {printf("Wrong stmt :error int\n");}yyerrok;}
    | error FLOAT{if (!errorsim) {printf("Wrong stmt :error float\n");}yyerrok;}
    | error RETURN {if (!errorsim) {printf("Wrong stmt:error RETURN\n");}yyerrok;}
-=======
-    | error SEMI    {if (!errorsim) {printf("Wrong Stmt\n");}yyerrok;}
- //   | error Stmt    {if(!errorsim){printf("Wrong Stmt:error Stmt\n");}yyerrok;}                      
-    | error Exp {if (!errorsim) {printf("Wrong Stmt :error Exp\n");}yyerrok;}
-    | error RETURN {if (!errorsim) {printf("Wrong Stmt:error RETURN\n");}yyerrok;}
->>>>>>> b60f2f220537b8a38579fa0d9cad3a58aa5836dc
     | error IF {if (!errorsim) {printf("Wrong Stmt:error IF\n");}yyerrok;}
     | error WHILE {if (!errorsim) {printf("Wrong Stmt:error WHILE\n");}yyerrok;}
     | error RC {if (!errorsim) {printf("Wrong Stmt:error RC\n");}yyerrok;}
