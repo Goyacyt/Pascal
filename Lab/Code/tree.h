@@ -5,6 +5,7 @@
 #include <stdarg.h>
 #define BLUE "\033[0;32;34m"
 #define NONE "\033[m"
+#define GREEN "\033[0;32;32m"
 
 typedef struct NODE{
     char name[32];

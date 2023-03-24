@@ -14,8 +14,6 @@
         yylloc.last_column=yycolumn+yyleng-1;   \
         yycolumn+=yyleng;
     
-    #define GREEN "\033[0;32;32m"
-    #define NONE "\033[m"
 %}
 
 %option yylineno
@@ -120,7 +118,11 @@ WHILE "while"
 [\t\f\r\v ] {}
 
 
-.   {printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);
+.   {
+    if(error_line!=yylineno){
+    printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);
+    error_line=yylineno;
+    }
     haserror=1;
     }
     

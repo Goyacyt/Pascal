@@ -154,7 +154,7 @@ DefList: Def DefList    {if(!bisonsim)  {printf(YELLOW"     DefList:Def DefList 
 ;
 Def: Specifier DecList SEMI {if(!bisonsim)  {printf(YELLOW"     Def:Specifier DecList SEMI (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Def", @$.first_line, NOTTOKEN, 3,$1,$2,$3);}
-    | error SEMI {if (!errorsim) {printf("Wrong Def:error SEMI\n");}yyerrok;}
+    |Specifier error SEMI {if (!errorsim) {printf("Wrong Def:Specifier error SEMI\n");}yyerrok;}
     |error Def  {if (!errorsim) {printf("Wrong Def:error Def\n");}yyerrok;}
     |Specifier DecList error    {if (!errorsim) {printf("Wrong Def:error Specifier DecList\n");}yyerrok;}
 ;
@@ -222,9 +222,9 @@ Args:Exp COMMA Args {if(!bisonsim)  {printf(YELLOW"     Args:Exp COMMA Args (%d)
 %%
 
 void yyerror(const char *s) {
-    //if (yylineno!=error_line){
+    if (yylineno!=error_line){
         printf ("Error type B at Line %d: in position(%d-%d), \'%s\' %s \n", yylineno,yylloc.first_column,yylloc.last_column,yytext,s);
-   //     error_line=yylineno;
-    //}
+        error_line=yylineno;
+    }
     haserror=1;
 }
