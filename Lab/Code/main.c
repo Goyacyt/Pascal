@@ -14,9 +14,9 @@ node* root;
 
 int main(int argc, char** argv){
 	yydebug=0;
-	sim=1;		//简洁打印模式
-	bisonsim=1;
-    errorsim=1;
+	sim=0;		//简洁打印模式
+	bisonsim=0;
+    errorsim=0;
 	haserror=0;
     error_line=0;//记录上一个出错的行数，如果当前错误仍然在这一行，就不要输出
 	if (argc==1){
