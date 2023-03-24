@@ -119,14 +119,5 @@ WHILE "while"
 {ID} {if(!sim) {printf(GREEN"\'%s\'->ID\n"NONE,yytext);} yylval=add_token("ID", TYPE_ID, yytext);  return ID;}
 \n {if(!sim) {printf(GREEN"NN\n"NONE);}yycolumn=1;}
 [\t\f\r\v ] {}
-<<<<<<< HEAD
 .  {if(yylineno!=error_line){printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);error_line=yylineno;}haserror=1;}
-=======
-
-
-.   {printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);
-    haserror=1;
-    }
-    
->>>>>>> 8cf657078d0cbba69ed7ec0d1a032ff94ada4b0d
 %%

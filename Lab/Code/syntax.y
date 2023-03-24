@@ -67,9 +67,11 @@ ExtDef: Specifier ExtDecList SEMI   {if(!bisonsim)  {printf(YELLOW"     ExtDef:S
         $$=add_nonterminal("ExtDef", @$.first_line, NOTTOKEN,2,$1,$2);}
     | Specifier FunDec CompSt   {if(!bisonsim)  {printf(YELLOW"     ExtDef:Specifier FunDec CompSt (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("ExtDef", @$.first_line, NOTTOKEN, 3,$1,$2,$3);} 
+    /*
     | error SEMI {if (!errorsim) {printf("Wrong ExtDef\n");}yyerrok;}
-//    | error Specifier {if (!errorsim) {printf("Wrong ExtDef: error Specifier\n");}yyerrok;}
+    | error Specifier {if (!errorsim) {printf("Wrong ExtDef: error Specifier\n");}yyerrok;}
     | error ExtDef  {if (!errorsim) {printf("Wrong ExtDef: error ExtDef\n");}yyerrok;}
+    */
 ;               
 ExtDecList: VarDec  {if(!bisonsim)  {printf(YELLOW"     ExtDecList:VarDec (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("ExtDecList", @$.first_line, NOTTOKEN, 1,$1);}
@@ -124,7 +126,7 @@ ParamDec: Specifier VarDec {if(!bisonsim)  {printf(YELLOW"     ParamDec:Specifie
 //declare Statements
 CompSt: LC DefList StmtList RC          {if(!bisonsim)  {printf(YELLOW"     CompSt:LC DefList StmtList RC (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("CompSt", @$.first_line, NOTTOKEN, 4,$1,$2,$3,$4);} 
-//   | error RC  {printf("error CompSt:Wrong ComSt\n");yyerrok;}
+    //| error RC  {printf("error CompSt:Wrong ComSt\n");yyerrok;}
 ;
 StmtList: Stmt StmtList     {if(!bisonsim)  {printf(YELLOW"     StmtList:Stmt StmtList (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("StmtList", @$.first_line, NOTTOKEN, 2,$1,$2);}
@@ -142,30 +144,16 @@ Stmt: Exp SEMI  {if(!bisonsim)  {printf(YELLOW"     Stmt:Exp SEMI (%d)\n"NONE,@$
         $$=add_nonterminal("Stmt", @$.first_line, NOTTOKEN, 7,$1,$2,$3,$4,$5,$6,$7);}         
     | WHILE LP Exp RP Stmt            {if(!bisonsim)  {printf(YELLOW"     Stmt:6WHILE LP Exp RP Stmt (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Stmt", @$.first_line, NOTTOKEN, 5,$1,$2,$3,$4,$5);} 
-<<<<<<< HEAD
-/*    | error SEMI    {if (!errorsim) {printf("Wrong Stmt\n");}yyerrok;}                      
-    //| error Exp {if (!errorsim) {printf("Wrong Stmt :error Exp\n");}yyerrok;}
-   | error LP {if (!errorsim) {printf("Wrong stmt :error lp\n");}yyerrok;}
-   | error MINUS{if (!errorsim) {printf("Wrong stmt :error minus\n");}yyerrok;}
-   | error NOT{if (!errorsim) {printf("Wrong stmt :error not\n");}yyerrok;}
-   | error ID{if (!errorsim) {printf("Wrong stmt :error id\n");}yyerrok;}
-   | error INT {if (!errorsim) {printf("Wrong stmt :error int\n");}yyerrok;}
-   | error FLOAT{if (!errorsim) {printf("Wrong stmt :error float\n");}yyerrok;}
-   | error RETURN {if (!errorsim) {printf("Wrong stmt:error RETURN\n");}yyerrok;}
-    | error IF {if (!errorsim) {printf("Wrong Stmt:error IF\n");}yyerrok;}
-    | error WHILE {if (!errorsim) {printf("Wrong Stmt:error WHILE\n");}yyerrok;}
-    | error RC {if (!errorsim) {printf("Wrong Stmt:error RC\n");}yyerrok;}
-    | error Specifier {if (!errorsim) {printf("Wrong Stmt: error Specifier\n");}yyerrok;}*/
-    |error {printf("Wrong Stmt\n");yyerrok;}
-    |error SEMI {printf("error SEMI\n");yyerrok;}
-=======
+    /*
     | Exp error  {if (!errorsim) {printf("Wrong Stmt:Exp error in line %d\n",@$.first_line);}yyerrok;}
     | error SEMI    {if (!errorsim) {printf("Wrong Stmt:error SEMI\n");}yyerrok;}
     | error Stmt    {if(!errorsim){printf("Wrong Stmt:error Stmt\n");}yyerrok;}                      
     | IF LP error RP Stmt %prec LOWER_THAN_ELSE {if (!errorsim) {printf("Wrong Stmt: error if prec\n");}yyerrok;}
     | IF LP error RP Stmt ELSE Stmt  {if (!errorsim) {printf("Wrong Stmt: error if\n");}yyerrok;}
     | WHILE LP error RP Stmt            {if (!errorsim) {printf("Wrong Stmt: error while\n");}yyerrok;} 
->>>>>>> 8cf657078d0cbba69ed7ec0d1a032ff94ada4b0d
+    */
+    | error Stmt {if (!errorsim) {printf("Wrong Stmt: error Stmt\n");}yyerrok;}
+    | error RC {if (!errorsim) {printf("Wrong Stmt: error\n");}yyerrok;}
 ;
 
 //declare Local Definitions 
@@ -175,9 +163,10 @@ DefList: Def DefList    {if(!bisonsim)  {printf(YELLOW"     DefList:Def DefList 
 ;
 Def: Specifier DecList SEMI {if(!bisonsim)  {printf(YELLOW"     Def:Specifier DecList SEMI (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Def", @$.first_line, NOTTOKEN, 3,$1,$2,$3);}
+   /*
    | error SEMI {if (!errorsim) {printf("Wrong Def:semi exist\n");}yyerrok;}
    | error Specifier{if (!errorsim) {printf("Wrong Def :error Specifier\n");}yyerrok;}
-   //| error Exp {if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
+   | error Exp {if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
    | error LP {if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
    | error MINUS{if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
    | error NOT{if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
@@ -187,7 +176,13 @@ Def: Specifier DecList SEMI {if(!bisonsim)  {printf(YELLOW"     Def:Specifier De
    | error RETURN {if (!errorsim) {printf("Wrong Def:error RETURN\n");}yyerrok;}
    | error IF {if (!errorsim) {printf("Wrong Def:error IF\n");}yyerrok;}
    | error WHILE {if (!errorsim) {printf("Wrong Def:error WHILE\n");}yyerrok;}
-//   | error RC {if (!errorsim) {printf("Wrong Def:error RC\n");}yyerrok;}
+   | error Def
+   | error RC {if (!errorsim) {printf("Wrong Def:error RC\n");}yyerrok;}
+   */
+   | error Def {if (!errorsim) {printf("Wrong Def:error Def\n");}yyerrok;}
+   | error Stmt {if (!errorsim) {printf("Wrong Def:error Stmt\n");}yyerrok;}
+   | error RC {if (!errorsim) {printf("Wrong Def:error RC\n");}yyerrok;}
+   //| Specifier error {if (!errorsim) {printf("Wrong Def:Specifier error\n");}yyerrok;}
 ;
 DecList: Dec    {if(!bisonsim)  {printf(YELLOW"     DecList:Dec (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("DecList", @$.first_line, NOTTOKEN, 1,$1);}
