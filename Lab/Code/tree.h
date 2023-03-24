@@ -3,10 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#define BLUE "\033[0;32;34m"
 #define NONE "\033[m"
+#define BLUE "\033[0;32;34m"
 #define GREEN "\033[0;32;32m"
-
+#define RED "\033[0;32;31m"
+#define YELLOW "\033[1;33m"
 typedef struct NODE{
     char name[32];
     int first_line;

@@ -8,9 +8,6 @@
     void yyerror(const char* s);
     extern int yylineno;
     extern char* yytext;
-    #define RED "\033[0;32;31m"
-    #define NONE "\033[m"
-    #define YELLOW "\033[1;33m"
     extern int bisonsim;
     extern node* root;
     extern int haserror;
