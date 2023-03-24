@@ -7,6 +7,7 @@
     int yycolumn =1;
     extern int sim;
     extern int haserror;
+    extern int error_line;
     #define YY_USER_ACTION  \
         yylloc.first_line=yylloc.last_line=yylineno;    \
         yylloc.first_column=yycolumn;   \
@@ -24,7 +25,7 @@ letter [_a-zA-z]
 digit [0-9]
 INT 0|([1-9]{digit}*)|(00)|(0[1-7][0-7]*)|(0x0)|(0x[1-9A-Fa-f][0-9A-Fa-f]*)|(0X0)|(0X[1-9A-Fa-f][0-9A-Fa-f]*)
 EXPPART [Ee][+-]?{INT}
-FLOAT ({digit}*\.{digit}+|{digit}+\.{digit}*){EXPPART}{0,1}
+FLOAT (({digit}*\.{digit}+|{digit}+\.{digit}*){EXPPART})|{digit}+\.{digit}+
 ID {letter}[_a-zA-z0-9]*
 SEMI ";"
 COMMA ","
@@ -117,5 +118,5 @@ WHILE "while"
 {ID} {if(!sim) {printf(GREEN"\'%s\'->ID\n"NONE,yytext);} yylval=add_token("ID", TYPE_ID, yytext);  return ID;}
 \n {if(!sim) {printf(GREEN"NN\n"NONE);}yycolumn=1;}
 [\t\f\r\v ] {}
-.  {printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);haserror=1;}
+.  {if(yylineno!=error_line){printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);error_line=yylineno;}haserror=1;}
 %%

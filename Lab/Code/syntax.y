@@ -36,7 +36,7 @@
 %left  DOT LP RP LB RB
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
-
+%nonassoc righterror
 
 //declare non-terminals
 %type Program ExtDefList ExtDef ExtDecList
@@ -124,7 +124,7 @@ ParamDec: Specifier VarDec {if(!bisonsim)  {printf(YELLOW"     ParamDec:Specifie
 //declare Statements
 CompSt: LC DefList StmtList RC          {if(!bisonsim)  {printf(YELLOW"     CompSt:LC DefList StmtList RC (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("CompSt", @$.first_line, NOTTOKEN, 4,$1,$2,$3,$4);} 
-   // | error RC  {printf("Wrong ComSt\n");yyerrok;}
+    //| error RC  {printf("Wrong ComSt\n");yyerrok;}
 ;
 StmtList: Stmt StmtList     {if(!bisonsim)  {printf(YELLOW"     StmtList:Stmt StmtList (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("StmtList", @$.first_line, NOTTOKEN, 2,$1,$2);}
@@ -143,8 +143,14 @@ Stmt: Exp SEMI  {if(!bisonsim)  {printf(YELLOW"     Stmt:Exp SEMI (%d)\n"NONE,@$
     | WHILE LP Exp RP Stmt            {if(!bisonsim)  {printf(YELLOW"     Stmt:6WHILE LP Exp RP Stmt (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Stmt", @$.first_line, NOTTOKEN, 5,$1,$2,$3,$4,$5);} 
     | error SEMI    {if (!errorsim) {printf("Wrong Stmt\n");}yyerrok;}                      
-    | error Exp {if (!errorsim) {printf("Wrong Stmt :error Exp\n");}yyerrok;}
-    | error RETURN {if (!errorsim) {printf("Wrong Stmt:error RETURN\n");}yyerrok;}
+    //| error Exp {if (!errorsim) {printf("Wrong Stmt :error Exp\n");}yyerrok;}
+   | error LP {if (!errorsim) {printf("Wrong stmt :error lp\n");}yyerrok;}
+   | error MINUS{if (!errorsim) {printf("Wrong stmt :error minus\n");}yyerrok;}
+   | error NOT{if (!errorsim) {printf("Wrong stmt :error not\n");}yyerrok;}
+   | error ID{if (!errorsim) {printf("Wrong stmt :error id\n");}yyerrok;}
+   | error INT {if (!errorsim) {printf("Wrong stmt :error int\n");}yyerrok;}
+   | error FLOAT{if (!errorsim) {printf("Wrong stmt :error float\n");}yyerrok;}
+   | error RETURN {if (!errorsim) {printf("Wrong stmt:error RETURN\n");}yyerrok;}
     | error IF {if (!errorsim) {printf("Wrong Stmt:error IF\n");}yyerrok;}
     | error WHILE {if (!errorsim) {printf("Wrong Stmt:error WHILE\n");}yyerrok;}
     | error RC {if (!errorsim) {printf("Wrong Stmt:error RC\n");}yyerrok;}
@@ -160,7 +166,13 @@ Def: Specifier DecList SEMI {if(!bisonsim)  {printf(YELLOW"     Def:Specifier De
         $$=add_nonterminal("Def", @$.first_line, NOTTOKEN, 3,$1,$2,$3);}
    | error SEMI {if (!errorsim) {printf("Wrong Def:semi exist\n");}yyerrok;}
    | error Specifier{if (!errorsim) {printf("Wrong Def :error Specifier\n");}yyerrok;}
-   | error Exp {if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
+   //| error Exp {if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
+   | error LP {if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
+   | error MINUS{if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
+   | error NOT{if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
+   | error ID{if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
+   | error INT {if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
+   | error FLOAT{if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
    | error RETURN {if (!errorsim) {printf("Wrong Def:error RETURN\n");}yyerrok;}
    | error IF {if (!errorsim) {printf("Wrong Def:error IF\n");}yyerrok;}
    | error WHILE {if (!errorsim) {printf("Wrong Def:error WHILE\n");}yyerrok;}
