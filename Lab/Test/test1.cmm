@@ -7,9 +7,9 @@ int main()
 	int j=2;
 	c(i,j);
 	i=i+1;
-	i=i+1;
+	i=i+=
 
-	if(){
+	if(i>1){
 		i=i+1;
 		i=i*5;
 	}

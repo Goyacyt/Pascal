@@ -142,6 +142,7 @@ Stmt: Exp SEMI  {if(!bisonsim)  {printf(YELLOW"     Stmt:Exp SEMI (%d)\n"NONE,@$
         $$=add_nonterminal("Stmt", @$.first_line, NOTTOKEN, 7,$1,$2,$3,$4,$5,$6,$7);}         
     | WHILE LP Exp RP Stmt            {if(!bisonsim)  {printf(YELLOW"     Stmt:6WHILE LP Exp RP Stmt (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Stmt", @$.first_line, NOTTOKEN, 5,$1,$2,$3,$4,$5);} 
+<<<<<<< HEAD
 /*    | error SEMI    {if (!errorsim) {printf("Wrong Stmt\n");}yyerrok;}                      
     //| error Exp {if (!errorsim) {printf("Wrong Stmt :error Exp\n");}yyerrok;}
    | error LP {if (!errorsim) {printf("Wrong stmt :error lp\n");}yyerrok;}
@@ -157,6 +158,14 @@ Stmt: Exp SEMI  {if(!bisonsim)  {printf(YELLOW"     Stmt:Exp SEMI (%d)\n"NONE,@$
     | error Specifier {if (!errorsim) {printf("Wrong Stmt: error Specifier\n");}yyerrok;}*/
     |error {printf("Wrong Stmt\n");yyerrok;}
     |error SEMI {printf("error SEMI\n");yyerrok;}
+=======
+    | Exp error  {if (!errorsim) {printf("Wrong Stmt:Exp error in line %d\n",@$.first_line);}yyerrok;}
+    | error SEMI    {if (!errorsim) {printf("Wrong Stmt:error SEMI\n");}yyerrok;}
+    | error Stmt    {if(!errorsim){printf("Wrong Stmt:error Stmt\n");}yyerrok;}                      
+    | IF LP error RP Stmt %prec LOWER_THAN_ELSE {if (!errorsim) {printf("Wrong Stmt: error if prec\n");}yyerrok;}
+    | IF LP error RP Stmt ELSE Stmt  {if (!errorsim) {printf("Wrong Stmt: error if\n");}yyerrok;}
+    | WHILE LP error RP Stmt            {if (!errorsim) {printf("Wrong Stmt: error while\n");}yyerrok;} 
+>>>>>>> 8cf657078d0cbba69ed7ec0d1a032ff94ada4b0d
 ;
 
 //declare Local Definitions 
@@ -238,9 +247,9 @@ Args:Exp COMMA Args {if(!bisonsim)  {printf(YELLOW"     Args:Exp COMMA Args (%d)
 %%
 
 void yyerror(const char *s) {
-    if (yylineno!=error_line){
+    //if (yylineno!=error_line){
         printf ("Error type B at Line %d: in position(%d-%d), \'%s\' %s \n", yylineno,yylloc.first_column,yylloc.last_column,yytext,s);
-        error_line=yylineno;
-    }
+   //     error_line=yylineno;
+    //}
     haserror=1;
 }

@@ -551,6 +551,7 @@ char *yytext;
     #include"tree.h"
     int yycolumn =1;
     extern int sim;
+    extern int error_line;
     extern int haserror;
     extern int error_line;
     #define YY_USER_ACTION  \
@@ -1034,6 +1035,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 121 "./lexical.l"
 {if(yylineno!=error_line){printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);error_line=yylineno;}haserror=1;}
 	YY_BREAK
@@ -1043,6 +1045,19 @@ YY_RULE_SETUP
 ECHO;
 	YY_BREAK
 #line 1046 "./lex.yy.c"
+=======
+#line 124 "./lexical.l"
+{printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);
+    haserror=1;
+    }
+	YY_BREAK
+case 33:
+YY_RULE_SETUP
+#line 128 "./lexical.l"
+ECHO;
+	YY_BREAK
+#line 1048 "./lex.yy.c"
+>>>>>>> 8cf657078d0cbba69ed7ec0d1a032ff94ada4b0d
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2059,6 +2074,10 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
+<<<<<<< HEAD
 #line 122 "./lexical.l"
+=======
+#line 128 "./lexical.l"
+>>>>>>> 8cf657078d0cbba69ed7ec0d1a032ff94ada4b0d
 
 
