@@ -162,26 +162,9 @@ DefList: Def DefList    {if(!bisonsim)  {printf(YELLOW"     DefList:Def DefList 
 ;
 Def: Specifier DecList SEMI {if(!bisonsim)  {printf(YELLOW"     Def:Specifier DecList SEMI (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Def", @$.first_line, NOTTOKEN, 3,$1,$2,$3);}
-   /*
-   | error SEMI {if (!errorsim) {printf("Wrong Def:semi exist\n");}yyerrok;}
-   | error Specifier{if (!errorsim) {printf("Wrong Def :error Specifier\n");}yyerrok;}
-   | error Exp {if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
-   | error LP {if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
-   | error MINUS{if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
-   | error NOT{if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
-   | error ID{if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
-   | error INT {if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
-   | error FLOAT{if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
-   | error RETURN {if (!errorsim) {printf("Wrong Def:error RETURN\n");}yyerrok;}
-   | error IF {if (!errorsim) {printf("Wrong Def:error IF\n");}yyerrok;}
-   | error WHILE {if (!errorsim) {printf("Wrong Def:error WHILE\n");}yyerrok;}
-   | error Def
-   | error RC {if (!errorsim) {printf("Wrong Def:error RC\n");}yyerrok;}
-   */
-   | error Def {if (!errorsim) {printf("Wrong Def:error Def\n");}yyerrok;}
-   | error Stmt {if (!errorsim) {printf("Wrong Def:error Stmt\n");}yyerrok;}
-   | error RC {if (!errorsim) {printf("Wrong Def:error RC\n");}yyerrok;}
-   //| Specifier error {if (!errorsim) {printf("Wrong Def:Specifier error\n");}yyerrok;}
+    |Specifier error SEMI {if (!errorsim) {printf("Wrong Def:Specifier error SEMI\n");}yyerrok;}
+    |error Def  {if (!errorsim) {printf("Wrong Def:error Def\n");}yyerrok;}
+    |Specifier DecList error    {if (!errorsim) {printf("Wrong Def:error Specifier DecList\n");}yyerrok;}
 ;
 DecList: Dec    {if(!bisonsim)  {printf(YELLOW"     DecList:Dec (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("DecList", @$.first_line, NOTTOKEN, 1,$1);}
@@ -247,9 +230,9 @@ Args:Exp COMMA Args {if(!bisonsim)  {printf(YELLOW"     Args:Exp COMMA Args (%d)
 %%
 
 void yyerror(const char *s) {
-    //if (yylineno!=error_line){
+    if (yylineno!=error_line){
         printf ("Error type B at Line %d: in position(%d-%d), \'%s\' %s \n", yylineno,yylloc.first_column,yylloc.last_column,yytext,s);
-   //     error_line=yylineno;
-    //}
+        error_line=yylineno;
+    }
     haserror=1;
 }

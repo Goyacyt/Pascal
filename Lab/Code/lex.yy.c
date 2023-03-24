@@ -560,10 +560,15 @@ char *yytext;
         yylloc.last_column=yycolumn+yyleng-1;   \
         yycolumn+=yyleng;
     
+<<<<<<< HEAD
     #define GREEN "\033[0;32;32m"
     #define NONE "\033[m"
 #line 566 "./lex.yy.c"
 #line 567 "./lex.yy.c"
+=======
+#line 563 "./lex.yy.c"
+#line 564 "./lex.yy.c"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 
 #define INITIAL 0
 
@@ -780,10 +785,17 @@ YY_DECL
 		}
 
 	{
+<<<<<<< HEAD
 #line 56 "./lexical.l"
 
 
 #line 787 "./lex.yy.c"
+=======
+#line 53 "./lexical.l"
+
+
+#line 784 "./lex.yy.c"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -852,7 +864,11 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 58 "./lexical.l"
+=======
+#line 55 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {
     char c=input();
     //printf("//\n");
@@ -861,7 +877,11 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 65 "./lexical.l"
+=======
+#line 62 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {
     //printf("/*\n");
     int c=input();
@@ -883,127 +903,227 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 86 "./lexical.l"
+=======
+#line 83 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->SEMI\n"NONE,yytext);} yylval=add_token("SEMI", OTHERTOKEN, NULL); return SEMI;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 87 "./lexical.l"
+=======
+#line 84 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim)  {printf(GREEN"\'%s\'->COMMA\n"NONE,yytext);}  yylval=add_token("COMMA", OTHERTOKEN, NULL);    return COMMA;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 88 "./lexical.l"
+=======
+#line 85 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->ASSIGNOP\n"NONE,yytext);} yylval=add_token("ASSIGNOP", OTHERTOKEN, NULL);    return ASSIGNOP;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 89 "./lexical.l"
+=======
+#line 86 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->RELOP\n"NONE,yytext);}   yylval=add_token("RELOP", OTHERTOKEN, NULL);    return RELOP;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 90 "./lexical.l"
+=======
+#line 87 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->PLUS\n"NONE,yytext);} yylval=add_token("PLUS", OTHERTOKEN, NULL);    return PLUS;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 91 "./lexical.l"
+=======
+#line 88 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->MINUS\n"NONE,yytext);}   yylval=add_token("MINUS", OTHERTOKEN, NULL);    return MINUS;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 92 "./lexical.l"
+=======
+#line 89 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->STAR\n"NONE,yytext);} yylval=add_token("STAR", OTHERTOKEN, NULL);    return STAR;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 93 "./lexical.l"
+=======
+#line 90 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->DIV\n"NONE,yytext);}   yylval=add_token("DIV", OTHERTOKEN, NULL);    return DIV;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 94 "./lexical.l"
+=======
+#line 91 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->AND\n"NONE,yytext);}   yylval=add_token("AND", OTHERTOKEN, NULL);    return AND;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 95 "./lexical.l"
+=======
+#line 92 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->OR\n"NONE,yytext);} yylval=add_token("OR", OTHERTOKEN, NULL);    return OR;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 96 "./lexical.l"
+=======
+#line 93 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->DOT\n"NONE,yytext);}   yylval=add_token("DOT", OTHERTOKEN, NULL);    return DOT;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 97 "./lexical.l"
+=======
+#line 94 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->NOT\n"NONE,yytext);}   yylval=add_token("NOT", OTHERTOKEN, NULL);    return NOT;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 98 "./lexical.l"
+=======
+#line 95 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->TYPE\n"NONE,yytext);} yylval=add_token("TYPE", TYPE_TYPE, yytext);    return TYPE;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 99 "./lexical.l"
+=======
+#line 96 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->LP\n"NONE,yytext);} yylval=add_token("LP", OTHERTOKEN, NULL);    return LP;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 100 "./lexical.l"
+=======
+#line 97 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->RP\n"NONE,yytext);} yylval=add_token("RP", OTHERTOKEN, NULL); return RP;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 101 "./lexical.l"
+=======
+#line 98 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->LB\n"NONE,yytext);} yylval=add_token("LB", OTHERTOKEN, NULL); return LB;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 102 "./lexical.l"
+=======
+#line 99 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->RB\n"NONE,yytext);} yylval=add_token("RB", OTHERTOKEN, NULL); return RB;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 103 "./lexical.l"
+=======
+#line 100 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->LC\n"NONE,yytext);} yylval=add_token("LC", OTHERTOKEN, NULL); return LC;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 104 "./lexical.l"
+=======
+#line 101 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->RC\n"NONE,yytext);} yylval=add_token("RC", OTHERTOKEN, NULL); return RC;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 105 "./lexical.l"
+=======
+#line 102 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'NONE->STRUCT\n",yytext);} yylval=add_token("STRUCT", OTHERTOKEN, NULL); return STRUCT;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 106 "./lexical.l"
+=======
+#line 103 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->RETURN\n"NONE,yytext);} yylval=add_token("RETURN", OTHERTOKEN, NULL); return RETURN;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 107 "./lexical.l"
+=======
+#line 104 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->IF\n"NONE,yytext);} yylval=add_token("IF", OTHERTOKEN, NULL); return IF;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 108 "./lexical.l"
+=======
+#line 105 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->ELSE\n"NONE,yytext);} yylval=add_token("ELSE", OTHERTOKEN, NULL); return ELSE;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 109 "./lexical.l"
+=======
+#line 106 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->WHILE\n"NONE,yytext);}   yylval=add_token("WHILE", OTHERTOKEN, NULL); return WHILE;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 111 "./lexical.l"
+=======
+#line 108 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {
 	if(!sim) {printf(GREEN"\'%s\'->INT\n"NONE,yytext);}
 	yylval=add_token("INT", TYPE_INT, yytext);
@@ -1011,7 +1131,11 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 115 "./lexical.l"
+=======
+#line 112 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {
 	if(!sim) {printf(GREEN"\'%s\'->FLOAT\n"NONE,yytext);}
 	yylval=add_token("FLOAT", TYPE_FLOAT, yytext);
@@ -1019,22 +1143,35 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 119 "./lexical.l"
+=======
+#line 116 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"\'%s\'->ID\n"NONE,yytext);} yylval=add_token("ID", TYPE_ID, yytext);  return ID;}
 	YY_BREAK
 case 30:
 /* rule 30 can match eol */
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 120 "./lexical.l"
+=======
+#line 117 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {if(!sim) {printf(GREEN"NN\n"NONE);}yycolumn=1;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 121 "./lexical.l"
+=======
+#line 118 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 {}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
+<<<<<<< HEAD
 <<<<<<< HEAD
 #line 122 "./lexical.l"
 {if(yylineno!=error_line){printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);error_line=yylineno;}haserror=1;}
@@ -1045,16 +1182,31 @@ YY_RULE_SETUP
 =======
 #line 123 "./lexical.l"
 {printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);
+=======
+#line 121 "./lexical.l"
+{
+    if(error_line!=yylineno){
+    printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);
+    error_line=yylineno;
+    }
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
     haserror=1;
     }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 127 "./lexical.l"
 >>>>>>> 0d0b067ada9c55a8d597f49b9641685fbf91daf4
 ECHO;
 	YY_BREAK
 #line 1047 "./lex.yy.c"
+=======
+#line 129 "./lexical.l"
+ECHO;
+	YY_BREAK
+#line 1050 "./lex.yy.c"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2072,9 +2224,13 @@ void yyfree (void * ptr )
 #define YYTABLES_NAME "yytables"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #line 123 "./lexical.l"
 =======
 #line 127 "./lexical.l"
 >>>>>>> 0d0b067ada9c55a8d597f49b9641685fbf91daf4
+=======
+#line 129 "./lexical.l"
+>>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
 
 
