@@ -14,7 +14,11 @@ node* root;
 
 int main(int argc, char** argv){
 	yydebug=0;
+<<<<<<< HEAD
 	sim=1;		//简洁打印模式
+=======
+	sim=0;		//简洁打印模式
+>>>>>>> b60f2f220537b8a38579fa0d9cad3a58aa5836dc
 	bisonsim=0;
     errorsim=0;
 	haserror=0;
