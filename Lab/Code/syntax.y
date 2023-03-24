@@ -1,9 +1,7 @@
 %{
     #define YYDEBUG 1
-    #include<stdio.h>
     #include"tree.h"
     #include"lex.yy.c"
-    #define YYSTYPE node*
     int yylex(void);
     void yyerror(const char* s);
     extern int yylineno;

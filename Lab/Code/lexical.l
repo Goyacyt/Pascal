@@ -1,8 +1,5 @@
 %{
-    #define YYSTYPE node*
     #include "syntax.tab.h"
-    #include <stdlib.h>
-    #include <stdio.h>
     #include"tree.h"
     int yycolumn =1;
     extern int sim;
