@@ -6,6 +6,7 @@
     #include"tree.h"
     int yycolumn =1;
     extern int sim;
+    extern int error_line;
     extern int haserror;
     #define YY_USER_ACTION  \
         yylloc.first_line=yylloc.last_line=yylineno;    \
@@ -117,5 +118,10 @@ WHILE "while"
 {ID} {if(!sim) {printf(GREEN"\'%s\'->ID\n"NONE,yytext);} yylval=add_token("ID", TYPE_ID, yytext);  return ID;}
 \n {if(!sim) {printf(GREEN"NN\n"NONE);}yycolumn=1;}
 [\t\f\r\v ] {}
-.  {printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);haserror=1;}
+
+
+.   {printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);
+    haserror=1;
+    }
+    
 %%

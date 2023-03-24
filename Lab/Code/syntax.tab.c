@@ -499,16 +499,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  14
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   331
+#define YYLAST   348
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  32
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  22
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  79
+#define YYNRULES  74
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  140
+#define YYNSTATES  135
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   286
@@ -564,10 +564,10 @@ static const yytype_uint8 yyrline[] =
       74,    76,    81,    83,    86,    88,    93,    95,    97,   102,
      104,   109,   111,   113,   115,   117,   120,   125,   129,   131,
      133,   135,   137,   139,   141,   143,   145,   146,   147,   148,
-     149,   150,   151,   152,   153,   154,   155,   159,   161,   163,
-     165,   166,   167,   168,   169,   170,   173,   175,   178,   180,
-     185,   187,   189,   191,   193,   195,   197,   199,   201,   203,
-     205,   207,   209,   211,   213,   215,   217,   219,   223,   225
+     149,   150,   154,   156,   158,   160,   161,   162,   163,   164,
+     165,   168,   170,   173,   175,   180,   182,   184,   186,   188,
+     190,   192,   194,   196,   198,   200,   202,   204,   206,   208,
+     210,   212,   214,   218,   220
 };
 #endif
 
@@ -600,12 +600,12 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-58)
+#define YYPACT_NINF (-59)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-49)
+#define YYTABLE_NINF (-44)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -614,20 +614,20 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-       4,    38,   -58,    18,     8,   -58,     4,    61,   -58,   -58,
-     -58,    17,    20,   -58,   -58,   -58,    11,    34,   -58,    51,
-      -6,    41,    64,   -58,    75,   -58,    69,    72,   107,   -58,
-     145,    69,    52,   107,   -58,    69,    57,    71,   -58,   -58,
-      68,   118,   -58,   -58,    77,   -58,   178,   178,   178,   -58,
-     -58,   -58,   -58,   290,     3,    95,   106,   -58,   -58,    81,
-     -58,   -16,   -58,    80,   178,    96,    97,   -58,    90,   118,
-     190,   135,    21,    21,   248,   178,   178,   178,   178,   178,
-     178,   178,   178,   112,   178,   178,   -58,    69,   -58,   -58,
-     -58,   178,    96,    97,   -58,   -58,   190,   204,   156,   175,
-     -58,   -58,   -58,   -58,   219,   100,   -58,   290,   310,   172,
-     172,    21,    21,   303,   303,   -58,   233,   290,   -58,   -58,
-     108,   262,   123,   276,   178,   -58,   -58,     9,     9,     9,
-       9,   -58,    99,   125,   -58,   -58,     9,     9,   -58,   -58
+      82,   154,   -59,    -1,    20,   -59,    82,    37,   -59,   -59,
+     -59,    21,    30,   -59,   -59,   -59,    39,    11,   -59,    51,
+       3,    46,     7,   -59,    83,   -59,    55,    72,    67,   -59,
+     148,    55,    52,    67,   -59,    55,    57,    73,   -59,   -59,
+      59,    94,   -59,   -59,    60,   -59,   203,   203,   203,   -59,
+     -59,   -59,   -59,   301,    14,    81,    95,   -59,   -59,    85,
+     -59,     1,   -59,   121,   203,    69,    90,   -59,    80,    94,
+     175,   126,    40,    40,   259,   203,   203,   203,   203,   203,
+     203,   203,   203,   105,   203,   203,   -59,    55,   -59,   -59,
+     -59,   215,   194,   199,   -59,   -59,   -59,   -59,   -59,   230,
+      92,   -59,   301,   321,   327,   327,    40,    40,   314,   314,
+     -59,   244,   301,   -59,   -59,    96,   273,    99,   287,   203,
+     -59,   -59,    10,    10,    10,    10,   -59,    86,    87,   -59,
+     -59,    10,    10,   -59,   -59
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -639,24 +639,24 @@ static const yytype_int8 yydefact[] =
        9,    18,     0,    15,     1,     3,     0,    19,     6,     0,
       10,     0,     0,    23,     0,     5,     0,     0,     0,     7,
        0,     0,     0,     0,    22,     0,     0,    25,    19,    11,
-       0,     0,    76,    77,    75,    50,     0,     0,     0,    53,
-      54,    55,    51,    52,    58,     0,    56,    14,    47,    26,
+       0,     0,    71,    72,    70,    45,     0,     0,     0,    48,
+      49,    50,    46,    47,    53,     0,    51,    14,    42,    26,
       21,     0,    20,     0,     0,     0,     0,    31,     0,     0,
-       0,     0,    69,    70,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,    49,     0,    24,    36,
-      42,    39,    40,    41,    43,    37,    38,     0,     0,     0,
-      27,    28,    30,    72,    79,     0,    68,    60,    63,    64,
-      65,    66,    67,    61,    62,    74,     0,    59,    57,    32,
-       0,     0,     0,     0,     0,    71,    73,     0,     0,     0,
-       0,    78,    44,    33,    46,    35,     0,     0,    45,    34
+       0,     0,    64,    65,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,    44,     0,    24,    37,
+      38,     0,     0,     0,    27,    28,    36,    30,    67,    74,
+       0,    63,    55,    58,    59,    60,    61,    62,    56,    57,
+      69,     0,    54,    52,    32,     0,     0,     0,     0,     0,
+      66,    68,     0,     0,     0,     0,    73,    39,    33,    41,
+      35,     0,     0,    40,    34
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-     -58,   -58,   152,   164,   140,    -3,   -58,   -58,   -58,   -28,
-     -58,   116,   -58,   147,   121,   -57,    59,   -58,    82,   -58,
-     -30,    63
+     -59,   -59,   122,   132,   108,   -21,   -59,   -59,   -59,   -29,
+     -59,    74,   -59,   115,    70,   -58,    -5,   -59,    54,   -59,
+     -30,    23
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
@@ -664,7 +664,7 @@ static const yytype_int8 yydefgoto[] =
 {
        0,     4,     5,     6,    19,     7,     8,    12,    13,    20,
       21,    36,    37,    67,    68,    69,    32,    33,    55,    56,
-      70,   105
+      70,   100
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -672,78 +672,80 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int16 yytable[] =
 {
-      53,    26,     2,    54,    -4,     1,    95,    59,    14,     3,
-      63,    85,    42,    43,    44,    27,    72,    73,    74,    31,
-      46,    35,     2,    11,    27,    31,    47,    52,    48,     3,
-      31,    23,    28,    96,    97,    64,    65,    83,    66,     1,
-     -16,   104,    84,    22,     9,   107,   108,   109,   110,   111,
-     112,   113,   114,    24,   116,   117,     2,    25,    35,    54,
-      94,    97,    16,     3,    28,    30,    17,    18,   121,   123,
-     132,   133,   134,   135,    38,    40,    57,    60,    61,   138,
-     139,    63,     2,    42,    43,    44,    89,    41,   -48,     3,
-      62,    46,    58,     2,   104,    34,    71,    47,     2,    48,
-       3,    86,    27,    28,    90,     3,    91,    92,    30,    93,
-     -48,   -48,   -48,    87,   100,    98,    99,   115,   -48,    63,
-     125,    42,    43,    44,   -48,     2,   -48,   136,   127,    46,
-     -48,   -48,     3,   -48,   -48,    47,   -48,    48,    42,    43,
-      44,    28,   -29,   129,    64,    65,    46,    66,    42,    43,
-      44,    45,    47,   137,    48,   103,    46,   120,    15,    42,
-      43,    44,    47,     2,    48,    10,    39,    46,    29,   118,
-       3,    49,    50,    47,    51,    48,   122,    88,    42,    43,
-      44,    42,    43,    44,    79,    80,    46,   131,    83,    46,
-     101,     0,    47,    84,    48,    47,   102,    48,    75,    76,
+      53,    31,    54,    35,    11,    90,    59,    31,    30,    52,
+      26,    63,    31,    42,    43,    44,    72,    73,    74,     2,
+      14,    46,    85,    41,    27,     2,     3,    47,    58,    48,
+      24,   -43,     3,    28,    91,    27,    64,    65,    16,    66,
+      35,    99,    17,    18,   -16,   102,   103,   104,   105,   106,
+     107,   108,   109,    22,   111,   112,    83,    25,    54,    23,
+      38,    84,   116,   118,   127,   128,   129,   130,    30,    28,
+     -43,   -43,   -43,   133,   134,    40,    57,    60,   -43,    71,
+      61,    62,    -4,     1,   -43,     2,   -43,    86,    92,    99,
+     -43,   -43,     3,   -43,   -43,    63,   -43,    42,    43,    44,
+       2,     2,    87,    34,    94,    46,    27,     3,     3,    93,
+     110,    47,   120,    48,   131,   132,   122,    28,   -29,   124,
+      64,    65,    63,    66,    42,    43,    44,    89,    15,    42,
+      43,    44,    46,    10,    39,    88,    29,    46,    47,    95,
+      48,   113,   126,    47,    28,    48,    98,    64,    65,     0,
+      66,    42,    43,    44,    45,     1,     0,     0,     0,    46,
+       9,     0,     0,     0,     0,    47,     2,    48,     0,     0,
+       0,     0,     2,     3,    49,    50,    96,    51,     0,     3,
+       0,    97,     0,    75,    76,    77,    78,    79,    80,    81,
+      82,    83,     0,     0,     0,   115,    84,    42,    43,    44,
+     117,     0,    42,    43,    44,    46,    42,    43,    44,     0,
+      46,    47,     0,    48,    46,     0,    47,     0,    48,     0,
+      47,   114,    48,    75,    76,    77,    78,    79,    80,    81,
+      82,    83,     0,     0,     0,     0,    84,   119,    75,    76,
       77,    78,    79,    80,    81,    82,    83,     0,     0,     0,
-     119,    84,    75,    76,    77,    78,    79,    80,    81,    82,
-      83,     0,     0,     0,     0,    84,   124,    75,    76,    77,
-      78,    79,    80,    81,    82,    83,     0,     0,     0,     0,
+       0,    84,    75,    76,    77,    78,    79,    80,    81,    82,
+      83,     0,     0,     0,     0,    84,   121,    75,    76,    77,
+      78,    79,    80,    81,    82,    83,     0,     0,     0,   101,
       84,    75,    76,    77,    78,    79,    80,    81,    82,    83,
-       0,     0,     0,     0,    84,   126,    75,    76,    77,    78,
-      79,    80,    81,    82,    83,     0,     0,     0,   106,    84,
-      75,    76,    77,    78,    79,    80,    81,    82,    83,     0,
-       0,     0,   128,    84,    75,    76,    77,    78,    79,    80,
-      81,    82,    83,     0,     0,     0,   130,    84,    75,    76,
-      77,    78,    79,    80,    81,    82,    83,     0,     0,     0,
-       0,    84,    76,    77,    78,    79,    80,     0,     0,    83,
-      77,    78,    79,    80,    84,     0,    83,     0,     0,     0,
-       0,    84
+       0,     0,     0,   123,    84,    75,    76,    77,    78,    79,
+      80,    81,    82,    83,     0,     0,     0,   125,    84,    75,
+      76,    77,    78,    79,    80,    81,    82,    83,     0,     0,
+       0,     0,    84,    76,    77,    78,    79,    80,     0,     0,
+      83,    77,    78,    79,    80,    84,     0,    83,     0,    79,
+      80,     0,    84,    83,     0,     0,     0,     0,    84
 };
 
 static const yytype_int16 yycheck[] =
 {
-      30,     7,    18,    31,     0,     1,    63,    35,     0,    25,
-       1,     8,     3,     4,     5,    21,    46,    47,    48,    22,
-      11,    24,    18,     5,    21,    28,    17,    30,    19,    25,
-      33,    20,    23,    63,    64,    26,    27,    16,    29,     1,
-      23,    71,    21,    23,     6,    75,    76,    77,    78,    79,
-      80,    81,    82,    19,    84,    85,    18,     6,    61,    87,
-      63,    91,     1,    25,    23,     1,     5,     6,    98,    99,
-     127,   128,   129,   130,     5,     3,    24,    20,     7,   136,
-     137,     1,    18,     3,     4,     5,     6,    28,    24,    25,
-      22,    11,    33,    18,   124,    20,    19,    17,    18,    19,
-      25,     6,    21,    23,    24,    25,    26,    27,     1,    29,
-       3,     4,     5,     7,    24,    19,    19,     5,    11,     1,
-      20,     3,     4,     5,    17,    18,    19,    28,    20,    11,
-      23,    24,    25,    26,    27,    17,    29,    19,     3,     4,
-       5,    23,    24,    20,    26,    27,    11,    29,     3,     4,
-       5,     6,    17,    28,    19,    20,    11,     1,     6,     3,
-       4,     5,    17,    18,    19,     1,    26,    11,    21,    87,
-      25,    26,    27,    17,    29,    19,     1,    61,     3,     4,
-       5,     3,     4,     5,    12,    13,    11,   124,    16,    11,
-      69,    -1,    17,    21,    19,    17,     6,    19,     8,     9,
+      30,    22,    31,    24,     5,    63,    35,    28,     1,    30,
+       7,     1,    33,     3,     4,     5,    46,    47,    48,    18,
+       0,    11,     8,    28,    21,    18,    25,    17,    33,    19,
+      19,    24,    25,    23,    64,    21,    26,    27,     1,    29,
+      61,    71,     5,     6,    23,    75,    76,    77,    78,    79,
+      80,    81,    82,    23,    84,    85,    16,     6,    87,    20,
+       5,    21,    92,    93,   122,   123,   124,   125,     1,    23,
+       3,     4,     5,   131,   132,     3,    24,    20,    11,    19,
+       7,    22,     0,     1,    17,    18,    19,     6,    19,   119,
+      23,    24,    25,    26,    27,     1,    29,     3,     4,     5,
+      18,    18,     7,    20,    24,    11,    21,    25,    25,    19,
+       5,    17,    20,    19,    28,    28,    20,    23,    24,    20,
+      26,    27,     1,    29,     3,     4,     5,     6,     6,     3,
+       4,     5,    11,     1,    26,    61,    21,    11,    17,    69,
+      19,    87,   119,    17,    23,    19,    20,    26,    27,    -1,
+      29,     3,     4,     5,     6,     1,    -1,    -1,    -1,    11,
+       6,    -1,    -1,    -1,    -1,    17,    18,    19,    -1,    -1,
+      -1,    -1,    18,    25,    26,    27,     1,    29,    -1,    25,
+      -1,     6,    -1,     8,     9,    10,    11,    12,    13,    14,
+      15,    16,    -1,    -1,    -1,     1,    21,     3,     4,     5,
+       1,    -1,     3,     4,     5,    11,     3,     4,     5,    -1,
+      11,    17,    -1,    19,    11,    -1,    17,    -1,    19,    -1,
+      17,     6,    19,     8,     9,    10,    11,    12,    13,    14,
+      15,    16,    -1,    -1,    -1,    -1,    21,     7,     8,     9,
       10,    11,    12,    13,    14,    15,    16,    -1,    -1,    -1,
-       6,    21,     8,     9,    10,    11,    12,    13,    14,    15,
-      16,    -1,    -1,    -1,    -1,    21,     7,     8,     9,    10,
-      11,    12,    13,    14,    15,    16,    -1,    -1,    -1,    -1,
+      -1,    21,     8,     9,    10,    11,    12,    13,    14,    15,
+      16,    -1,    -1,    -1,    -1,    21,    22,     8,     9,    10,
+      11,    12,    13,    14,    15,    16,    -1,    -1,    -1,    20,
       21,     8,     9,    10,    11,    12,    13,    14,    15,    16,
-      -1,    -1,    -1,    -1,    21,    22,     8,     9,    10,    11,
-      12,    13,    14,    15,    16,    -1,    -1,    -1,    20,    21,
-       8,     9,    10,    11,    12,    13,    14,    15,    16,    -1,
-      -1,    -1,    20,    21,     8,     9,    10,    11,    12,    13,
-      14,    15,    16,    -1,    -1,    -1,    20,    21,     8,     9,
-      10,    11,    12,    13,    14,    15,    16,    -1,    -1,    -1,
-      -1,    21,     9,    10,    11,    12,    13,    -1,    -1,    16,
-      10,    11,    12,    13,    21,    -1,    16,    -1,    -1,    -1,
-      -1,    21
+      -1,    -1,    -1,    20,    21,     8,     9,    10,    11,    12,
+      13,    14,    15,    16,    -1,    -1,    -1,    20,    21,     8,
+       9,    10,    11,    12,    13,    14,    15,    16,    -1,    -1,
+      -1,    -1,    21,     9,    10,    11,    12,    13,    -1,    -1,
+      16,    10,    11,    12,    13,    21,    -1,    16,    -1,    12,
+      13,    -1,    21,    16,    -1,    -1,    -1,    -1,    21
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -759,11 +761,11 @@ static const yytype_int8 yystos[] =
       20,     7,    22,     1,    26,    27,    29,    45,    46,    47,
       52,    19,    52,    52,    52,     8,     9,    10,    11,    12,
       13,    14,    15,    16,    21,     8,     6,     7,    43,     6,
-      24,    26,    27,    29,    37,    47,    52,    52,    19,    19,
-      24,    46,     6,    20,    52,    53,    20,    52,    52,    52,
-      52,    52,    52,    52,    52,     5,    52,    52,    50,     6,
-       1,    52,     1,    52,     7,    20,    22,    20,    20,    20,
-      20,    53,    47,    47,    47,    47,    28,    28,    47,    47
+      47,    52,    19,    19,    24,    46,     1,     6,    20,    52,
+      53,    20,    52,    52,    52,    52,    52,    52,    52,    52,
+       5,    52,    52,    50,     6,     1,    52,     1,    52,     7,
+      20,    22,    20,    20,    20,    20,    53,    47,    47,    47,
+      47,    28,    28,    47,    47
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
@@ -773,10 +775,10 @@ static const yytype_int8 yyr1[] =
       36,    36,    37,    37,    38,    38,    39,    39,    40,    41,
       41,    42,    42,    42,    43,    43,    44,    45,    46,    46,
       47,    47,    47,    47,    47,    47,    47,    47,    47,    47,
-      47,    47,    47,    47,    47,    47,    47,    48,    48,    49,
-      49,    49,    49,    49,    49,    49,    50,    50,    51,    51,
+      47,    47,    48,    48,    49,    49,    49,    49,    49,    49,
+      49,    50,    50,    51,    51,    52,    52,    52,    52,    52,
       52,    52,    52,    52,    52,    52,    52,    52,    52,    52,
-      52,    52,    52,    52,    52,    52,    52,    52,    53,    53
+      52,    52,    52,    53,    53
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -785,11 +787,11 @@ static const yytype_int8 yyr2[] =
        0,     2,     1,     2,     0,     3,     2,     3,     2,     2,
        1,     3,     1,     1,     5,     2,     1,     0,     1,     1,
        4,     4,     3,     2,     3,     1,     2,     4,     2,     0,
-       2,     1,     3,     5,     7,     5,     2,     2,     2,     2,
-       2,     2,     2,     2,     5,     7,     5,     2,     0,     3,
-       2,     2,     2,     2,     2,     2,     1,     3,     1,     3,
-       3,     3,     3,     3,     3,     3,     3,     3,     3,     2,
-       2,     4,     3,     4,     3,     1,     1,     1,     3,     1
+       2,     1,     3,     5,     7,     5,     2,     2,     2,     5,
+       7,     5,     2,     0,     3,     2,     2,     2,     2,     2,
+       2,     1,     3,     1,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     2,     2,     4,     3,     4,     3,
+       1,     1,     1,     3,     1
 };
 
 
@@ -1372,526 +1374,496 @@ yyreduce:
     yyval=add_nonterminal("Program", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);
     root=yyval;
 }
-#line 1376 "./syntax.tab.c"
+#line 1378 "./syntax.tab.c"
     break;
 
   case 3: /* ExtDefList: ExtDef ExtDefList  */
 #line 60 "./syntax.y"
                                 {if(!bisonsim)  {printf(YELLOW"     ExtDefList:ExtDef ExtDefList (%d)\n"NONE,(yyloc).first_line);}  
         yyval=add_nonterminal("ExtDefList", (yyloc).first_line, NOTTOKEN,2,yyvsp[-1],yyvsp[0]);}
-#line 1383 "./syntax.tab.c"
+#line 1385 "./syntax.tab.c"
     break;
 
   case 4: /* ExtDefList: %empty  */
 #line 62 "./syntax.y"
                 {if(!bisonsim)  {printf(YELLOW"     ExtDefList:empty (%d)\n"NONE,(yyloc).first_line);}   yyval=NULL;}
-#line 1389 "./syntax.tab.c"
+#line 1391 "./syntax.tab.c"
     break;
 
   case 5: /* ExtDef: Specifier ExtDecList SEMI  */
 #line 64 "./syntax.y"
                                     {if(!bisonsim)  {printf(YELLOW"     ExtDef:Specifier ExtDecList SEMI (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("ExtDef", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1396 "./syntax.tab.c"
+#line 1398 "./syntax.tab.c"
     break;
 
   case 6: /* ExtDef: Specifier SEMI  */
 #line 66 "./syntax.y"
                         {if(!bisonsim)  {printf(YELLOW"     ExtDef:Specifier SEMI (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("ExtDef", (yyloc).first_line, NOTTOKEN,2,yyvsp[-1],yyvsp[0]);}
-#line 1403 "./syntax.tab.c"
+#line 1405 "./syntax.tab.c"
     break;
 
   case 7: /* ExtDef: Specifier FunDec CompSt  */
 #line 68 "./syntax.y"
                                 {if(!bisonsim)  {printf(YELLOW"     ExtDef:Specifier FunDec CompSt (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("ExtDef", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1410 "./syntax.tab.c"
+#line 1412 "./syntax.tab.c"
     break;
 
   case 8: /* ExtDef: error SEMI  */
 #line 70 "./syntax.y"
                  {if (!errorsim) {printf("Wrong ExtDef\n");}yyerrok;}
-#line 1416 "./syntax.tab.c"
+#line 1418 "./syntax.tab.c"
     break;
 
   case 9: /* ExtDef: error ExtDef  */
 #line 72 "./syntax.y"
                     {if (!errorsim) {printf("Wrong ExtDef: error ExtDef\n");}yyerrok;}
-#line 1422 "./syntax.tab.c"
+#line 1424 "./syntax.tab.c"
     break;
 
   case 10: /* ExtDecList: VarDec  */
 #line 74 "./syntax.y"
                     {if(!bisonsim)  {printf(YELLOW"     ExtDecList:VarDec (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("ExtDecList", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
-#line 1429 "./syntax.tab.c"
+#line 1431 "./syntax.tab.c"
     break;
 
   case 11: /* ExtDecList: VarDec COMMA ExtDecList  */
 #line 76 "./syntax.y"
                                 {if(!bisonsim)  {printf(YELLOW"     ExtDecList:VarDec COMMA ExtDecList (%d)\n"NONE,(yyloc).first_line);}
          yyval=add_nonterminal("ExtDefList", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1436 "./syntax.tab.c"
+#line 1438 "./syntax.tab.c"
     break;
 
   case 12: /* Specifier: TYPE  */
 #line 81 "./syntax.y"
                     {if(!bisonsim)  {printf(YELLOW"     Specifier:TYPE (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Specifier", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
-#line 1443 "./syntax.tab.c"
+#line 1445 "./syntax.tab.c"
     break;
 
   case 13: /* Specifier: StructSpecifier  */
 #line 83 "./syntax.y"
                         {if(!bisonsim)  {printf(YELLOW"     Specifier:StructSpecifier (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Specifier", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
-#line 1450 "./syntax.tab.c"
+#line 1452 "./syntax.tab.c"
     break;
 
   case 14: /* StructSpecifier: STRUCT OptTag LC DefList RC  */
 #line 86 "./syntax.y"
                                                 {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:STRUCT OptTag LC DefList RC (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("StructSpecifier", (yyloc).first_line, NOTTOKEN, 5,yyvsp[-4],yyvsp[-3],yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1457 "./syntax.tab.c"
+#line 1459 "./syntax.tab.c"
     break;
 
   case 15: /* StructSpecifier: STRUCT Tag  */
 #line 88 "./syntax.y"
                     {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:STRUCT Tag (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("StructSpecifier", (yyloc).first_line, NOTTOKEN, 2,yyvsp[-1],yyvsp[0]);}
-#line 1464 "./syntax.tab.c"
+#line 1466 "./syntax.tab.c"
     break;
 
   case 16: /* OptTag: ID  */
 #line 93 "./syntax.y"
             {if(!bisonsim)  {printf(YELLOW"     OptTag:ID (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("OptTag", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
-#line 1471 "./syntax.tab.c"
+#line 1473 "./syntax.tab.c"
     break;
 
   case 17: /* OptTag: %empty  */
 #line 95 "./syntax.y"
                     {if(!bisonsim)  {printf(YELLOW"     OptTag:empty (%d)\n"NONE,(yyloc).first_line);} yyval=NULL;}
-#line 1477 "./syntax.tab.c"
+#line 1479 "./syntax.tab.c"
     break;
 
   case 18: /* Tag: ID  */
 #line 97 "./syntax.y"
         {if(!bisonsim)  {printf(YELLOW"     Tag:ID (%d)\n"NONE,(yyloc).first_line);}
     yyval=add_nonterminal("Tag", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
-#line 1484 "./syntax.tab.c"
+#line 1486 "./syntax.tab.c"
     break;
 
   case 19: /* VarDec: ID  */
 #line 102 "./syntax.y"
             {if(!bisonsim)  {printf(YELLOW"     VarDec:ID (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("VarDec", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
-#line 1491 "./syntax.tab.c"
+#line 1493 "./syntax.tab.c"
     break;
 
   case 20: /* VarDec: VarDec LB INT RB  */
 #line 104 "./syntax.y"
                         {if(!bisonsim)  {printf(YELLOW"     VarDec:VarDec LB INT RB (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("VarDec", (yyloc).first_line, NOTTOKEN, 4,yyvsp[-3],yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1498 "./syntax.tab.c"
+#line 1500 "./syntax.tab.c"
     break;
 
   case 21: /* FunDec: ID LP VarList RP  */
 #line 109 "./syntax.y"
                             {if(!bisonsim)  {printf(YELLOW"     FunDec:ID LP VarList RP (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("FunDec", (yyloc).first_line, NOTTOKEN, 4,yyvsp[-3],yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1505 "./syntax.tab.c"
+#line 1507 "./syntax.tab.c"
     break;
 
   case 22: /* FunDec: ID LP RP  */
 #line 111 "./syntax.y"
                 {if(!bisonsim)  {printf(YELLOW"     FunDec:ID LP RP (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("FunDec", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1512 "./syntax.tab.c"
+#line 1514 "./syntax.tab.c"
     break;
 
   case 23: /* FunDec: error RP  */
 #line 113 "./syntax.y"
                {if (!errorsim) {printf("Wrong FunDec\n");}yyerrok;}
-#line 1518 "./syntax.tab.c"
+#line 1520 "./syntax.tab.c"
     break;
 
   case 24: /* VarList: ParamDec COMMA VarList  */
 #line 115 "./syntax.y"
                                 {if(!bisonsim)  {printf(YELLOW"     VarList:ParamDec COMMA VarList (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("VarList", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1525 "./syntax.tab.c"
+#line 1527 "./syntax.tab.c"
     break;
 
   case 25: /* VarList: ParamDec  */
 #line 117 "./syntax.y"
                 {if(!bisonsim)  {printf(YELLOW"     VarList:ParamDec (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("VarList", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
-#line 1532 "./syntax.tab.c"
+#line 1534 "./syntax.tab.c"
     break;
 
   case 26: /* ParamDec: Specifier VarDec  */
 #line 120 "./syntax.y"
                            {if(!bisonsim)  {printf(YELLOW"     ParamDec:Specifier VarDec (%d)\n"NONE,(yyloc).first_line);}
     yyval=add_nonterminal("ParamDec", (yyloc).first_line, NOTTOKEN, 2,yyvsp[-1],yyvsp[0]);}
-#line 1539 "./syntax.tab.c"
+#line 1541 "./syntax.tab.c"
     break;
 
   case 27: /* CompSt: LC DefList StmtList RC  */
 #line 125 "./syntax.y"
                                         {if(!bisonsim)  {printf(YELLOW"     CompSt:LC DefList StmtList RC (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("CompSt", (yyloc).first_line, NOTTOKEN, 4,yyvsp[-3],yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1546 "./syntax.tab.c"
+#line 1548 "./syntax.tab.c"
     break;
 
   case 28: /* StmtList: Stmt StmtList  */
 #line 129 "./syntax.y"
                             {if(!bisonsim)  {printf(YELLOW"     StmtList:Stmt StmtList (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("StmtList", (yyloc).first_line, NOTTOKEN, 2,yyvsp[-1],yyvsp[0]);}
-#line 1553 "./syntax.tab.c"
+#line 1555 "./syntax.tab.c"
     break;
 
   case 29: /* StmtList: %empty  */
 #line 131 "./syntax.y"
                     {if(!bisonsim)  {printf(YELLOW"     StmtList:empty (%d)\n"NONE,(yyloc).first_line);}    yyval=NULL;}
-#line 1559 "./syntax.tab.c"
+#line 1561 "./syntax.tab.c"
     break;
 
   case 30: /* Stmt: Exp SEMI  */
 #line 133 "./syntax.y"
                 {if(!bisonsim)  {printf(YELLOW"     Stmt:Exp SEMI (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Stmt", (yyloc).first_line, NOTTOKEN, 2,yyvsp[-1],yyvsp[0]);}
-#line 1566 "./syntax.tab.c"
+#line 1568 "./syntax.tab.c"
     break;
 
   case 31: /* Stmt: CompSt  */
 #line 135 "./syntax.y"
                 {if(!bisonsim)  {printf(YELLOW"     Stmt:CompSt (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Stmt", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
-#line 1573 "./syntax.tab.c"
+#line 1575 "./syntax.tab.c"
     break;
 
   case 32: /* Stmt: RETURN Exp SEMI  */
 #line 137 "./syntax.y"
                          {if(!bisonsim)  {printf(YELLOW"     Stmt:RETURN Exp SEMI (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Stmt", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1580 "./syntax.tab.c"
+#line 1582 "./syntax.tab.c"
     break;
 
   case 33: /* Stmt: IF LP Exp RP Stmt  */
 #line 139 "./syntax.y"
                                               {if(!bisonsim)  {printf(YELLOW"     Stmt:IF LP Exp RP Stmt LOWER_THAN_ELSE (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Stmt", (yyloc).first_line, NOTTOKEN, 5,yyvsp[-4],yyvsp[-3],yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1587 "./syntax.tab.c"
+#line 1589 "./syntax.tab.c"
     break;
 
   case 34: /* Stmt: IF LP Exp RP Stmt ELSE Stmt  */
 #line 141 "./syntax.y"
                                     {if(!bisonsim)  {printf(YELLOW"     Stmt:IF LP Exp RP Stmt ELSE Stmt (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Stmt", (yyloc).first_line, NOTTOKEN, 7,yyvsp[-6],yyvsp[-5],yyvsp[-4],yyvsp[-3],yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1594 "./syntax.tab.c"
+#line 1596 "./syntax.tab.c"
     break;
 
   case 35: /* Stmt: WHILE LP Exp RP Stmt  */
 #line 143 "./syntax.y"
                                       {if(!bisonsim)  {printf(YELLOW"     Stmt:6WHILE LP Exp RP Stmt (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Stmt", (yyloc).first_line, NOTTOKEN, 5,yyvsp[-4],yyvsp[-3],yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1601 "./syntax.tab.c"
+#line 1603 "./syntax.tab.c"
     break;
 
-  case 36: /* Stmt: error SEMI  */
+  case 36: /* Stmt: Exp error  */
 #line 145 "./syntax.y"
-                    {if (!errorsim) {printf("Wrong Stmt\n");}yyerrok;}
-#line 1607 "./syntax.tab.c"
+                 {if (!errorsim) {printf("Wrong Stmt:Exp error in line %d\n",(yyloc).first_line);}yyerrok;}
+#line 1609 "./syntax.tab.c"
     break;
 
-  case 37: /* Stmt: error Stmt  */
+  case 37: /* Stmt: error SEMI  */
 #line 146 "./syntax.y"
-                    {if(!errorsim){printf("Wrong Stmt:error Stmt\n");}yyerrok;}
-#line 1613 "./syntax.tab.c"
+                    {if (!errorsim) {printf("Wrong Stmt:error SEMI\n");}yyerrok;}
+#line 1615 "./syntax.tab.c"
     break;
 
-  case 38: /* Stmt: error Exp  */
+  case 38: /* Stmt: error Stmt  */
 #line 147 "./syntax.y"
-                {if (!errorsim) {printf("Wrong Stmt :error Exp\n");}yyerrok;}
-#line 1619 "./syntax.tab.c"
+                    {if(!errorsim){printf("Wrong Stmt:error Stmt\n");}yyerrok;}
+#line 1621 "./syntax.tab.c"
     break;
 
-  case 39: /* Stmt: error RETURN  */
+  case 39: /* Stmt: IF LP error RP Stmt  */
 #line 148 "./syntax.y"
-                   {if (!errorsim) {printf("Wrong Stmt:error RETURN\n");}yyerrok;}
-#line 1625 "./syntax.tab.c"
-    break;
-
-  case 40: /* Stmt: error IF  */
-#line 149 "./syntax.y"
-               {if (!errorsim) {printf("Wrong Stmt:error IF\n");}yyerrok;}
-#line 1631 "./syntax.tab.c"
-    break;
-
-  case 41: /* Stmt: error WHILE  */
-#line 150 "./syntax.y"
-                  {if (!errorsim) {printf("Wrong Stmt:error WHILE\n");}yyerrok;}
-#line 1637 "./syntax.tab.c"
-    break;
-
-  case 42: /* Stmt: error RC  */
-#line 151 "./syntax.y"
-               {if (!errorsim) {printf("Wrong Stmt:error RC\n");}yyerrok;}
-#line 1643 "./syntax.tab.c"
-    break;
-
-  case 43: /* Stmt: error Specifier  */
-#line 152 "./syntax.y"
-                      {if (!errorsim) {printf("Wrong Stmt: error Specifier\n");}yyerrok;}
-#line 1649 "./syntax.tab.c"
-    break;
-
-  case 44: /* Stmt: IF LP error RP Stmt  */
-#line 153 "./syntax.y"
                                                 {if (!errorsim) {printf("Wrong Stmt: error if prec\n");}yyerrok;}
-#line 1655 "./syntax.tab.c"
+#line 1627 "./syntax.tab.c"
     break;
 
-  case 45: /* Stmt: IF LP error RP Stmt ELSE Stmt  */
-#line 154 "./syntax.y"
+  case 40: /* Stmt: IF LP error RP Stmt ELSE Stmt  */
+#line 149 "./syntax.y"
                                      {if (!errorsim) {printf("Wrong Stmt: error if\n");}yyerrok;}
-#line 1661 "./syntax.tab.c"
+#line 1633 "./syntax.tab.c"
     break;
 
-  case 46: /* Stmt: WHILE LP error RP Stmt  */
-#line 155 "./syntax.y"
+  case 41: /* Stmt: WHILE LP error RP Stmt  */
+#line 150 "./syntax.y"
                                         {if (!errorsim) {printf("Wrong Stmt: error while\n");}yyerrok;}
-#line 1667 "./syntax.tab.c"
+#line 1639 "./syntax.tab.c"
     break;
 
-  case 47: /* DefList: Def DefList  */
-#line 159 "./syntax.y"
+  case 42: /* DefList: Def DefList  */
+#line 154 "./syntax.y"
                         {if(!bisonsim)  {printf(YELLOW"     DefList:Def DefList (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("DefList", (yyloc).first_line, NOTTOKEN, 2,yyvsp[-1],yyvsp[0]);}
-#line 1674 "./syntax.tab.c"
+#line 1646 "./syntax.tab.c"
     break;
 
-  case 48: /* DefList: %empty  */
-#line 161 "./syntax.y"
+  case 43: /* DefList: %empty  */
+#line 156 "./syntax.y"
                     {if(!bisonsim)  {printf(YELLOW"     DefList:empty (%d)\n"NONE,(yyloc).first_line);} yyval=NULL;}
-#line 1680 "./syntax.tab.c"
+#line 1652 "./syntax.tab.c"
     break;
 
-  case 49: /* Def: Specifier DecList SEMI  */
-#line 163 "./syntax.y"
+  case 44: /* Def: Specifier DecList SEMI  */
+#line 158 "./syntax.y"
                             {if(!bisonsim)  {printf(YELLOW"     Def:Specifier DecList SEMI (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Def", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1687 "./syntax.tab.c"
+#line 1659 "./syntax.tab.c"
     break;
 
-  case 50: /* Def: error SEMI  */
-#line 165 "./syntax.y"
+  case 45: /* Def: error SEMI  */
+#line 160 "./syntax.y"
                 {if (!errorsim) {printf("Wrong Def:semi exist\n");}yyerrok;}
-#line 1693 "./syntax.tab.c"
+#line 1665 "./syntax.tab.c"
     break;
 
-  case 51: /* Def: error Specifier  */
-#line 166 "./syntax.y"
+  case 46: /* Def: error Specifier  */
+#line 161 "./syntax.y"
                     {if (!errorsim) {printf("Wrong Def :error Specifier\n");}yyerrok;}
-#line 1699 "./syntax.tab.c"
+#line 1671 "./syntax.tab.c"
     break;
 
-  case 52: /* Def: error Exp  */
-#line 167 "./syntax.y"
+  case 47: /* Def: error Exp  */
+#line 162 "./syntax.y"
                {if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
-#line 1705 "./syntax.tab.c"
+#line 1677 "./syntax.tab.c"
     break;
 
-  case 53: /* Def: error RETURN  */
-#line 168 "./syntax.y"
+  case 48: /* Def: error RETURN  */
+#line 163 "./syntax.y"
                   {if (!errorsim) {printf("Wrong Def:error RETURN\n");}yyerrok;}
-#line 1711 "./syntax.tab.c"
+#line 1683 "./syntax.tab.c"
     break;
 
-  case 54: /* Def: error IF  */
-#line 169 "./syntax.y"
+  case 49: /* Def: error IF  */
+#line 164 "./syntax.y"
               {if (!errorsim) {printf("Wrong Def:error IF\n");}yyerrok;}
-#line 1717 "./syntax.tab.c"
+#line 1689 "./syntax.tab.c"
     break;
 
-  case 55: /* Def: error WHILE  */
-#line 170 "./syntax.y"
+  case 50: /* Def: error WHILE  */
+#line 165 "./syntax.y"
                  {if (!errorsim) {printf("Wrong Def:error WHILE\n");}yyerrok;}
+#line 1695 "./syntax.tab.c"
+    break;
+
+  case 51: /* DecList: Dec  */
+#line 168 "./syntax.y"
+                {if(!bisonsim)  {printf(YELLOW"     DecList:Dec (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("DecList", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
+#line 1702 "./syntax.tab.c"
+    break;
+
+  case 52: /* DecList: Dec COMMA DecList  */
+#line 170 "./syntax.y"
+                        {if(!bisonsim)  {printf(YELLOW"     DecList:Dec COMMA DecList (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("DecList", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
+#line 1709 "./syntax.tab.c"
+    break;
+
+  case 53: /* Dec: VarDec  */
+#line 173 "./syntax.y"
+            {if(!bisonsim)  {printf(YELLOW"     Dec:VarDec (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Dec", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
+#line 1716 "./syntax.tab.c"
+    break;
+
+  case 54: /* Dec: VarDec ASSIGNOP Exp  */
+#line 175 "./syntax.y"
+                            {if(!bisonsim)  {printf(YELLOW"     Dec:VarDec ASSIGNOP Exp (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Dec", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1723 "./syntax.tab.c"
     break;
 
-  case 56: /* DecList: Dec  */
-#line 173 "./syntax.y"
-                {if(!bisonsim)  {printf(YELLOW"     DecList:Dec (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("DecList", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
+  case 55: /* Exp: Exp ASSIGNOP Exp  */
+#line 180 "./syntax.y"
+                        {if(!bisonsim)  {printf(YELLOW"     Exp:Exp ASSIGNOP Exp (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1730 "./syntax.tab.c"
     break;
 
-  case 57: /* DecList: Dec COMMA DecList  */
-#line 175 "./syntax.y"
-                        {if(!bisonsim)  {printf(YELLOW"     DecList:Dec COMMA DecList (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("DecList", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
+  case 56: /* Exp: Exp AND Exp  */
+#line 182 "./syntax.y"
+                        {if(!bisonsim)  {printf(YELLOW"     Exp:Exp AND Exp (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1737 "./syntax.tab.c"
     break;
 
-  case 58: /* Dec: VarDec  */
-#line 178 "./syntax.y"
-            {if(!bisonsim)  {printf(YELLOW"     Dec:VarDec (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Dec", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
+  case 57: /* Exp: Exp OR Exp  */
+#line 184 "./syntax.y"
+                    {if(!bisonsim)  {printf(YELLOW"     Exp:Exp OR Exp (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1744 "./syntax.tab.c"
     break;
 
-  case 59: /* Dec: VarDec ASSIGNOP Exp  */
-#line 180 "./syntax.y"
-                            {if(!bisonsim)  {printf(YELLOW"     Dec:VarDec ASSIGNOP Exp (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Dec", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
+  case 58: /* Exp: Exp RELOP Exp  */
+#line 186 "./syntax.y"
+                        {if(!bisonsim)  {printf(YELLOW"     Exp:Exp RELOP Exp (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1751 "./syntax.tab.c"
     break;
 
-  case 60: /* Exp: Exp ASSIGNOP Exp  */
-#line 185 "./syntax.y"
-                        {if(!bisonsim)  {printf(YELLOW"     Exp:Exp ASSIGNOP Exp (%d)\n"NONE,(yyloc).first_line);}
+  case 59: /* Exp: Exp PLUS Exp  */
+#line 188 "./syntax.y"
+                    {if(!bisonsim)  {printf(YELLOW"     Exp:Exp PLUS Exp (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1758 "./syntax.tab.c"
     break;
 
-  case 61: /* Exp: Exp AND Exp  */
-#line 187 "./syntax.y"
-                        {if(!bisonsim)  {printf(YELLOW"     Exp:Exp AND Exp (%d)\n"NONE,(yyloc).first_line);}
+  case 60: /* Exp: Exp MINUS Exp  */
+#line 190 "./syntax.y"
+                    {if(!bisonsim)  {printf(YELLOW"     Exp:Exp MINUS Exp (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1765 "./syntax.tab.c"
     break;
 
-  case 62: /* Exp: Exp OR Exp  */
-#line 189 "./syntax.y"
-                    {if(!bisonsim)  {printf(YELLOW"     Exp:Exp OR Exp (%d)\n"NONE,(yyloc).first_line);}
+  case 61: /* Exp: Exp STAR Exp  */
+#line 192 "./syntax.y"
+                    {if(!bisonsim)  {printf(YELLOW"     Exp:Exp STAR Exp (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1772 "./syntax.tab.c"
     break;
 
-  case 63: /* Exp: Exp RELOP Exp  */
-#line 191 "./syntax.y"
-                        {if(!bisonsim)  {printf(YELLOW"     Exp:Exp RELOP Exp (%d)\n"NONE,(yyloc).first_line);}
+  case 62: /* Exp: Exp DIV Exp  */
+#line 194 "./syntax.y"
+                    {if(!bisonsim)  {printf(YELLOW"     Exp:Exp DIV Exp (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1779 "./syntax.tab.c"
     break;
 
-  case 64: /* Exp: Exp PLUS Exp  */
-#line 193 "./syntax.y"
-                    {if(!bisonsim)  {printf(YELLOW"     Exp:Exp PLUS Exp (%d)\n"NONE,(yyloc).first_line);}
+  case 63: /* Exp: LP Exp RP  */
+#line 196 "./syntax.y"
+                {if(!bisonsim)  {printf(YELLOW"     Exp:LP Exp RP (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1786 "./syntax.tab.c"
     break;
 
-  case 65: /* Exp: Exp MINUS Exp  */
-#line 195 "./syntax.y"
-                    {if(!bisonsim)  {printf(YELLOW"     Exp:Exp MINUS Exp (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
+  case 64: /* Exp: MINUS Exp  */
+#line 198 "./syntax.y"
+                            {if(!bisonsim)  {printf(YELLOW"     Exp:MINUS Exp (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 2,yyvsp[-1],yyvsp[0]);}
 #line 1793 "./syntax.tab.c"
     break;
 
-  case 66: /* Exp: Exp STAR Exp  */
-#line 197 "./syntax.y"
-                    {if(!bisonsim)  {printf(YELLOW"     Exp:Exp STAR Exp (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
+  case 65: /* Exp: NOT Exp  */
+#line 200 "./syntax.y"
+                {if(!bisonsim)  {printf(YELLOW"     Exp:NOT Exp (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 2,yyvsp[-1],yyvsp[0]);}
 #line 1800 "./syntax.tab.c"
     break;
 
-  case 67: /* Exp: Exp DIV Exp  */
-#line 199 "./syntax.y"
-                    {if(!bisonsim)  {printf(YELLOW"     Exp:Exp DIV Exp (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
+  case 66: /* Exp: ID LP Args RP  */
+#line 202 "./syntax.y"
+                    {if(!bisonsim)  {printf(YELLOW"     Exp:ID LP Args RP (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 4,yyvsp[-3],yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1807 "./syntax.tab.c"
     break;
 
-  case 68: /* Exp: LP Exp RP  */
-#line 201 "./syntax.y"
-                {if(!bisonsim)  {printf(YELLOW"     Exp:LP Exp RP (%d)\n"NONE,(yyloc).first_line);}
+  case 67: /* Exp: ID LP RP  */
+#line 204 "./syntax.y"
+                {if(!bisonsim)  {printf(YELLOW"     Exp:ID LP RP (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1814 "./syntax.tab.c"
     break;
 
-  case 69: /* Exp: MINUS Exp  */
-#line 203 "./syntax.y"
-                            {if(!bisonsim)  {printf(YELLOW"     Exp:MINUS Exp (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 2,yyvsp[-1],yyvsp[0]);}
+  case 68: /* Exp: Exp LB Exp RB  */
+#line 206 "./syntax.y"
+                    {if(!bisonsim)  {printf(YELLOW"     Exp:Exp LB Exp RB (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 4,yyvsp[-3],yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1821 "./syntax.tab.c"
     break;
 
-  case 70: /* Exp: NOT Exp  */
-#line 205 "./syntax.y"
-                {if(!bisonsim)  {printf(YELLOW"     Exp:NOT Exp (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 2,yyvsp[-1],yyvsp[0]);}
+  case 69: /* Exp: Exp DOT ID  */
+#line 208 "./syntax.y"
+                {if(!bisonsim)  {printf(YELLOW"     Exp:Exp DOT ID (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1828 "./syntax.tab.c"
     break;
 
-  case 71: /* Exp: ID LP Args RP  */
-#line 207 "./syntax.y"
-                    {if(!bisonsim)  {printf(YELLOW"     Exp:ID LP Args RP (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 4,yyvsp[-3],yyvsp[-2],yyvsp[-1],yyvsp[0]);}
+  case 70: /* Exp: ID  */
+#line 210 "./syntax.y"
+        {if(!bisonsim)  {printf(YELLOW"     Exp:ID (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
 #line 1835 "./syntax.tab.c"
     break;
 
-  case 72: /* Exp: ID LP RP  */
-#line 209 "./syntax.y"
-                {if(!bisonsim)  {printf(YELLOW"     Exp:ID LP RP (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
+  case 71: /* Exp: INT  */
+#line 212 "./syntax.y"
+            {if(!bisonsim)  {printf(YELLOW"     Exp:INT (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
 #line 1842 "./syntax.tab.c"
     break;
 
-  case 73: /* Exp: Exp LB Exp RB  */
-#line 211 "./syntax.y"
-                    {if(!bisonsim)  {printf(YELLOW"     Exp:Exp LB Exp RB (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 4,yyvsp[-3],yyvsp[-2],yyvsp[-1],yyvsp[0]);}
+  case 72: /* Exp: FLOAT  */
+#line 214 "./syntax.y"
+            {if(!bisonsim)  {printf(YELLOW"     Exp:FLOAT (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
 #line 1849 "./syntax.tab.c"
     break;
 
-  case 74: /* Exp: Exp DOT ID  */
-#line 213 "./syntax.y"
-                {if(!bisonsim)  {printf(YELLOW"     Exp:Exp DOT ID (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
+  case 73: /* Args: Exp COMMA Args  */
+#line 218 "./syntax.y"
+                    {if(!bisonsim)  {printf(YELLOW"     Args:Exp COMMA Args (%d)\n"NONE,(yyloc).first_line);}
+        yyval=add_nonterminal("Args", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1856 "./syntax.tab.c"
     break;
 
-  case 75: /* Exp: ID  */
-#line 215 "./syntax.y"
-        {if(!bisonsim)  {printf(YELLOW"     Exp:ID (%d)\n"NONE,(yyloc).first_line);}
+  case 74: /* Args: Exp  */
+#line 220 "./syntax.y"
+            {if(!bisonsim)  {printf(YELLOW"     Args:Exp (%d)\n"NONE,(yyloc).first_line);}
         yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
 #line 1863 "./syntax.tab.c"
     break;
 
-  case 76: /* Exp: INT  */
-#line 217 "./syntax.y"
-            {if(!bisonsim)  {printf(YELLOW"     Exp:INT (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
-#line 1870 "./syntax.tab.c"
-    break;
 
-  case 77: /* Exp: FLOAT  */
-#line 219 "./syntax.y"
-            {if(!bisonsim)  {printf(YELLOW"     Exp:FLOAT (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
-#line 1877 "./syntax.tab.c"
-    break;
-
-  case 78: /* Args: Exp COMMA Args  */
-#line 223 "./syntax.y"
-                    {if(!bisonsim)  {printf(YELLOW"     Args:Exp COMMA Args (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Args", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
-#line 1884 "./syntax.tab.c"
-    break;
-
-  case 79: /* Args: Exp  */
-#line 225 "./syntax.y"
-            {if(!bisonsim)  {printf(YELLOW"     Args:Exp (%d)\n"NONE,(yyloc).first_line);}
-        yyval=add_nonterminal("Exp", (yyloc).first_line, NOTTOKEN, 1,yyvsp[0]);}
-#line 1891 "./syntax.tab.c"
-    break;
-
-
-#line 1895 "./syntax.tab.c"
+#line 1867 "./syntax.tab.c"
 
       default: break;
     }
@@ -2089,13 +2061,13 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 228 "./syntax.y"
+#line 223 "./syntax.y"
 
 
 void yyerror(const char *s) {
-    if (yylineno!=error_line){
+    //if (yylineno!=error_line){
         printf ("Error type B at Line %d: in position(%d-%d), \'%s\' %s \n", yylineno,yylloc.first_column,yylloc.last_column,yytext,s);
-        error_line=yylineno;
-    }
+   //     error_line=yylineno;
+    //}
     haserror=1;
 }
