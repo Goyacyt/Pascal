@@ -67,9 +67,8 @@ ExtDef: Specifier ExtDecList SEMI   {if(!bisonsim)  {printf(YELLOW"     ExtDef:S
         $$=add_nonterminal("ExtDef", @$.first_line, NOTTOKEN,2,$1,$2);}
     | Specifier FunDec CompSt   {if(!bisonsim)  {printf(YELLOW"     ExtDef:Specifier FunDec CompSt (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("ExtDef", @$.first_line, NOTTOKEN, 3,$1,$2,$3);} 
-    | error SEMI {if (!errorsim) {printf("Wrong ExtDef\n");}yyerrok;}
-//    | error Specifier {if (!errorsim) {printf("Wrong ExtDef: error Specifier\n");}yyerrok;}
-    | error ExtDef  {if (!errorsim) {printf("Wrong ExtDef: error ExtDef\n");}yyerrok;}
+//    | error SEMI {if (!errorsim) {printf("Wrong ExtDef\n");}yyerrok;}
+//    | error ExtDef  {if (!errorsim) {printf("Wrong ExtDef: error ExtDef\n");}yyerrok;}
 ;               
 ExtDecList: VarDec  {if(!bisonsim)  {printf(YELLOW"     ExtDecList:VarDec (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("ExtDecList", @$.first_line, NOTTOKEN, 1,$1);}
@@ -87,7 +86,6 @@ StructSpecifier: STRUCT OptTag LC DefList RC    {if(!bisonsim)  {printf(YELLOW" 
         $$=add_nonterminal("StructSpecifier", @$.first_line, NOTTOKEN, 5,$1,$2,$3,$4,$5);}
     | STRUCT Tag    {if(!bisonsim)  {printf(YELLOW"     StructSpecifier:STRUCT Tag (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("StructSpecifier", @$.first_line, NOTTOKEN, 2,$1,$2);}
-   // |error RC {printf("Wrong StructSpecifier\n");yyerrok;}
 ;   
 
 OptTag: ID  {if(!bisonsim)  {printf(YELLOW"     OptTag:ID (%d)\n"NONE,@$.first_line);}
@@ -103,14 +101,13 @@ VarDec: ID  {if(!bisonsim)  {printf(YELLOW"     VarDec:ID (%d)\n"NONE,@$.first_l
         $$=add_nonterminal("VarDec", @$.first_line, NOTTOKEN, 1,$1);}
     | VarDec LB INT RB  {if(!bisonsim)  {printf(YELLOW"     VarDec:VarDec LB INT RB (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("VarDec", @$.first_line, NOTTOKEN, 4,$1,$2,$3,$4);}
-//  | error RB {printf("Wrong VarDec\n");yyerrok;}
 ;
 
 FunDec: ID LP VarList RP    {if(!bisonsim)  {printf(YELLOW"     FunDec:ID LP VarList RP (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("FunDec", @$.first_line, NOTTOKEN, 4,$1,$2,$3,$4);}
     | ID LP RP  {if(!bisonsim)  {printf(YELLOW"     FunDec:ID LP RP (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("FunDec", @$.first_line, NOTTOKEN, 3,$1,$2,$3);}
-    | error RP {if (!errorsim) {printf("Wrong FunDec\n");}yyerrok;}
+//    | error RP {if (!errorsim) {printf("Wrong FunDec\n");}yyerrok;}
 ;
 VarList: ParamDec COMMA VarList {if(!bisonsim)  {printf(YELLOW"     VarList:ParamDec COMMA VarList (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("VarList", @$.first_line, NOTTOKEN, 3,$1,$2,$3);}
@@ -124,7 +121,6 @@ ParamDec: Specifier VarDec {if(!bisonsim)  {printf(YELLOW"     ParamDec:Specifie
 //declare Statements
 CompSt: LC DefList StmtList RC          {if(!bisonsim)  {printf(YELLOW"     CompSt:LC DefList StmtList RC (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("CompSt", @$.first_line, NOTTOKEN, 4,$1,$2,$3,$4);} 
-//   | error RC  {printf("error CompSt:Wrong ComSt\n");yyerrok;}
 ;
 StmtList: Stmt StmtList     {if(!bisonsim)  {printf(YELLOW"     StmtList:Stmt StmtList (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("StmtList", @$.first_line, NOTTOKEN, 2,$1,$2);}
@@ -143,6 +139,7 @@ Stmt: Exp SEMI  {if(!bisonsim)  {printf(YELLOW"     Stmt:Exp SEMI (%d)\n"NONE,@$
     | WHILE LP Exp RP Stmt            {if(!bisonsim)  {printf(YELLOW"     Stmt:6WHILE LP Exp RP Stmt (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Stmt", @$.first_line, NOTTOKEN, 5,$1,$2,$3,$4,$5);} 
     | Exp error  {if (!errorsim) {printf("Wrong Stmt:Exp error in line %d\n",@$.first_line);}yyerrok;}
+    | RETURN Exp error  {if (!errorsim) {printf("Wrong Stmt:RETURN Exp error in line %d\n",@$.first_line);}yyerrok;}
     | error SEMI    {if (!errorsim) {printf("Wrong Stmt:error SEMI\n");}yyerrok;}
     | error Stmt    {if(!errorsim){printf("Wrong Stmt:error Stmt\n");}yyerrok;}                      
     | IF LP error RP Stmt %prec LOWER_THAN_ELSE {if (!errorsim) {printf("Wrong Stmt: error if prec\n");}yyerrok;}
@@ -157,13 +154,9 @@ DefList: Def DefList    {if(!bisonsim)  {printf(YELLOW"     DefList:Def DefList 
 ;
 Def: Specifier DecList SEMI {if(!bisonsim)  {printf(YELLOW"     Def:Specifier DecList SEMI (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Def", @$.first_line, NOTTOKEN, 3,$1,$2,$3);}
-   | error SEMI {if (!errorsim) {printf("Wrong Def:semi exist\n");}yyerrok;}
-   | error Specifier{if (!errorsim) {printf("Wrong Def :error Specifier\n");}yyerrok;}
-   | error Exp {if (!errorsim) {printf("Wrong Def :error Exp\n");}yyerrok;}
-   | error RETURN {if (!errorsim) {printf("Wrong Def:error RETURN\n");}yyerrok;}
-   | error IF {if (!errorsim) {printf("Wrong Def:error IF\n");}yyerrok;}
-   | error WHILE {if (!errorsim) {printf("Wrong Def:error WHILE\n");}yyerrok;}
-//   | error RC {if (!errorsim) {printf("Wrong Def:error RC\n");}yyerrok;}
+    | error SEMI {if (!errorsim) {printf("Wrong Def:error SEMI\n");}yyerrok;}
+    |error Def  {if (!errorsim) {printf("Wrong Def:error Def\n");}yyerrok;}
+    |Specifier DecList error    {if (!errorsim) {printf("Wrong Def:error Specifier DecList\n");}yyerrok;}
 ;
 DecList: Dec    {if(!bisonsim)  {printf(YELLOW"     DecList:Dec (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("DecList", @$.first_line, NOTTOKEN, 1,$1);}
@@ -213,6 +206,12 @@ Exp:Exp ASSIGNOP Exp    {if(!bisonsim)  {printf(YELLOW"     Exp:Exp ASSIGNOP Exp
         $$=add_nonterminal("Exp", @$.first_line, NOTTOKEN, 1,$1);}
     |FLOAT  {if(!bisonsim)  {printf(YELLOW"     Exp:FLOAT (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Exp", @$.first_line, NOTTOKEN, 1,$1);}
+    | LP error RP {if (!errorsim) {printf("Wrong Exp:LP error RP\n");}yyerrok;} 
+    | LP Exp error  {if (!errorsim) {printf("Wrong Exp:LP Exp error\n");}yyerrok;}    
+    | MINUS error %prec NEG  {if (!errorsim) {printf("Wrong Exp:MINUS error prec NEG\n");}yyerrok;}          
+    | NOT error   {if (!errorsim) {printf("Wrong Exp:NOT error \n");}yyerrok;} 
+    | ID LP error RP  {if (!errorsim) {printf("Wrong Exp:ID LP error RP\n");}yyerrok;} 
+
 ;
 
 Args:Exp COMMA Args {if(!bisonsim)  {printf(YELLOW"     Args:Exp COMMA Args (%d)\n"NONE,@$.first_line);}

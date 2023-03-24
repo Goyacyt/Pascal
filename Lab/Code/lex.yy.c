@@ -1034,14 +1034,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 124 "./lexical.l"
+#line 123 "./lexical.l"
 {printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);
     haserror=1;
     }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 128 "./lexical.l"
+#line 127 "./lexical.l"
 ECHO;
 	YY_BREAK
 #line 1048 "./lex.yy.c"
@@ -2061,6 +2061,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 128 "./lexical.l"
+#line 127 "./lexical.l"
 
 
