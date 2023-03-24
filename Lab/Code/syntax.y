@@ -142,7 +142,7 @@ Stmt: Exp SEMI  {if(!bisonsim)  {printf(YELLOW"     Stmt:Exp SEMI (%d)\n"NONE,@$
         $$=add_nonterminal("Stmt", @$.first_line, NOTTOKEN, 7,$1,$2,$3,$4,$5,$6,$7);}         
     | WHILE LP Exp RP Stmt            {if(!bisonsim)  {printf(YELLOW"     Stmt:6WHILE LP Exp RP Stmt (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("Stmt", @$.first_line, NOTTOKEN, 5,$1,$2,$3,$4,$5);} 
-    | error SEMI    {if (!errorsim) {printf("Wrong Stmt\n");}yyerrok;}                      
+/*    | error SEMI    {if (!errorsim) {printf("Wrong Stmt\n");}yyerrok;}                      
     //| error Exp {if (!errorsim) {printf("Wrong Stmt :error Exp\n");}yyerrok;}
    | error LP {if (!errorsim) {printf("Wrong stmt :error lp\n");}yyerrok;}
    | error MINUS{if (!errorsim) {printf("Wrong stmt :error minus\n");}yyerrok;}
@@ -154,7 +154,9 @@ Stmt: Exp SEMI  {if(!bisonsim)  {printf(YELLOW"     Stmt:Exp SEMI (%d)\n"NONE,@$
     | error IF {if (!errorsim) {printf("Wrong Stmt:error IF\n");}yyerrok;}
     | error WHILE {if (!errorsim) {printf("Wrong Stmt:error WHILE\n");}yyerrok;}
     | error RC {if (!errorsim) {printf("Wrong Stmt:error RC\n");}yyerrok;}
-    | error Specifier {if (!errorsim) {printf("Wrong Stmt: error Specifier\n");}yyerrok;}
+    | error Specifier {if (!errorsim) {printf("Wrong Stmt: error Specifier\n");}yyerrok;}*/
+    |error {printf("Wrong Stmt\n");yyerrok;}
+    |error SEMI {printf("error SEMI\n");yyerrok;}
 ;
 
 //declare Local Definitions 
