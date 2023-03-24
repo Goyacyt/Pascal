@@ -1,3 +1,4 @@
+int i,j
 int inc()
 {
     int i;

@@ -3,10 +3,9 @@ int c(int num1,int num2){
 }
 int main()
 {
-	int i = 1;
-	int j=2;
+	int i = 1
+	int j=2
 	c(i,j);
-	(i
 /*
 	if(i>){
 		i=i+1;

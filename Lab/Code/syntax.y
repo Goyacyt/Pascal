@@ -62,8 +62,11 @@ ExtDef: Specifier ExtDecList SEMI   {if(!bisonsim)  {printf(YELLOW"     ExtDef:S
         $$=add_nonterminal("ExtDef", @$.first_line, NOTTOKEN,2,$1,$2);}
     | Specifier FunDec CompSt   {if(!bisonsim)  {printf(YELLOW"     ExtDef:Specifier FunDec CompSt (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("ExtDef", @$.first_line, NOTTOKEN, 3,$1,$2,$3);} 
-//    | error SEMI {if (!errorsim) {printf("Wrong ExtDef\n");}yyerrok;}
-//    | error ExtDef  {if (!errorsim) {printf("Wrong ExtDef: error ExtDef\n");}yyerrok;}
+    | error SEMI {if (!errorsim) {printf("Wrong ExtDef:error SEMI\n");}yyerrok;}
+    | error ExtDef  {if (!errorsim) {printf("Wrong ExtDef: error ExtDef\n");}yyerrok;}
+    | error CompSt   {if (!errorsim) {printf("Wrong ExtDef: error CompSt \n");}yyerrok;}
+    | Specifier error SEMI  {if (!errorsim) {printf("Wrong ExtDef: Specifier error SEMI\n");}yyerrok;}
+    | Specifier error CompSt  {if (!errorsim) {printf("Wrong ExtDef: Specifier error CompSt\n");}yyerrok;}
 ;               
 ExtDecList: VarDec  {if(!bisonsim)  {printf(YELLOW"     ExtDecList:VarDec (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("ExtDecList", @$.first_line, NOTTOKEN, 1,$1);}

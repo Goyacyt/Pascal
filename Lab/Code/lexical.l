@@ -117,7 +117,7 @@ WHILE "while"
 
 .   {
     if(error_line!=yylineno){
-    printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);
+    printf("Error type A at Line %d: Mysterious characters \'%s\'\n",yylineno,yytext);
     error_line=yylineno;
     }
     haserror=1;
