@@ -1035,12 +1035,23 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
+<<<<<<< HEAD
 #line 122 "./lexical.l"
 {if(yylineno!=error_line){printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);error_line=yylineno;}haserror=1;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 123 "./lexical.l"
+=======
+#line 123 "./lexical.l"
+{printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);
+    haserror=1;
+    }
+	YY_BREAK
+case 33:
+YY_RULE_SETUP
+#line 127 "./lexical.l"
+>>>>>>> 0d0b067ada9c55a8d597f49b9641685fbf91daf4
 ECHO;
 	YY_BREAK
 #line 1047 "./lex.yy.c"
@@ -2060,6 +2071,10 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
+<<<<<<< HEAD
 #line 123 "./lexical.l"
+=======
+#line 127 "./lexical.l"
+>>>>>>> 0d0b067ada9c55a8d597f49b9641685fbf91daf4
 
 
