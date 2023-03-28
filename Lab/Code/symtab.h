@@ -2,8 +2,9 @@
 #define _SYMTAB_H_
 
 #include<stdio.h>
-#include <string.h>
+#include<string.h>
 #include<assert.h>
+#include <stdlib.h>
 #define HASHTAB_SIZE  0x3fff
 #define STACK_SIZE  100 //待定
 typedef struct Type_{
@@ -11,17 +12,17 @@ typedef struct Type_{
     union{
         int basirc;//基本类型
         struct{
-            Type* elem;
+            struct Type* elem;
             int size;
         }array;//数组类型信息：元素类型+数组大小
-        FieldList* structure;    //结构体类型信息是一个链表
+        struct FieldList* structure;    //结构体类型信息是一个链表
     }u;
 }Type;
 
 typedef struct FieldList_{
     char* name; //域名
     Type* type;  //域类型
-    FieldList* tail; //下一域
+    struct FieldList* tail; //下一域
 }FieldList;
 
 typedef struct HashNode_{
