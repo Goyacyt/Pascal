@@ -20,8 +20,12 @@ int main(int argc, char** argv){
     errorsim=0;
 =======
 	bisonsim=1;
+<<<<<<< HEAD
     errorsim=1;
 >>>>>>> 505d86d7edf8d5eb9ee1bae0a8e8cd23cbe81730
+=======
+    errorsim=0;
+>>>>>>> bc14a88e15067179d346350fb8b2ae1c0ea13fe7
 	haserror=0;
     error_line=0;//记录上一个出错的行数，如果当前错误仍然在这一行，就不要输出
 	if (argc==1){
