@@ -62,6 +62,8 @@ ExtDef: Specifier ExtDecList SEMI   {if(!bisonsim)  {printf(YELLOW"     ExtDef:S
         $$=add_nonterminal("ExtDef", @$.first_line, NOTTOKEN,2,$1,$2);}
     | Specifier FunDec CompSt   {if(!bisonsim)  {printf(YELLOW"     ExtDef:Specifier FunDec CompSt (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("ExtDef", @$.first_line, NOTTOKEN, 3,$1,$2,$3);} 
+    | Specifier FunDec {if(!bisonsim)  {printf(YELLOW"     ExtDef:Specifier FunDec (%d)\n"NONE,@$.first_line);}
+        $$=add_nonterminal("ExtDef", @$.first_line, NOTTOKEN, 2,$1,$2);}
     | error SEMI {if (!errorsim) {printf("Wrong ExtDef:error SEMI\n");}yyerrok;}
     | error ExtDef  {if (!errorsim) {printf("Wrong ExtDef: error ExtDef\n");}yyerrok;}
     | error CompSt   {if (!errorsim) {printf("Wrong ExtDef: error CompSt \n");}yyerrok;}
