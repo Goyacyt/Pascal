@@ -71,4 +71,5 @@ void Stmt(node* root);
 Type Exp(node* root);//可能需要返回一个变量的类型
 FieldList Args(node* root);//返回实参的调用，检查调用是否正确
 int CompareType(Type left,Type right);
+void debug(char* s);
 #endif

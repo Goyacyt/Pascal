@@ -18,10 +18,10 @@ LFO = $(LFC:.c=.o)
 YFO = $(YFC:.c=.o)
 
 parser: syntax $(filter-out $(LFO),$(OBJS))
-	$(CC) -o parser $(filter-out $(LFO),$(OBJS)) -lfl 
+	$(CC) -o parser $(filter-out $(LFO),$(OBJS)) -lfl -g
 
 syntax: lexical syntax-c
-	$(CC) -c $(YFC) -o $(YFO)
+	$(CC) -c $(YFC) -o $(YFO) -g
 
 lexical: $(LFILE)
 	$(FLEX) -o $(LFC) $(LFILE)
@@ -30,10 +30,10 @@ syntax-c: $(YFILE)
 	$(BISON) -o $(YFC) -d -v $(YFILE)
 
 symtab:symtab.h symtab.c
-	$(CC) $(CFLAGS) symtab.h symtab.c
+	$(CC) $(CFLAGS) symtab.h symtab.c -g
 
 tree: tree.h tree.c
-	$(CC) $(CFLAGS) tree.h tree.c
+	$(CC) $(CFLAGS) tree.h tree.c -g
 
 #symtab.o: tree.h tree.c symtab.h symtab.c
 #	$(CC) $(CFLAGS) tree.h tree.c symtab.h symtab.c -o symtab.o

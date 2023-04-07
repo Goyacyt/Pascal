@@ -3,6 +3,7 @@
 #include "tree.h"
 HashNode hash_tab[HASHTAB_SIZE+1];
 HashNode stack[STACK_SIZE];
+extern int de;
 
 unsigned int hash_fun(char* name){
     unsigned int val=0,i;
@@ -37,8 +38,17 @@ HashNode get(char* name){
 }
 
 HashNode add_sym(FieldList value,int stack_dep){
+    debug("add_sym begin");
     int pos=hash_fun(value->name);
+    if(pos>=HASHTAB_SIZE){
+        debug("hash overflow");
+        assert(0);
+    }
     HashNode slot_head=hash_tab[pos];//hash槽的表头
+    if(stack_dep>=STACK_SIZE){
+        debug("stack overflow");
+        assert(0);
+    }
     HashNode stack_head=stack[stack_dep];//这一层栈的表头
     HashNode p = (HashNode)malloc(sizeof (struct HashNode_));
     assert(p!=NULL);
@@ -47,38 +57,39 @@ HashNode add_sym(FieldList value,int stack_dep){
     p->slot_next=NULL;
     p->stack_next=NULL;
     //变量插入到hash槽的头部
-    if(slot_head!=NULL)
-        p->slot_next=slot_head->slot_next;
-    slot_head->slot_next=p;
+    debug("add hash");
+    p->slot_next=slot_head;
+    slot_head=p;
     //变量插入到这一层变量定义栈的链表尾部，其实头部也可以
-    HashNode stackP=stack_head;
-    while(stackP->stack_next!=NULL){
-        stackP=stackP->stack_next;
-    }
-    stackP->stack_next=p;
+    debug("add stack");
+    p->stack_next=stack_head;
+    stack_head=p;
+    debug("add_sym end");
     return p;
 }
 
 void Program(node* root){
+    debug("program");
     init_hashtab();
     init_stack();
     if(root->son!=NULL){
         ExtDefList(root->son);
     }
-    return;
+    return ;
 }
 void ExtDefList(node* root){
-    node *son1=root->son;
-    if(son1!=NULL){
-        node* son2=son1->bro;
-        ExtDef(son1);
-        ExtDefList(son2);
-    }else{
+    debug("extdeflist");
+    if(root==NULL){
         return ;
     }
+    node* son1=root->son;
+    node* son2=son1->bro;
+    ExtDef(son1);
+    ExtDefList(son2);
     return ;
 }
 void ExtDef(node* root){
+    debug("extdef");
     node* son1=NULL;
     node* son2=NULL;
     node* son3=NULL;
@@ -91,7 +102,7 @@ void ExtDef(node* root){
     }else if(strcmp(son2->name,"FunDec")==0){
         son3=son2->bro;
         FunDec(son2,specifier_type);
-        CompSt(son2);
+        CompSt(son3);
     }else if(strcmp(son2->name,"SEMI")==0){
     }else{
         printf("ExtDef error\n");
@@ -100,6 +111,7 @@ void ExtDef(node* root){
 }
 
 void ExtDecList(node* root,Type type){
+    debug("extdeclist");
     node* son1=root->son;
     node* son2=son1->bro;
     node* son3=son2->bro;
@@ -115,24 +127,26 @@ void ExtDecList(node* root,Type type){
 }
 
 Type Specifier(node* root){
+    debug("Specifier");
     node* son=root->son;
     Type type=(Type)malloc(sizeof(struct Type_));
     if(strcmp(son->name,"TYPE")==0){
-        if(son->type==TYPE_TYPE){
-            type->kind=BASIC;
-            if(strcmp(son->val.type_val,"int")==0){
-                type->u.basirc=INT;
-            }else if(strcmp(son->val.type_val,"float")==0){
-                type->u.basirc=FLOAT;
-            }else{
-                printf("int/float error\n");
-            }
+        debug("Type");
+        type->kind=BASIC;
+        if(strcmp(son->val.type_val,"int")==0){
+            debug("type :int");
+            type->u.basirc=INT;
+        }else if(strcmp(son->val.type_val,"float")==0){
+            type->u.basirc=FLOAT;
+        }else{
+            printf("int/float error\n");
         }
     }else if(strcmp(son->name,"StructSpecifier")==0){
         type=StructSpecifier(son);
     }else{
         printf("Specifier error\n");
     }
+    debug("before specifier return");
     return type;
 }
 
@@ -186,6 +200,7 @@ char* Tag(node* root){
 }
 
 void FunDec(node* root,Type type){
+    debug("fundec");
     FieldList field=(FieldList)malloc(sizeof(struct FieldList_));
     node* id=root->son;
     field->name=ID(id);
@@ -197,11 +212,14 @@ void FunDec(node* root,Type type){
         node* varlist=id->bro->bro;
         FunType->u.function.param=VarList(varlist);
     }else{
+        debug("fundec->id lp rp");
         FunType->u.function.param=NULL;
     }
     field->type=FunType;
 
     add_sym(field,0);
+    debug("before fundec return");
+    return ;
 }
 
 char* ID(node* root){
@@ -209,14 +227,25 @@ char* ID(node* root){
 }
 
 void CompSt(node* root){
-    node* deflist=root->son->bro;
-    DefList(deflist);
-
-    node* stmtlist=deflist->bro;
-    StmtList(stmtlist);
+    //这里面有两个可以为空的指针:deflist 和stmtlist不进行检查就可能把rc当作stmtlist或者deflist
+    debug("compst");
+    node* son2=root->son->bro;
+    if(strcmp(son2->name,"DefList")==0){
+        DefList(son2);
+        node* son3=son2->bro;
+        if(strcmp(son3->name,"StmtList")==0){
+            StmtList(son3);
+        }
+    }else{
+        if(strcmp(son2->name,"StmtList")==0){
+            StmtList(son2);
+        }
+    }
+    debug("before compst return");
 }
 
 FieldList Def(node* root){
+    debug("def");
     node* specifier=root->son;
     node* declist=specifier->bro;
     Type specifier_type=Specifier(specifier);
@@ -224,7 +253,9 @@ FieldList Def(node* root){
 }
 
 FieldList DefList(node* root){
+    debug("deflist");
     if(root==NULL){
+        debug("deflist->null");
         return NULL;
     }else{
         node* def=root->son;
@@ -239,7 +270,9 @@ FieldList DefList(node* root){
 }
 
 FieldList DecList(node* root,Type type){
+    debug("declist");
     if(root->son_num==1){
+        debug("declist->dec");
         node* dec=root->son;
         return Dec(dec,type);
     }else if(root->son_num==3){
@@ -256,16 +289,23 @@ FieldList DecList(node* root,Type type){
 }
 
 FieldList Dec(node* root,Type type){
+    debug("dec");
     node* vardec=root->son;
-    node* exp=vardec->bro->bro;
-    FieldList vardec_field=VarDec(vardec,type,type);
-    Type exp_type=Exp(exp);
+    FieldList vardec_field;
+    if(root->son_num==1){
+        vardec_field=VarDec(vardec,type,type);
+    }else if(root->son_num==3){
+        node* exp=vardec->bro->bro;
+        vardec_field=VarDec(vardec,type,type);
+        Type exp_type=Exp(exp);
+    }
     return vardec_field;
     //TODO:
     //比较赋值号两边的type是否一致
 }
 
 FieldList VarDec(node* root,Type type,Type elemtype){
+    debug("vardec");
     if(root->son_num==1){
         char* id=ID(root->son);
         FieldList field=(FieldList)malloc(sizeof(struct FieldList_));
@@ -333,14 +373,17 @@ FieldList ParamDec(node* root){
 }
 
 void StmtList(node* root){
-    if(root!=NULL){
-        node* stmt=root->son;
-        Stmt(stmt);
-
-        node* stmtlist=stmt->bro;
-        StmtList(stmtlist);
+    debug("stmtlist");
+    if(root==NULL){
+        debug("stmtlist->null");
+        return;
     }
-    return ;
+    debug("stmtlist->stmt stmtlist");
+    node* stmt=root->son;
+    Stmt(stmt);
+
+    node* stmtlist=stmt->bro;
+    StmtList(stmtlist);
 }
 
 void Stmt(node* root){
@@ -546,4 +589,10 @@ FieldList Args(node* root){
         field->tail=Args(root->son->bro->bro);
     }
     return field;
+}
+
+void debug(char* s){
+    if(de){
+        printf("%s\n",s);
+    }
 }

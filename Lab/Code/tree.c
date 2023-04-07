@@ -67,7 +67,7 @@ node* add_nonterminal(char* name, int first_line, int type, int son_num,...){
     va_start(valist, son_num);
     node* child=va_arg(valist,node*);
     p->son=child;
-    for(int i=0;i<son_num-1;i++){
+    for(int i=0;i<son_num;i++){
         //printf("child %d: %s",i,child->name);
         //if(child->type==NOTTOKEN)   printf("[%d] ",child->first_line);
         node* nextchild=va_arg(valist,node*);
