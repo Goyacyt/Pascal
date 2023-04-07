@@ -5,33 +5,38 @@
 #include<string.h>
 #include<assert.h>
 #include <stdlib.h>
+#include "tree.h"
 #define HASHTAB_SIZE  0x3fff
 #define STACK_SIZE  100 //待定
 typedef struct Type_* Type;
 typedef struct FieldList_* FieldList;
 typedef struct HashNode_* HashNode;
-typedef struct Type_{
-    enum{BASIC,ARRAY,STRUCTURE} kind;
+struct Type_{
+    enum{BASIC,ARRAY,STRUCTURE,FUNCTION} kind;
     union{
-        int basirc;//基本类型
+        enum {INT,FLOAT} basirc;//基本类型
         struct{
-            struct Type* elem;//嵌套
+            Type elem;//嵌套
             int size;
         }array;//数组类型信息：元素类型+数组大小
-        struct FieldList structure;    //结构体类型信息是一个链表
+        FieldList structure;    //结构体类型信息是一个链表
+        struct{
+            int paramnum;//形参个数
+            Type ret;//返回值类型
+            FieldList param;//形参列表
+        }function;
     }u;
 };
-
-typedef struct FieldList_{
+struct FieldList_{
     char* name; //域名
-    Type* type;  //域类型
-    struct FieldList tail; //下一域
-};
+    Type type;  //域类型
+    FieldList tail; //下一域
+};//在结构体定义的时候，type中的structure指向这里，name为结构体的名字，然后从tail开始结构体里面变量的记录
 
-typedef struct HashNode_{
+struct HashNode_{
     FieldList value;
-    struct HashNode slot_next;
-    struct HashNode stack_next;
+    HashNode slot_next;
+    HashNode stack_next;
     int stack_dep;
 };
 
@@ -43,23 +48,27 @@ void init_hashtab();
 void init_stack();
 HashNode get(char* name);  //得到符号name对应的HashNode指针,查找出来是空指针就可以报错了
 HashNode add_sym(FieldList value,int stack_dep);  //将域结构为value的符号插入到符号表中，返回其对应的HashNode结构
-void Program(node* node);
-void ExtDefList(node* node);
-void ExtDef(node* node);
-Type Specifier(node* node);
-void ExtDecList(node* node,Type type);
-Type VarDec(node* node,Type type);
-void FunDec(node* node);
-void CompSt(node* node,Type type);
-Type StructSpecifier(node* node);
-FieldList DefList(node* node);
-Type Def(node* node);
-void DecList(node* node,Type type);
-void Dec(node* node,Type type);
-FieldList VarList(node* node);
-Type ParamDec(node* node);
-void StmtList(node* node);
-void Stmt(node* node);
-Type Exp(node* node);//可能需要返回一个变量的类型
-FieldList Args(node* node);//返回实参的调用，检查调用是否正确
+void Program(node* root);
+void ExtDefList(node* root);
+void ExtDef(node* root);
+Type Specifier(node* root);
+void ExtDecList(node* root,Type type);
+FieldList VarDec(node* root,Type type,Type elemtype);
+void FunDec(node* root,Type type);
+char* OptTag(node* root);
+char* Tag(node* root);
+char* ID(node* root);
+void CompSt(node* root);
+Type StructSpecifier(node* root);
+FieldList DefList(node* root);
+FieldList Def(node* root);
+FieldList DecList(node* root,Type type);
+FieldList Dec(node* root,Type type);
+FieldList VarList(node* root);
+FieldList ParamDec(node* root);
+void StmtList(node* root);
+void Stmt(node* root);
+Type Exp(node* root);//可能需要返回一个变量的类型
+FieldList Args(node* root);//返回实参的调用，检查调用是否正确
+int CompareType(Type left,Type right);
 #endif

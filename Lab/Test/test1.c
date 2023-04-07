@@ -1,7 +1,4 @@
-struct Complext{
-        float i,j
-}
 int main(){
-        int i
+    int i=0;
+    j=i+1;
 }
-

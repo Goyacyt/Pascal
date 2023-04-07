@@ -29,7 +29,16 @@ lexical: $(LFILE)
 syntax-c: $(YFILE)
 	$(BISON) -o $(YFC) -d -v $(YFILE)
 
--include $(patsubst %.o, %.d, $(OBJS))
+symtab:symtab.h symtab.c
+	$(CC) $(CFLAGS) symtab.h symtab.c
+
+tree: tree.h tree.c
+	$(CC) $(CFLAGS) tree.h tree.c
+
+#symtab.o: tree.h tree.c symtab.h symtab.c
+#	$(CC) $(CFLAGS) tree.h tree.c symtab.h symtab.c -o symtab.o
+
+#-include $(patsubst %.o, %.d, $(OBJS))
 
 # 定义的一些伪目标
 .PHONY: clean test
