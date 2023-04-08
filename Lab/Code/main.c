@@ -13,6 +13,7 @@ int error_line;
 int haserror;
 int syntax;
 int de;
+int sdep;
 node* root;
 
 int main(int argc, char** argv){

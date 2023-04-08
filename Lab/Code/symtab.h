@@ -48,6 +48,8 @@ void init_hashtab();
 void init_stack();
 HashNode get(char* name);  //得到符号name对应的HashNode指针,查找出来是空指针就可以报错了
 HashNode add_sym(FieldList value,int stack_dep);  //将域结构为value的符号插入到符号表中，返回其对应的HashNode结构
+int push_stack();
+int pop_stack();
 void Program(node* root);
 void ExtDefList(node* root);
 void ExtDef(node* root);

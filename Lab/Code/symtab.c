@@ -4,6 +4,7 @@
 HashNode hash_tab[HASHTAB_SIZE+1];
 HashNode stack[STACK_SIZE];
 extern int de;
+extern int sdep;
 
 //TODO:错误15涉及到压到不同层栈的问题，还没有解决
 
@@ -23,6 +24,7 @@ void init_hashtab(){
 }
 
 void init_stack(){
+    sdep=0;
     for(int i=0;i<=STACK_SIZE;i++)
         stack[i]=NULL;
     return;
@@ -68,12 +70,49 @@ HashNode add_sym(FieldList value,int stack_dep){
     debug("add hash");
     p->slot_next=hash_tab[pos];
     hash_tab[pos]=p;
-    //变量插入到这一层变量定义栈的链表尾部，其实头部也可以
+    //变量插入到这一层变量定义栈的头部也可以
     debug("add stack");
     p->stack_next=stack[stack_dep];
     stack[stack_dep]=p;
     debug("add_sym end");
     return p;
+}
+
+int push_stack(){
+    sdep+=1;
+    return sdep;
+}
+
+int pop_stack(){
+    //栈顶的hashnode肯定都位于hash槽的头部，一个一个删掉
+    HashNode stack_head=stack[sdep];
+    while(stack_head!=NULL){
+        char* name=stack_head->value->name;
+        int pos=hash_fun(name);
+        HashNode p=hash_tab[pos];
+        HashNode last=hash_tab[pos];
+        if(strcmp(p->value->name,name)==0){
+            hash_tab[pos]=p->slot_next;
+        }else{
+            p=p->slot_next;
+            while(p!=NULL){
+                if(strcmp(p->value->name,name)==0){
+                    break;
+                }
+                p=p->slot_next;
+                last=last->slot_next;
+            }
+            if(p==NULL){
+                printf("pop_stack error\n");
+                assert(0);
+            }
+            last->slot_next=p->slot_next;
+        }
+        stack_head=stack_head->stack_next;
+    }
+    stack[sdep]=NULL;
+    sdep-=1;
+    return sdep;
 }
 
 void Program(node* root){
@@ -108,10 +147,16 @@ void ExtDef(node* root){
         //son3=son2->bro;
         ExtDecList(son2,specifier_type);
     }else if(strcmp(son2->name,"FunDec")==0){
-        FunDec(son2,specifier_type);
         son3=son2->bro;
         if(strcmp(son3->name,"CompSt")==0){
+            push_stack();
+            FunDec(son2,specifier_type);
             CompSt(son3,specifier_type);
+            pop_stack();
+        }else{
+            push_stack();
+            FunDec(son2,specifier_type);
+            pop_stack();
         }
     }else if(strcmp(son2->name,"SEMI")==0){
         //这个其实不用做什么？
@@ -124,12 +169,14 @@ void ExtDef(node* root){
 void ExtDecList(node* root,Type type){
     debug("extdeclist");
     node* son1=root->son;
-    node* son2=son1->bro;
-    node* son3=son2->bro;
-    if(strcmp(son2->name,"COMMA")==0){
+    node* son2=NULL;
+    node* son3=NULL;
+    if(root->son_num==3){
+        son2=son1->bro;
+        son3=son2->bro;
         VarDec(son1,type,type);
         ExtDecList(son3,type);
-    }else if(son2==NULL){
+    }else if(root->son_num==1){
         VarDec(son1,type,type);
     }else{
         printf("ExtDecList error\n");
@@ -184,10 +231,12 @@ Type StructSpecifier(node* root){
         struct_field->name=struct_name;
         struct_field->type=type;
         type->kind=STRUCTURE;
+        push_stack();
         FieldList deflist_field=DefList(deflist);
+        pop_stack();
         type->u.structure=deflist_field;
         
-        add_sym(struct_field,0);//添加结构体名字的定义信息
+        add_sym(struct_field,sdep);//添加结构体名字的定义信息
     }else if(root->son_num=2){
         node* son2=root->son->bro;
         char* struct_name=Tag(son2);
@@ -221,11 +270,18 @@ char* Tag(node* root){
 }
 
 void FunDec(node* root,Type type){
+    int line=root->first_line;
     debug("FunDec");
     FieldList field=(FieldList)malloc(sizeof(struct FieldList_));
     node* id=root->son;
-    field->name=ID(id);
+    char* fun_name=ID(id);
+    HashNode this=get(fun_name);
+    if(this!=NULL){
+        eprintf(4,line,"Redefined func name");
+        return ;
+    }//函数不存在嵌套定义，所以不需要检查sdep
 
+    field->name=fun_name;
     Type FunType=(Type)malloc(sizeof(struct Type_));
     FunType->kind=FUNCTION;
     FunType->u.function.ret=type;
@@ -238,7 +294,7 @@ void FunDec(node* root,Type type){
     }
     field->type=FunType;
 
-    add_sym(field,0);
+    add_sym(field,sdep);
     debug("before fundec return");
     return ;
 }
@@ -333,8 +389,10 @@ FieldList VarDec(node* root,Type type,Type elemtype){
         char* id=ID(root->son);
         HashNode this=get(id);
         if(this!=NULL){
-            eprintf(3,line,"Redefined variable name");
-            return NULL;
+            if(this->stack_dep==sdep){
+                eprintf(3,line,"Redefined variable name");
+                return NULL;
+            }
         }
         FieldList field=(FieldList)malloc(sizeof(struct FieldList_));
         field->name=id;
@@ -348,7 +406,7 @@ FieldList VarDec(node* root,Type type,Type elemtype){
             subtype->u.array.elem=type;
             field->type=elemtype;
         }
-        add_sym(field,0);
+        add_sym(field,sdep);
         return field;
     }else if(root->son_num==4){
         node* vardec=root->son;
@@ -438,14 +496,20 @@ void Stmt(node* root,Type type){
         node* exp=root->son->bro->bro;
         Exp(exp);
         node* stmt=exp->bro->bro;
+        push_stack();
         Stmt(stmt,type);
+        pop_stack();
     }else if(root->son_num==7){
         node* exp=root->son->bro->bro;
         Exp(exp);
         node* stmt1=exp->bro->bro;
+        push_stack();
         Stmt(stmt1,type);
+        pop_stack();
         node* stmt2=stmt1->bro->bro;
+        push_stack();
         Stmt(stmt2,type);
+        pop_stack();
     }
     return ;
 }

@@ -1,4 +1,6 @@
 int main(){
-    int i=0;
-    j=i+1;
+    int j=0;
+}
+int test(){
+    int j=0;
 }
