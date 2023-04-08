@@ -22,6 +22,7 @@ struct Type_{
         FieldList structure;    //结构体类型信息是一个链表
         struct{
             int paramnum;//形参个数
+            enum {DECLARED,DEFINED} declare;//如果有声明没有定义就是DECLARE,只要有定义就是DEFILED
             Type ret;//返回值类型
             FieldList param;//形参列表
         }function;
@@ -56,16 +57,17 @@ void ExtDef(node* root);
 Type Specifier(node* root);
 void ExtDecList(node* root,Type type);
 FieldList VarDec(node* root,Type type,Type elemtype);
-void FunDec(node* root,Type type);
+void FunDec(node* root,Type type,int declare);
+int CompareParam(Type now,Type before);
 char* OptTag(node* root);
 char* Tag(node* root);
 char* ID(node* root);
 void CompSt(node* root,Type type);
 Type StructSpecifier(node* root);
-FieldList DefList(node* root);
-FieldList Def(node* root);
-FieldList DecList(node* root,Type type);
-FieldList Dec(node* root,Type type);
+FieldList DefList(node* root,int stru);
+FieldList Def(node* root,int stru);
+FieldList DecList(node* root,Type type,int stru);
+FieldList Dec(node* root,Type type,int str);
 FieldList VarList(node* root);
 FieldList ParamDec(node* root);
 void StmtList(node* root,Type type);
