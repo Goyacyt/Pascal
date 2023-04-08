@@ -31,7 +31,7 @@ struct FieldList_{
     char* name; //域名
     Type type;  //域类型
     FieldList tail; //下一域
-};//在结构体定义的时候，type中的structure指向这里，name为结构体的名字，然后从tail开始结构体里面变量的记录
+};//在结构体定义的时候，name为结构体的名字,type中的structure 指向一个新的fieldlist，从那里开始结构体里面变量的记录
 
 struct HashNode_{
     FieldList value;
@@ -58,7 +58,7 @@ void FunDec(node* root,Type type);
 char* OptTag(node* root);
 char* Tag(node* root);
 char* ID(node* root);
-void CompSt(node* root);
+void CompSt(node* root,Type type);
 Type StructSpecifier(node* root);
 FieldList DefList(node* root);
 FieldList Def(node* root);
@@ -66,10 +66,12 @@ FieldList DecList(node* root,Type type);
 FieldList Dec(node* root,Type type);
 FieldList VarList(node* root);
 FieldList ParamDec(node* root);
-void StmtList(node* root);
-void Stmt(node* root);
+void StmtList(node* root,Type type);
+void Stmt(node* root,Type type);
 Type Exp(node* root);//可能需要返回一个变量的类型
 FieldList Args(node* root);//返回实参的调用，检查调用是否正确
 int CompareType(Type left,Type right);
 void debug(char* s);
+void eprintf(int error_number,int line,char* message);
+void debugi(char* s,int d);
 #endif
