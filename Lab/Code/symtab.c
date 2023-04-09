@@ -151,12 +151,12 @@ void ExtDef(node* root){
         son3=son2->bro;
         if(strcmp(son3->name,"CompSt")==0){
             push_stack();
-            FunDec(son2,specifier_type);
+            FunDec(son2,specifier_type,0);
             CompSt(son3,specifier_type);
             pop_stack();
         }else{
             push_stack();
-            FunDec(son2,specifier_type);
+            FunDec(son2,specifier_type,1);
             pop_stack();
         }
     }else if(strcmp(son2->name,"SEMI")==0){
@@ -233,7 +233,7 @@ Type StructSpecifier(node* root){
         struct_field->type=type;
         type->kind=STRUCTURE;
         push_stack();
-        FieldList deflist_field=DefList(deflist);
+        FieldList deflist_field=DefList(deflist,1);
         pop_stack();
         type->u.structure=deflist_field;
         
@@ -270,34 +270,97 @@ char* Tag(node* root){
     return ID(son);
 }
 
-void FunDec(node* root,Type type){
+void FunDec(node* root,Type type,int declare){
     int line=root->first_line;
     debug("FunDec");
     FieldList field=(FieldList)malloc(sizeof(struct FieldList_));
     node* id=root->son;
     char* fun_name=ID(id);
     HashNode this=get(fun_name);
-    if(this!=NULL){
-        eprintf(4,line,"Redefined func name");
-        return ;
-    }//函数不存在嵌套定义，所以不需要检查sdep
-
     field->name=fun_name;
     Type FunType=(Type)malloc(sizeof(struct Type_));
     FunType->kind=FUNCTION;
     FunType->u.function.ret=type;
+<<<<<<< HEAD
     if(root->son_num==4){   //FundDec->ID LP VarList RP
         node* varlist=id->bro->bro;
         FunType->u.function.param=VarList(varlist);
     }else{  //FundDec->ID LP RP
+=======
+    FieldList varlist_field;
+    if(root->son_num==4){
+        node* varlist=id->bro->bro;
+        varlist_field=VarList(varlist);
+        FunType->u.function.param=varlist_field;
+    }else{
+>>>>>>> 9ef39a815d25f1f83bc30c9a60ef953148053466
         debug("fundec->id lp rp");
-        FunType->u.function.param=NULL;
+        varlist_field=NULL;
+        FunType->u.function.param=varlist_field;
     }
     field->type=FunType;
+    if(this!=NULL){
+        Type before_type=this->value->type;
+        if(before_type->kind!=FUNCTION){
+            eprintf(4,line,"Repeated definition of function:the name before is not a function");
+            return ;
+        }else{
+            if(!declare){
+                //这是函数定义
+                if(before_type->u.function.declare==DECLARED){
+                    if(!CompareParam(before_type,FunType)){
+                        eprintf(19,line,"Confliction between definition and declaration");
+                        return ;
+                    }else{
+                        this->value->type->u.function.declare=DEFINED;
+                        return ;
+                    }
+                }else{
+                    eprintf(4,line,"Repeated defintion of function");
+                    return ;
+                }
+            }else{
+                //这是函数声明,前面有声明或者定义都可以，只要匹配就行
+                if(!CompareParam(before_type,FunType)){
+                    eprintf(19,line,"Confliction bwtween declaration and dedinition or confliction between declaration and declaration.Here is decalration");
+                }
+                return ;
+            }
+        }
+    }//函数不存在嵌套定义，所以不需要检查sdep
 
+    if(declare){
+        FunType->u.function.declare=DECLARED;
+    }else{
+        FunType->u.function.declare=DEFINED;
+    }
     add_sym(field,sdep);
     debug("before fundec return");
     return ;
+}
+
+int CompareParam(Type left,Type right){
+    //检查返回类型
+    int res=1;
+    if(!CompareType(left->u.function.ret,right->u.function.ret)){
+        res=0;
+        return res;
+    }
+    FieldList field1=left->u.function.param;
+    FieldList field2=right->u.function.param;
+    while(field1!=NULL&&field2!=NULL){
+        if(!CompareType(field1->type,field2->type)){
+            res=0;
+            break;
+        }
+        field1=field1->tail;
+        field2=field2->tail;
+    }
+    if(field1!=NULL||field2!=NULL){
+        //形参数量不一致
+        res=0;
+    }
+    return res;
 }
 
 char* ID(node* root){
@@ -311,7 +374,7 @@ void CompSt(node* root,Type type){
     //CompSt->LC DefList StmtList RC
     node* son2=root->son->bro;
     if(strcmp(son2->name,"DefList")==0){
-        DefList(son2);
+        DefList(son2,0);
         node* son3=son2->bro;
         if(strcmp(son3->name,"StmtList")==0){
             StmtList(son3,type);
@@ -324,42 +387,51 @@ void CompSt(node* root,Type type){
     debug("before compst return");
 }
 
+<<<<<<< HEAD
 FieldList Def(node* root){ //Def->Specifier DecList SEMI
+=======
+FieldList Def(node* root,int stru){
+>>>>>>> 9ef39a815d25f1f83bc30c9a60ef953148053466
     debug("Def");
     node* specifier=root->son;
     node* declist=specifier->bro;
     Type specifier_type=Specifier(specifier);
-    return DecList(declist,specifier_type);
+    return DecList(declist,specifier_type,stru);
 }
 
-FieldList DefList(node* root){
+FieldList DefList(node* root,int stru){
     debug("DefList");
     if(root==NULL){
         debug("deflist->null");
         return NULL;
     }else{  //DefList->Def DefList
         node* def=root->son;
-        FieldList def_field=Def(def);
+        FieldList def_field=Def(def,stru);
 
         node* deflist=def->bro;
-        FieldList deflist_field=DefList(deflist);
+        FieldList deflist_field=DefList(deflist,stru);
         def_field->tail=deflist_field;
         return def_field;
     }
     return NULL;
 }
 
-FieldList DecList(node* root,Type type){
+FieldList DecList(node* root,Type type,int stru){
     debug("DecList");
     if(root->son_num==1){   //DecList->Dec
         debug("declist->dec");
         node* dec=root->son;
+<<<<<<< HEAD
         return Dec(dec,type);
     }else if(root->son_num==3){ //DecList->Dec COMMA DecList
+=======
+        return Dec(dec,type,stru);
+    }else if(root->son_num==3){
+>>>>>>> 9ef39a815d25f1f83bc30c9a60ef953148053466
         node* dec=root->son;
-        FieldList dec_field=Dec(dec,type);
+        FieldList dec_field=Dec(dec,type,stru);
         node* declist=dec->bro->bro;
-        FieldList declist_field=DecList(declist,type);
+        FieldList declist_field=DecList(declist,type,stru);
         dec_field->tail=declist_field;
         return dec_field;
     }else{
@@ -368,20 +440,41 @@ FieldList DecList(node* root,Type type){
     return NULL;
 }
 
-FieldList Dec(node* root,Type type){
+FieldList Dec(node* root,Type type,int stru){
+    int line=root->first_line;
     debug("Dec");
     node* vardec=root->son;
+<<<<<<< HEAD
     FieldList vardec_field;
     if(root->son_num==1){   //Dec->VarDec
         vardec_field=VarDec(vardec,type,type);
     }else if(root->son_num==3){ //Dec->VarDec ASIIGNOP Exp
+=======
+    FieldList vardec_field=NULL;
+    if(root->son_num==1){
+        vardec_field=VarDec(vardec,type,type);
+    }else if(root->son_num==3){
+        if(stru){
+            eprintf(15,line,"Assign value when defining struct variable");
+            return vardec_field;
+        }
+
+>>>>>>> 9ef39a815d25f1f83bc30c9a60ef953148053466
         node* exp=vardec->bro->bro;
         vardec_field=VarDec(vardec,type,type);
         Type exp_type=Exp(exp);
+        Type vardec_type=vardec_field->type;
+        if(vardec_type->kind==ARRAY||exp_type->kind==ARRAY){
+            eprintf(5,line,"Assign array to some variable");
+            vardec_field=NULL;
+            //TODO:不确定
+        }
+        if(!CompareType(exp_type,vardec_type)){
+            eprintf(5,line,"Type not match beside the ASSIGNOP");
+            vardec_field=NULL;
+        }
     }
     return vardec_field;
-    //TODO:
-    //比较赋值号两边的type是否一致
 }
 
 FieldList VarDec(node* root,Type type,Type elemtype){
@@ -594,12 +687,16 @@ Type Exp(node* root){
             HashNode this=get(funid_name);
             if(this==NULL){
                 printf("Error type 2 at Line %d : Undefined function %s\n",line,funid_name);
-            }else if(this->value->type->kind!=FUNCTION){
-                eprintf(11,line,"() used for a not function variable");
-            }else if(this->value->type->u.function.param!=NULL){
-                printf("Error type 9 at Line %d : There should be no paramof %s \n",line,funid_name);
             }else{
-                type=this->value->type->u.function.ret;
+                if(this->value->type->kind!=FUNCTION){
+                    eprintf(11,line,"() used for a not function variable");
+                }else if(this->value->type->u.function.declare==DECLARED){
+                    eprintf(18,line,"Function declared but not defined");
+                }else if(this->value->type->u.function.param!=NULL){
+                    printf("Error type 9 at Line %d : There should be no paramof %s \n",line,funid_name);
+                }else{
+                    type=this->value->type->u.function.ret;
+                }
             }
         }else if(strcmp(son1->name,"Exp")==0&&strcmp(son3->name,"Exp")==0){
             debug("Exp->exp 各种操作 exp");
@@ -628,11 +725,16 @@ Type Exp(node* root){
                     }
                 }else{
                     //TODO:not sure
-                    //函数肯定不能做这些操作，数组和结构体应该也不可以，但结构体应该可以进行赋值
+                    //函数肯定不能做这些操作，数组应该也不可以，但结构体应该可以进行赋值
                     if(strcmp(son2->name,"ASSIGNOP")==0){
                         if(left->kind!=STRUCTURE){
                              printf("Error type %d at Line %d : Operation type not match. They are %d \n",errortype,line,left->kind);
                         }//STRUCTURE是可以赋值，其他不可以
+                        else{
+                            if(!CompareType(left,right)){
+                                eprintf(5,line,"Type not match in ASSIGNOP");
+                            }
+                        }
                     }else{
                         printf("Error type %d at Line %d : Operation type not match. They are %d \n",errortype,line,left->kind);
                     }
@@ -703,10 +805,12 @@ int CompareType(Type left,Type right){//比较类型信息，相同输出1，不
         if(left->kind==BASIC){
             if(left->u.basirc!=right->u.basirc){
                 res=0;
+            }else{
+                res=1;
             }
          }else if(left->kind==ARRAY){
             Type sub_left=left,sub_right=right;
-            while(sub_left->u.array.elem!=NULL&&sub_right->u.array.elem!=NULL){
+            while(sub_left!=NULL&&sub_right!=NULL){
                 if(sub_left->kind!=ARRAY){
                     if(sub_right->kind==BASIC&&sub_right->u.basirc==sub_left->u.basirc){
                     }else{
@@ -728,14 +832,35 @@ int CompareType(Type left,Type right){//比较类型信息，相同输出1，不
                     sub_right=sub_right->u.array.elem;
                 }
             }
+            if(sub_left!=NULL||sub_right!=NULL){
+                //数组维度不一致
+                res=0;
+            }
          }else if(left->kind==STRUCTURE){
-            //TODO:这里只实现了名等价，结构等价还没想好怎么实现
-            char* name_left=left->u.structure->name;
+            /*char* name_left=left->u.structure->name;
             char* name_right=right->u.structure->name;
             if(strcmp(name_left,name_right)!=0){
                 res=0;
             }
+            */
+            //实现的：结构体的结构等价
+            FieldList field1=left->u.structure;
+            FieldList field2=right->u.structure;
+            while(field1!=NULL&&field2!=NULL){
+                if(!CompareType(field1->type,field2->type)){
+                    res=0;
+                    break;
+                }
+                field1=field1->tail;
+                field2=field2->tail;
+            }
+            if(field1!=NULL||field2!=NULL){
+                //域数量不一致
+                res=0;
+            }
          }else if(left->kind==FUNCTION){
+            debug("Compare type between two function");
+            assert(0);
             res=0;
          }
     }
