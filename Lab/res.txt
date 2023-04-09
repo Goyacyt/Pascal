@@ -1,0 +1,2219 @@
+[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'main'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (1)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (2)
+[m[0;32;32m'a'->ID
+[m[1;33m     VarDec:ID (2)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'1'->INT
+[m[1;33m     Exp:INT (2)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (2)
+[m[1;33m     DecList:Dec (2)
+[m[1;33m     Def:Specifier DecList SEMI (2)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (3)
+[m[0;32;32m'b'->ID
+[m[1;33m     VarDec:ID (3)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'a'->ID
+[mError type A at Line 3: Mysterious characters '@'
+[0;32;32m'2'->INT
+[m[1;33m     Exp:ID (3)
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (3)
+[m[1;33m     DecList:Dec (3)
+[mWrong Def:error Specifier DecList
+[1;33m     DefList:empty (3)
+[m[1;33m     DefList:Def DefList (3)
+[m[1;33m     DefList:Def DefList (2)
+[m[1;33m     Exp:INT (3)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:Exp SEMI (3)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (3)
+[m[1;33m     StmtList:Stmt StmtList (3)
+[m[1;33m     CompSt:LC DefList StmtList RC (1)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (1)
+[m[1;33m     ExtDefList:empty (4)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'a'->ID
+[m[0;32;32m','->COMMA
+[m[1;33m     VarDec:ID (1)
+[m[0;32;32m'b'->ID
+[m[1;33m     VarDec:ID (1)
+[m[0;32;32m';'->SEMI
+[m[1;33m     ExtDecList:VarDec (1)
+[m[1;33m     ExtDecList:VarDec COMMA ExtDecList (1)
+[m[1;33m     ExtDef:Specifier ExtDecList SEMI (1)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (3)
+[m[0;32;32m'add'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (3)
+[m[0;32;32m'x'->ID
+[m[1;33m     VarDec:ID (3)
+[m[0;32;32m','->COMMA
+[m[1;33m     ParamDec:Specifier VarDec (3)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (3)
+[m[0;32;32m'y'->ID
+[m[1;33m     VarDec:ID (3)
+[m[0;32;32m')'->RP
+[m[1;33m     ParamDec:Specifier VarDec (3)
+[m[1;33m     VarList:ParamDec (3)
+[m[1;33m     VarList:ParamDec COMMA VarList (3)
+[m[1;33m     FunDec:ID LP VarList RP (3)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'return'->RETURN
+[m[1;33m     DefList:empty (3)
+[m[0;32;32m'x'->ID
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (4)
+[m[0;32;32m'y'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (4)
+[m[1;33m     Exp:Exp PLUS Exp (4)
+[m[1;33m     Stmt:RETURN Exp SEMI (4)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (4)
+[m[1;33m     StmtList:Stmt StmtList (4)
+[m[1;33m     CompSt:LC DefList StmtList RC (3)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (3)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (7)
+[m[0;32;32m'minus'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (7)
+[m[0;32;32m'x'->ID
+[m[1;33m     VarDec:ID (7)
+[m[0;32;32m','->COMMA
+[m[1;33m     ParamDec:Specifier VarDec (7)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (7)
+[m[0;32;32m'y'->ID
+[m[1;33m     VarDec:ID (7)
+[m[0;32;32m')'->RP
+[m[1;33m     ParamDec:Specifier VarDec (7)
+[m[1;33m     VarList:ParamDec (7)
+[m[1;33m     VarList:ParamDec COMMA VarList (7)
+[m[1;33m     FunDec:ID LP VarList RP (7)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'return'->RETURN
+[m[1;33m     DefList:empty (7)
+[m[0;32;32m'x'->ID
+[m[0;32;32m'-'->MINUS
+[m[1;33m     Exp:ID (8)
+[m[0;32;32m'y'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (8)
+[m[1;33m     Exp:Exp MINUS Exp (8)
+[m[1;33m     Stmt:RETURN Exp SEMI (8)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (8)
+[m[1;33m     StmtList:Stmt StmtList (8)
+[m[1;33m     CompSt:LC DefList StmtList RC (7)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (7)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (11)
+[m[0;32;32m'cal'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (11)
+[m[0;32;32m'x'->ID
+[m[1;33m     VarDec:ID (11)
+[m[0;32;32m','->COMMA
+[m[1;33m     ParamDec:Specifier VarDec (11)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (11)
+[m[0;32;32m'y'->ID
+[m[1;33m     VarDec:ID (11)
+[m[0;32;32m')'->RP
+[m[1;33m     ParamDec:Specifier VarDec (11)
+[m[1;33m     VarList:ParamDec (11)
+[m[1;33m     VarList:ParamDec COMMA VarList (11)
+[m[1;33m     FunDec:ID LP VarList RP (11)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'return'->RETURN
+[m[1;33m     DefList:empty (11)
+[m[0;32;32m';'->SEMI
+[mError type B at Line 12: in position(11-11), ';' syntax error 
+Wrong Stmt:error SEMI
+[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (12)
+[m[1;33m     StmtList:Stmt StmtList (12)
+[m[1;33m     CompSt:LC DefList StmtList RC (11)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (11)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (15)
+[m[0;32;32m'main'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (15)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'a'->ID
+[m[1;33m     DefList:empty (15)
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (16)
+[m[0;32;32m'1'->INT
+[m[1;33m     Exp:INT (16)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp ASSIGNOP Exp (16)
+[m[1;33m     Stmt:Exp SEMI (16)
+[m[0;32;32mNN
+[m[0;32;32m'b'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (17)
+[m[0;32;32m'2'->INT
+[m[1;33m     Exp:INT (17)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp ASSIGNOP Exp (17)
+[m[1;33m     Stmt:Exp SEMI (17)
+[m[0;32;32mNN
+[m[0;32;32m'cal'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'add'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'a'->ID
+[m[0;32;32m','->COMMA
+[m[1;33m     Exp:ID (18)
+[m[0;32;32m'b'->ID
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:ID (18)
+[m[1;33m     Args:Exp (18)
+[m[1;33m     Args:Exp COMMA Args (18)
+[m[1;33m     Exp:ID LP Args RP (18)
+[m[0;32;32m','->COMMA
+[m[0;32;32m'minus'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'a'->ID
+[m[0;32;32m','->COMMA
+[m[1;33m     Exp:ID (18)
+[m[0;32;32m'b'->ID
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:ID (18)
+[m[1;33m     Args:Exp (18)
+[m[1;33m     Args:Exp COMMA Args (18)
+[m[1;33m     Exp:ID LP Args RP (18)
+[m[0;32;32m')'->RP
+[m[1;33m     Args:Exp (18)
+[m[1;33m     Args:Exp COMMA Args (18)
+[m[1;33m     Exp:ID LP Args RP (18)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:Exp SEMI (18)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (18)
+[m[1;33m     StmtList:Stmt StmtList (18)
+[m[1;33m     StmtList:Stmt StmtList (17)
+[m[1;33m     StmtList:Stmt StmtList (16)
+[m[1;33m     CompSt:LC DefList StmtList RC (15)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (15)
+[m[1;33m     ExtDefList:empty (19)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (15)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (11)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (7)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (3)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'foo'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'x'->ID
+[m[1;33m     VarDec:ID (1)
+[m[0;32;32m')'->RP
+[m[1;33m     ParamDec:Specifier VarDec (1)
+[m[1;33m     VarList:ParamDec (1)
+[m[1;33m     FunDec:ID LP VarList RP (1)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'return'->RETURN
+[m[1;33m     DefList:empty (1)
+[m[0;32;32m'x'->ID
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (2)
+[m[0;32;32m'1'->INT
+[m[1;33m     Exp:INT (2)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp PLUS Exp (2)
+[m[1;33m     Stmt:RETURN Exp SEMI (2)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (2)
+[m[1;33m     StmtList:Stmt StmtList (2)
+[m[1;33m     CompSt:LC DefList StmtList RC (1)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (1)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (5)
+[m[0;32;32m'main'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (5)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (6)
+[m[0;32;32m'3'->INT
+[mError type B at Line 6: in position(7-7), '3' syntax error 
+[0;32;32m'c'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'foo'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'1'->INT
+[m[0;32;32m')'->RP
+[m[0;32;32m';'->SEMI
+[mWrong Def:Specifier error SEMI
+[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     DefList:empty (6)
+[m[1;33m     DefList:Def DefList (6)
+[m[1;33m     StmtList:empty (6)
+[m[1;33m     CompSt:LC DefList StmtList RC (5)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (5)
+[m[1;33m     ExtDefList:empty (7)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (5)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'Person'->ID
+[m[0;32;32m'{'->LC
+[m[1;33m     OptTag:ID (1)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (2)
+[m[0;32;32m'x'->ID
+[m[1;33m     VarDec:ID (2)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (2)
+[m[1;33m     DecList:Dec (2)
+[m[1;33m     Def:Specifier DecList SEMI (2)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (3)
+[m[0;32;32m'y'->ID
+[m[1;33m     VarDec:ID (3)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (3)
+[m[1;33m     DecList:Dec (3)
+[m[1;33m     Def:Specifier DecList SEMI (3)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     DefList:empty (3)
+[m[1;33m     DefList:Def DefList (3)
+[m[1;33m     DefList:Def DefList (2)
+[m[1;33m     StructSpecifier:STRUCT OptTag LC DefList RC (1)
+[m[1;33m     Specifier:StructSpecifier (1)
+[m[0;32;32m';'->SEMI
+[m[1;33m     ExtDef:Specifier SEMI (1)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (6)
+[m[0;32;32m'main'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (6)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'Person'->ID
+[m[1;33m     DefList:empty (6)
+[m[0;32;32m'person'->ID
+[m[1;33m     Exp:ID (7)
+[mError type B at Line 7: in position(10-15), 'person' syntax error 
+Wrong Stmt:Exp error in line 7
+[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (7)
+[m[1;33m     Stmt:Exp SEMI (7)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[mError type B at Line 8: in position(3-5), 'int' syntax error 
+[0;32;32m'a'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (8)
+[m[0;32;32m'person'->ID
+[m[0;32;32m'.'->DOT
+[m[1;33m     Exp:ID (8)
+[m[0;32;32m'x'->ID
+[m[1;33m     Exp:Exp DOT ID (8)
+[m[0;32;32m'+'->PLUS
+[m[0;32;32m'1'->INT
+[m[1;33m     Exp:INT (8)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp PLUS Exp (8)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (8)
+[m[1;33m     Stmt:Exp SEMI (8)
+[mWrong Stmt:error Stmt
+Wrong Stmt:error Stmt
+[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (8)
+[m[1;33m     StmtList:Stmt StmtList (8)
+[m[1;33m     StmtList:Stmt StmtList (7)
+[m[1;33m     StmtList:Stmt StmtList (7)
+[m[1;33m     CompSt:LC DefList StmtList RC (6)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (6)
+[m[1;33m     ExtDefList:empty (9)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (6)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'a[10][10]'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     VarDec:ID (1)
+[m[1;33m     ExtDecList:VarDec (1)
+[m[1;33m     ExtDef:Specifier ExtDecList SEMI (1)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (2)
+[m[0;32;32m'b'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     VarDec:ID (2)
+[m[1;33m     ExtDecList:VarDec (2)
+[mError type B at Line 2: in position(7-7), '=' syntax error 
+[0;32;32m'100'->INT
+[m[0;32;32m';'->SEMI
+[mWrong ExtDef: Specifier error SEMI
+[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (4)
+[m[0;32;32m'main'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (4)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (5)
+[m[0;32;32m'c'->ID
+[m[1;33m     VarDec:ID (5)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'b'->ID
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (5)
+[m[0;32;32m'a[0][0]'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (5)
+[m[1;33m     Exp:Exp PLUS Exp (5)
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (5)
+[m[1;33m     DecList:Dec (5)
+[m[1;33m     Def:Specifier DecList SEMI (5)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     DefList:empty (5)
+[m[1;33m     DefList:Def DefList (5)
+[m[1;33m     StmtList:empty (5)
+[m[1;33m     CompSt:LC DefList StmtList RC (4)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (4)
+[m[1;33m     ExtDefList:empty (6)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (4)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (2)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'main'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (1)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (2)
+[m[0;32;32m'f'->ID
+[m[1;33m     VarDec:ID (2)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'1.2'->FLOAT
+[m[1;33m     Exp:FLOAT (2)
+[m[0;32;32m'.'->DOT
+[m[0;32;32m'2.4'->FLOAT
+[mError type B at Line 2: in position(17-19), '2.4' syntax error 
+[0;32;32m';'->SEMI
+[mWrong Def:Specifier error SEMI
+[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     DefList:empty (2)
+[m[1;33m     DefList:Def DefList (2)
+[m[1;33m     StmtList:empty (2)
+[m[1;33m     CompSt:LC DefList StmtList RC (1)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (1)
+[m[1;33m     ExtDefList:empty (3)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'Taxi'->ID
+[m[0;32;32m'{'->LC
+[m[1;33m     OptTag:ID (1)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (2)
+[m[0;32;32m'id'->ID
+[m[1;33m     VarDec:ID (2)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (2)
+[m[1;33m     DecList:Dec (2)
+[m[1;33m     Def:Specifier DecList SEMI (2)
+[m[0;32;32mNN
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (3)
+[m[0;32;32m'speed'->ID
+[m[1;33m     VarDec:ID (3)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (3)
+[m[1;33m     DecList:Dec (3)
+[m[1;33m     Def:Specifier DecList SEMI (3)
+[m[0;32;32mNN
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (4)
+[m[0;32;32m'location'->ID
+[m[1;33m     VarDec:ID (4)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (4)
+[m[1;33m     DecList:Dec (4)
+[m[1;33m     Def:Specifier DecList SEMI (4)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     DefList:empty (4)
+[m[1;33m     DefList:Def DefList (4)
+[m[1;33m     DefList:Def DefList (3)
+[m[1;33m     DefList:Def DefList (2)
+[m[1;33m     StructSpecifier:STRUCT OptTag LC DefList RC (1)
+[m[1;33m     Specifier:StructSpecifier (1)
+[m[0;32;32m'taxis[10]'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     VarDec:ID (5)
+[m[1;33m     ExtDecList:VarDec (5)
+[m[1;33m     ExtDef:Specifier ExtDecList SEMI (1)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (7)
+[m[0;32;32m'main'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (7)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (8)
+[m[0;32;32m'speed'->ID
+[m[1;33m     VarDec:ID (8)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'taxis[0'->ID
+[m[0;32;32m','->COMMA
+[m[1;33m     Exp:ID (8)
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (8)
+[m[0;32;32m'1'->INT
+[mError type B at Line 8: in position(25-25), '1' syntax error 
+[0;32;32m']'->RB
+[m[0;32;32m'.'->DOT
+[m[0;32;32m'speed'->ID
+[m[0;32;32m';'->SEMI
+[mWrong Def:Specifier error SEMI
+[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     DefList:empty (8)
+[m[1;33m     DefList:Def DefList (8)
+[m[1;33m     StmtList:empty (8)
+[m[1;33m     CompSt:LC DefList StmtList RC (7)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (7)
+[m[1;33m     ExtDefList:empty (9)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (7)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'array[10]'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     VarDec:ID (1)
+[m[1;33m     ExtDecList:VarDec (1)
+[m[1;33m     ExtDef:Specifier ExtDecList SEMI (1)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (3)
+[m[0;32;32m'initArray'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (3)
+[m[0;32;32m'len'->ID
+[m[1;33m     VarDec:ID (3)
+[m[0;32;32m')'->RP
+[m[1;33m     ParamDec:Specifier VarDec (3)
+[m[1;33m     VarList:ParamDec (3)
+[m[1;33m     FunDec:ID LP VarList RP (3)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (4)
+[m[0;32;32m'i'->ID
+[m[1;33m     VarDec:ID (4)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'0'->INT
+[m[1;33m     Exp:INT (4)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (4)
+[m[1;33m     DecList:Dec (4)
+[m[1;33m     Def:Specifier DecList SEMI (4)
+[m[0;32;32mNN
+[m[0;32;32m'while'->WHILE
+[m[1;33m     DefList:empty (4)
+[m[1;33m     DefList:Def DefList (4)
+[m[0;32;32m'('->LP
+[m[0;32;32m'i'->ID
+[m[0;32;32m'<'->RELOP
+[m[1;33m     Exp:ID (5)
+[m[0;32;32m'len'->ID
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:ID (5)
+[m[1;33m     Exp:Exp RELOP Exp (5)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'array[i]'->ID
+[m[1;33m     DefList:empty (5)
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (6)
+[m[0;32;32m'i'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (6)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (6)
+[m[1;33m     Stmt:Exp SEMI (6)
+[m[0;32;32mNN
+[m[0;32;32m'i'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (7)
+[m[0;32;32m'i'->ID
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (7)
+[m[0;32;32m'1'->INT
+[m[1;33m     Exp:INT (7)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp PLUS Exp (7)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (7)
+[m[1;33m     Stmt:Exp SEMI (7)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (7)
+[m[1;33m     StmtList:Stmt StmtList (7)
+[m[1;33m     StmtList:Stmt StmtList (6)
+[m[1;33m     CompSt:LC DefList StmtList RC (5)
+[m[1;33m     Stmt:CompSt (5)
+[m[1;33m     Stmt:6WHILE LP Exp RP Stmt (5)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (8)
+[m[1;33m     StmtList:Stmt StmtList (5)
+[m[1;33m     CompSt:LC DefList StmtList RC (3)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (3)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (11)
+[m[0;32;32m'swapArray'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (11)
+[m[0;32;32m'len'->ID
+[m[1;33m     VarDec:ID (11)
+[m[0;32;32m','->COMMA
+[m[1;33m     ParamDec:Specifier VarDec (11)
+[m[0;32;32m')'->RP
+[mError type B at Line 11: in position(23-23), ')' syntax error 
+[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (12)
+[m[0;32;32m'i'->ID
+[m[1;33m     VarDec:ID (12)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'0'->INT
+[m[1;33m     Exp:INT (12)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (12)
+[m[1;33m     DecList:Dec (12)
+[m[1;33m     Def:Specifier DecList SEMI (12)
+[m[0;32;32mNN
+[m[0;32;32m'while'->WHILE
+[m[1;33m     DefList:empty (12)
+[m[1;33m     DefList:Def DefList (12)
+[m[0;32;32m'('->LP
+[m[0;32;32m'i'->ID
+[m[0;32;32m'<'->RELOP
+[m[1;33m     Exp:ID (13)
+[m[0;32;32m'len'->ID
+[m[0;32;32m'/'->DIV
+[m[1;33m     Exp:ID (13)
+[m[0;32;32m'2'->INT
+[m[1;33m     Exp:INT (13)
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:Exp DIV Exp (13)
+[m[1;33m     Exp:Exp RELOP Exp (13)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (14)
+[m[0;32;32m'temp'->ID
+[m[1;33m     VarDec:ID (14)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'array[i]'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (14)
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (14)
+[m[1;33m     DecList:Dec (14)
+[m[1;33m     Def:Specifier DecList SEMI (14)
+[m[0;32;32mNN
+[m[0;32;32m'array[i]'->ID
+[m[1;33m     DefList:empty (14)
+[m[1;33m     DefList:Def DefList (14)
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (15)
+[m[0;32;32m'array[len'->ID
+[m[0;32;32m'-'->MINUS
+[m[1;33m     Exp:ID (15)
+[m[0;32;32m'i'->ID
+[m[0;32;32m'-'->MINUS
+[m[1;33m     Exp:ID (15)
+[m[1;33m     Exp:Exp MINUS Exp (15)
+[m[0;32;32m'1'->INT
+[m[1;33m     Exp:INT (15)
+[m[0;32;32m']'->RB
+[m[1;33m     Exp:Exp MINUS Exp (15)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (15)
+[mError type B at Line 15: in position(33-33), ']' syntax error 
+Wrong Stmt:Exp error in line 15
+[0;32;32m';'->SEMI
+[mWrong Stmt:error SEMI
+Wrong Stmt:error Stmt
+[0;32;32mNN
+[m[0;32;32m'array[len'->ID
+[m[0;32;32m'-'->MINUS
+[m[1;33m     Exp:ID (16)
+[m[0;32;32m'i'->ID
+[m[0;32;32m'-'->MINUS
+[m[1;33m     Exp:ID (16)
+[m[1;33m     Exp:Exp MINUS Exp (16)
+[m[0;32;32m'1'->INT
+[m[1;33m     Exp:INT (16)
+[m[0;32;32m']'->RB
+[m[1;33m     Exp:Exp MINUS Exp (16)
+[mError type B at Line 16: in position(22-22), ']' syntax error 
+Wrong Stmt:Exp error in line 16
+[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'temp'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (16)
+[m[1;33m     Stmt:Exp SEMI (16)
+[mWrong Stmt:error Stmt
+Wrong Stmt:error Stmt
+Wrong Stmt:error Stmt
+[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (16)
+[m[1;33m     StmtList:Stmt StmtList (16)
+[m[1;33m     StmtList:Stmt StmtList (16)
+[m[1;33m     StmtList:Stmt StmtList (15)
+[m[1;33m     StmtList:Stmt StmtList (15)
+[m[1;33m     CompSt:LC DefList StmtList RC (13)
+[m[1;33m     Stmt:CompSt (13)
+[m[1;33m     Stmt:6WHILE LP Exp RP Stmt (13)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (17)
+[m[1;33m     StmtList:Stmt StmtList (13)
+[m[1;33m     CompSt:LC DefList StmtList RC (11)
+[mWrong ExtDef: Specifier error CompSt
+[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (20)
+[m[0;32;32m'main'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (20)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'initArray'->ID
+[m[1;33m     DefList:empty (20)
+[m[0;32;32m'('->LP
+[m[0;32;32m'10'->INT
+[m[1;33m     Exp:INT (21)
+[m[0;32;32m')'->RP
+[m[1;33m     Args:Exp (21)
+[m[1;33m     Exp:ID LP Args RP (21)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:Exp SEMI (21)
+[m[0;32;32mNN
+[m[0;32;32m'buble_sort'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'10'->INT
+[m[1;33m     Exp:INT (22)
+[m[0;32;32m')'->RP
+[m[1;33m     Args:Exp (22)
+[m[1;33m     Exp:ID LP Args RP (22)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:Exp SEMI (22)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (22)
+[m[1;33m     StmtList:Stmt StmtList (22)
+[m[1;33m     StmtList:Stmt StmtList (21)
+[m[1;33m     CompSt:LC DefList StmtList RC (20)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (20)
+[m[1;33m     ExtDefList:empty (23)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (20)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (11)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (3)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'Oops'->ID
+[m[0;32;32m'say'->ID
+[m[1;33m     Tag:ID (1)
+[m[1;33m     StructSpecifier:STRUCT Tag (1)
+[m[1;33m     Specifier:StructSpecifier (1)
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (1)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'Point'->ID
+[m[0;32;32m'{'->LC
+[m[1;33m     OptTag:ID (2)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (3)
+[m[0;32;32m'x'->ID
+[m[1;33m     VarDec:ID (3)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (3)
+[m[1;33m     DecList:Dec (3)
+[m[1;33m     Def:Specifier DecList SEMI (3)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (4)
+[m[0;32;32m'y'->ID
+[m[1;33m     VarDec:ID (4)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (4)
+[m[1;33m     DecList:Dec (4)
+[m[1;33m     Def:Specifier DecList SEMI (4)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (5)
+[m[0;32;32m'z'->ID
+[m[1;33m     VarDec:ID (5)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (5)
+[m[1;33m     DecList:Dec (5)
+[m[1;33m     Def:Specifier DecList SEMI (5)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     DefList:empty (5)
+[m[1;33m     DefList:Def DefList (5)
+[m[1;33m     DefList:Def DefList (4)
+[m[1;33m     DefList:Def DefList (3)
+[m[1;33m     StructSpecifier:STRUCT OptTag LC DefList RC (2)
+[m[1;33m     Specifier:StructSpecifier (2)
+[m[0;32;32m'p1'->ID
+[m[1;33m     VarDec:ID (6)
+[m[0;32;32m','->COMMA
+[m[1;33m     Dec:VarDec (6)
+[m[0;32;32m'p2'->ID
+[m[1;33m     VarDec:ID (6)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (6)
+[m[1;33m     DecList:Dec (6)
+[m[1;33m     DecList:Dec COMMA DecList (6)
+[m[1;33m     Def:Specifier DecList SEMI (2)
+[m[0;32;32mNN
+[m[0;32;32m'return'->RETURN
+[m[1;33m     DefList:empty (6)
+[m[1;33m     DefList:Def DefList (2)
+[m[0;32;32m'0'->INT
+[m[1;33m     Exp:INT (7)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:RETURN Exp SEMI (7)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (7)
+[m[1;33m     StmtList:Stmt StmtList (7)
+[m[1;33m     CompSt:LC DefList StmtList RC (1)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (1)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (10)
+[m[0;32;32m';'->SEMI
+[m[1;33m     ExtDef:Specifier SEMI (10)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (11)
+[m[0;32;32m';'->SEMI
+[m[1;33m     ExtDef:Specifier SEMI (11)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'st'->ID
+[m[0;32;32m'{'->LC
+[m[1;33m     OptTag:ID (13)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (14)
+[m[0;32;32m's1'->ID
+[m[1;33m     VarDec:ID (14)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (14)
+[m[1;33m     DecList:Dec (14)
+[m[1;33m     Def:Specifier DecList SEMI (14)
+[m[0;32;32mNN
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (15)
+[m[0;32;32m's2'->ID
+[m[1;33m     VarDec:ID (15)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (15)
+[m[1;33m     DecList:Dec (15)
+[m[1;33m     Def:Specifier DecList SEMI (15)
+[m[0;32;32mNN
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'st'->ID
+[m[0;32;32m's3'->ID
+[m[1;33m     Tag:ID (16)
+[m[1;33m     StructSpecifier:STRUCT Tag (16)
+[m[1;33m     Specifier:StructSpecifier (16)
+[m[1;33m     VarDec:ID (16)
+[m[0;32;32m','->COMMA
+[m[1;33m     Dec:VarDec (16)
+[m[0;32;32m's4'->ID
+[m[1;33m     VarDec:ID (16)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (16)
+[m[1;33m     DecList:Dec (16)
+[m[1;33m     DecList:Dec COMMA DecList (16)
+[m[1;33m     Def:Specifier DecList SEMI (16)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (17)
+[m[0;32;32m'arr[10]'->ID
+[m[1;33m     VarDec:ID (17)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (17)
+[m[1;33m     DecList:Dec (17)
+[m[1;33m     Def:Specifier DecList SEMI (17)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     DefList:empty (17)
+[m[1;33m     DefList:Def DefList (17)
+[m[1;33m     DefList:Def DefList (16)
+[m[1;33m     DefList:Def DefList (15)
+[m[1;33m     DefList:Def DefList (14)
+[m[1;33m     StructSpecifier:STRUCT OptTag LC DefList RC (13)
+[m[1;33m     Specifier:StructSpecifier (13)
+[m[0;32;32m';'->SEMI
+[m[1;33m     ExtDef:Specifier SEMI (13)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (20)
+[m[0;32;32m'main'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (20)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'st'->ID
+[m[0;32;32m'st1'->ID
+[m[1;33m     Tag:ID (21)
+[m[1;33m     StructSpecifier:STRUCT Tag (21)
+[m[1;33m     Specifier:StructSpecifier (21)
+[m[1;33m     VarDec:ID (21)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (21)
+[m[1;33m     DecList:Dec (21)
+[m[1;33m     Def:Specifier DecList SEMI (21)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (22)
+[m[0;32;32m'i'->ID
+[m[1;33m     VarDec:ID (22)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'0'->INT
+[m[1;33m     Exp:INT (22)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (22)
+[m[1;33m     DecList:Dec (22)
+[m[1;33m     Def:Specifier DecList SEMI (22)
+[m[0;32;32mNN
+[m[0;32;32m'while'->WHILE
+[m[1;33m     DefList:empty (22)
+[m[1;33m     DefList:Def DefList (22)
+[m[1;33m     DefList:Def DefList (21)
+[m[0;32;32m'('->LP
+[m[0;32;32m'i'->ID
+[m[0;32;32m'<'->RELOP
+[m[1;33m     Exp:ID (23)
+[m[0;32;32m'10'->INT
+[m[1;33m     Exp:INT (23)
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:Exp RELOP Exp (23)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'st1'->ID
+[m[1;33m     DefList:empty (23)
+[m[0;32;32m'.'->DOT
+[m[1;33m     Exp:ID (24)
+[m[0;32;32m'arr[i]'->ID
+[m[1;33m     Exp:Exp DOT ID (24)
+[m[0;32;32m'*'->STAR
+[m[0;32;32m'='->ASSIGNOP
+[mError type B at Line 24: in position(17-17), '=' syntax error 
+Wrong Stmt:Exp error in line 24
+[0;32;32m'100'->INT
+[m[1;33m     Exp:INT (24)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:Exp SEMI (24)
+[mWrong Stmt:error Stmt
+Wrong Stmt:error Stmt
+[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (24)
+[m[1;33m     StmtList:Stmt StmtList (24)
+[m[1;33m     StmtList:Stmt StmtList (24)
+[m[1;33m     CompSt:LC DefList StmtList RC (23)
+[m[1;33m     Stmt:CompSt (23)
+[m[1;33m     Stmt:6WHILE LP Exp RP Stmt (23)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (25)
+[m[1;33m     StmtList:Stmt StmtList (23)
+[m[1;33m     CompSt:LC DefList StmtList RC (20)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (20)
+[m[1;33m     ExtDefList:empty (26)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (20)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (13)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (11)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (10)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'array[10]'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     VarDec:ID (1)
+[m[1;33m     ExtDecList:VarDec (1)
+[m[1;33m     ExtDef:Specifier ExtDecList SEMI (1)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (2)
+[m[0;32;32m'a'->ID
+[m[0;32;32m','->COMMA
+[m[1;33m     VarDec:ID (2)
+[m[0;32;32m'b'->ID
+[m[1;33m     VarDec:ID (2)
+[m[0;32;32m','->COMMA
+[m[0;32;32m'd'->ID
+[m[1;33m     VarDec:ID (2)
+[m[0;32;32m','->COMMA
+[m[0;32;32m'c'->ID
+[m[1;33m     VarDec:ID (2)
+[m[0;32;32m';'->SEMI
+[m[1;33m     ExtDecList:VarDec (2)
+[m[1;33m     ExtDecList:VarDec COMMA ExtDecList (2)
+[m[1;33m     ExtDecList:VarDec COMMA ExtDecList (2)
+[m[1;33m     ExtDecList:VarDec COMMA ExtDecList (2)
+[m[1;33m     ExtDef:Specifier ExtDecList SEMI (2)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'Two'->ID
+[m[0;32;32m'{'->LC
+[m[1;33m     OptTag:ID (4)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (5)
+[m[0;32;32m'x'->ID
+[m[1;33m     VarDec:ID (5)
+[m[0;32;32m','->COMMA
+[m[1;33m     Dec:VarDec (5)
+[m[0;32;32m'y'->ID
+[m[1;33m     VarDec:ID (5)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (5)
+[m[1;33m     DecList:Dec (5)
+[m[1;33m     DecList:Dec COMMA DecList (5)
+[m[1;33m     Def:Specifier DecList SEMI (5)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     DefList:empty (5)
+[m[1;33m     DefList:Def DefList (5)
+[m[1;33m     StructSpecifier:STRUCT OptTag LC DefList RC (4)
+[m[1;33m     Specifier:StructSpecifier (4)
+[m[0;32;32m';'->SEMI
+[m[1;33m     ExtDef:Specifier SEMI (4)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (8)
+[m[0;32;32m'compare'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'Two'->ID
+[m[0;32;32m't1'->ID
+[m[1;33m     Tag:ID (8)
+[m[1;33m     StructSpecifier:STRUCT Tag (8)
+[m[1;33m     Specifier:StructSpecifier (8)
+[m[1;33m     VarDec:ID (8)
+[m[0;32;32m','->COMMA
+[m[1;33m     ParamDec:Specifier VarDec (8)
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'Two'->ID
+[m[0;32;32m't2'->ID
+[m[1;33m     Tag:ID (8)
+[m[1;33m     StructSpecifier:STRUCT Tag (8)
+[m[1;33m     Specifier:StructSpecifier (8)
+[m[1;33m     VarDec:ID (8)
+[m[0;32;32m')'->RP
+[m[1;33m     ParamDec:Specifier VarDec (8)
+[m[1;33m     VarList:ParamDec (8)
+[m[1;33m     VarList:ParamDec COMMA VarList (8)
+[m[1;33m     FunDec:ID LP VarList RP (8)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'if'->IF
+[m[1;33m     DefList:empty (8)
+[m[0;32;32m'('->LP
+[m[0;32;32m't1'->ID
+[m[0;32;32m'.'->DOT
+[m[1;33m     Exp:ID (9)
+[m[0;32;32m'x'->ID
+[m[1;33m     Exp:Exp DOT ID (9)
+[m[0;32;32m'>'->RELOP
+[m[0;32;32m't2'->ID
+[m[0;32;32m'.'->DOT
+[m[1;33m     Exp:ID (9)
+[m[0;32;32m'x'->ID
+[m[1;33m     Exp:Exp DOT ID (9)
+[m[0;32;32m'&&'->AND
+[m[1;33m     Exp:Exp RELOP Exp (9)
+[m[0;32;32m't1'->ID
+[m[0;32;32m'.'->DOT
+[m[1;33m     Exp:ID (9)
+[m[0;32;32m'y'->ID
+[m[1;33m     Exp:Exp DOT ID (9)
+[m[0;32;32m'>'->RELOP
+[m[0;32;32m't2'->ID
+[m[0;32;32m'.'->DOT
+[m[1;33m     Exp:ID (9)
+[m[0;32;32m'y'->ID
+[m[1;33m     Exp:Exp DOT ID (9)
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:Exp RELOP Exp (9)
+[m[1;33m     Exp:Exp AND Exp (9)
+[m[0;32;32m'else'->ELSE
+[mError type B at Line 9: in position(35-38), 'else' syntax error 
+[0;32;32m'return'->RETURN
+[m[0;32;32m'0'->INT
+[m[1;33m     Exp:INT (9)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:RETURN Exp SEMI (9)
+[mWrong Stmt:error Stmt
+Wrong Stmt:error Stmt
+[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     Stmt:IF LP Exp RP Stmt LOWER_THAN_ELSE (9)
+[m[1;33m     StmtList:empty (9)
+[m[1;33m     StmtList:Stmt StmtList (9)
+[m[1;33m     CompSt:LC DefList StmtList RC (8)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (8)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (12)
+[m[0;32;32m'main'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (12)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'Two'->ID
+[m[0;32;32m't1'->ID
+[m[1;33m     Tag:ID (13)
+[m[1;33m     StructSpecifier:STRUCT Tag (13)
+[m[1;33m     Specifier:StructSpecifier (13)
+[m[1;33m     VarDec:ID (13)
+[m[0;32;32m','->COMMA
+[m[1;33m     Dec:VarDec (13)
+[m[0;32;32m't2'->ID
+[m[1;33m     VarDec:ID (13)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (13)
+[m[1;33m     DecList:Dec (13)
+[m[1;33m     DecList:Dec COMMA DecList (13)
+[m[1;33m     Def:Specifier DecList SEMI (13)
+[m[0;32;32mNN
+[m[0;32;32m'compare'->ID
+[m[1;33m     DefList:empty (13)
+[m[1;33m     DefList:Def DefList (13)
+[m[0;32;32m'('->LP
+[m[0;32;32m't1'->ID
+[m[0;32;32m','->COMMA
+[m[1;33m     Exp:ID (14)
+[m[0;32;32m't2'->ID
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:ID (14)
+[m[1;33m     Args:Exp (14)
+[m[1;33m     Args:Exp COMMA Args (14)
+[m[1;33m     Exp:ID LP Args RP (14)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:Exp SEMI (14)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (14)
+[m[1;33m     StmtList:Stmt StmtList (14)
+[m[1;33m     CompSt:LC DefList StmtList RC (12)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (12)
+[m[1;33m     ExtDefList:empty (15)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (12)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (8)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (4)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (2)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'foo'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'arr[10]'->ID
+[m[1;33m     VarDec:ID (1)
+[m[0;32;32m','->COMMA
+[m[1;33m     ParamDec:Specifier VarDec (1)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'y'->ID
+[m[1;33m     VarDec:ID (1)
+[m[0;32;32m','->COMMA
+[m[1;33m     ParamDec:Specifier VarDec (1)
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'player'->ID
+[m[0;32;32m'p'->ID
+[m[1;33m     Tag:ID (1)
+[m[1;33m     StructSpecifier:STRUCT Tag (1)
+[m[1;33m     Specifier:StructSpecifier (1)
+[m[1;33m     VarDec:ID (1)
+[m[0;32;32m')'->RP
+[m[1;33m     ParamDec:Specifier VarDec (1)
+[m[1;33m     VarList:ParamDec (1)
+[m[1;33m     VarList:ParamDec COMMA VarList (1)
+[m[1;33m     VarList:ParamDec COMMA VarList (1)
+[m[1;33m     FunDec:ID LP VarList RP (1)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (2)
+[m[0;32;32m'a'->ID
+[m[1;33m     VarDec:ID (2)
+[m[0;32;32m','->COMMA
+[m[1;33m     Dec:VarDec (2)
+[m[0;32;32m'b'->ID
+[m[1;33m     VarDec:ID (2)
+[m[0;32;32m','->COMMA
+[m[1;33m     Dec:VarDec (2)
+[m[0;32;32m'c'->ID
+[m[1;33m     VarDec:ID (2)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (2)
+[m[1;33m     DecList:Dec (2)
+[m[1;33m     DecList:Dec COMMA DecList (2)
+[m[1;33m     DecList:Dec COMMA DecList (2)
+[m[1;33m     Def:Specifier DecList SEMI (2)
+[m[0;32;32mNN
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'st'->ID
+[m[0;32;32m'{'->LC
+[m[1;33m     OptTag:ID (3)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (4)
+[m[0;32;32m'_i'->ID
+[m[1;33m     VarDec:ID (4)
+[m[0;32;32m','->COMMA
+[m[1;33m     Dec:VarDec (4)
+[m[0;32;32m'_j'->ID
+[m[1;33m     VarDec:ID (4)
+[m[0;32;32m','->COMMA
+[m[1;33m     Dec:VarDec (4)
+[m[0;32;32m'_k'->ID
+[m[1;33m     VarDec:ID (4)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (4)
+[m[1;33m     DecList:Dec (4)
+[m[1;33m     DecList:Dec COMMA DecList (4)
+[m[1;33m     DecList:Dec COMMA DecList (4)
+[m[1;33m     Def:Specifier DecList SEMI (4)
+[m[0;32;32mNN
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (5)
+[m[0;32;32m'2'->INT
+[mError type B at Line 5: in position(11-11), '2' syntax error 
+[0;32;32m'g'->ID
+[m[0;32;32m';'->SEMI
+[mWrong Def:Specifier error SEMI
+[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (6)
+[m[0;32;32m'_l'->ID
+[m[1;33m     VarDec:ID (6)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (6)
+[m[1;33m     DecList:Dec (6)
+[m[1;33m     Def:Specifier DecList SEMI (6)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     DefList:empty (6)
+[m[1;33m     DefList:Def DefList (6)
+[m[1;33m     DefList:Def DefList (5)
+[m[1;33m     DefList:Def DefList (4)
+[m[1;33m     StructSpecifier:STRUCT OptTag LC DefList RC (3)
+[m[1;33m     Specifier:StructSpecifier (3)
+[m[0;32;32m';'->SEMI
+[mError type B at Line 7: in position(4-4), ';' syntax error 
+Wrong Def:Specifier error SEMI
+[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (8)
+[m[0;32;32m'an'->ID
+[m[1;33m     VarDec:ID (8)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'100'->INT
+[m[1;33m     Exp:INT (8)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (8)
+[m[1;33m     DecList:Dec (8)
+[m[1;33m     Def:Specifier DecList SEMI (8)
+[m[0;32;32mNN
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'st'->ID
+[m[0;32;32m't1'->ID
+[m[1;33m     Tag:ID (9)
+[m[1;33m     StructSpecifier:STRUCT Tag (9)
+[m[1;33m     Specifier:StructSpecifier (9)
+[m[1;33m     VarDec:ID (9)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (9)
+[m[1;33m     DecList:Dec (9)
+[m[1;33m     Def:Specifier DecList SEMI (9)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'while'->WHILE
+[m[1;33m     DefList:empty (9)
+[m[1;33m     DefList:Def DefList (9)
+[m[1;33m     DefList:Def DefList (8)
+[m[1;33m     DefList:Def DefList (3)
+[m[1;33m     DefList:Def DefList (2)
+[m[0;32;32m'('->LP
+[m[0;32;32m'a'->ID
+[m[0;32;32m'<='->RELOP
+[m[1;33m     Exp:ID (11)
+[m[0;32;32m'100'->INT
+[m[1;33m     Exp:INT (11)
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:Exp RELOP Exp (11)
+[m[0;32;32m';'->SEMI
+[mError type B at Line 11: in position(18-18), ';' syntax error 
+Wrong Stmt:error SEMI
+[1;33m     Stmt:6WHILE LP Exp RP Stmt (11)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'if'->IF
+[m[0;32;32m'('->LP
+[m[0;32;32m'a'->ID
+[m[0;32;32m'>'->RELOP
+[m[1;33m     Exp:ID (13)
+[m[0;32;32m'c'->ID
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:ID (13)
+[m[1;33m     Exp:Exp RELOP Exp (13)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'return'->RETURN
+[m[1;33m     DefList:empty (13)
+[m[0;32;32m't2'->ID
+[m[0;32;32m'.'->DOT
+[m[1;33m     Exp:ID (14)
+[m[0;32;32m'_i'->ID
+[m[1;33m     Exp:Exp DOT ID (14)
+[m[0;32;32m'+'->PLUS
+[m[0;32;32m't2'->ID
+[m[0;32;32m'.'->DOT
+[m[1;33m     Exp:ID (14)
+[m[0;32;32m'_j'->ID
+[m[1;33m     Exp:Exp DOT ID (14)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp PLUS Exp (14)
+[m[1;33m     Stmt:RETURN Exp SEMI (14)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (14)
+[m[1;33m     StmtList:Stmt StmtList (14)
+[m[1;33m     CompSt:LC DefList StmtList RC (13)
+[m[1;33m     Stmt:CompSt (13)
+[m[0;32;32mNN
+[m[0;32;32m'else'->ELSE
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'b'->ID
+[m[1;33m     DefList:empty (16)
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (17)
+[m[0;32;32m't1'->ID
+[m[0;32;32m'.'->DOT
+[m[1;33m     Exp:ID (17)
+[m[0;32;32m'_i'->ID
+[m[1;33m     Exp:Exp DOT ID (17)
+[m[0;32;32m'+'->PLUS
+[m[0;32;32m'an'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (17)
+[m[1;33m     Exp:Exp PLUS Exp (17)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (17)
+[m[1;33m     Stmt:Exp SEMI (17)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (17)
+[m[1;33m     StmtList:Stmt StmtList (17)
+[m[1;33m     CompSt:LC DefList StmtList RC (16)
+[m[1;33m     Stmt:CompSt (16)
+[m[1;33m     Stmt:IF LP Exp RP Stmt ELSE Stmt (13)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'return'->RETURN
+[m[0;32;32m'10'->INT
+[m[1;33m     Exp:INT (20)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:RETURN Exp SEMI (20)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (20)
+[m[1;33m     StmtList:Stmt StmtList (20)
+[m[1;33m     StmtList:Stmt StmtList (13)
+[m[1;33m     StmtList:Stmt StmtList (11)
+[m[1;33m     CompSt:LC DefList StmtList RC (1)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (1)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (23)
+[m[0;32;32m'bar'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (23)
+[m[0;32;32m'h1'->ID
+[m[1;33m     VarDec:ID (23)
+[m[0;32;32m','->COMMA
+[m[1;33m     ParamDec:Specifier VarDec (23)
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (23)
+[m[0;32;32m'h2'->ID
+[m[1;33m     VarDec:ID (23)
+[m[0;32;32m','->COMMA
+[m[1;33m     ParamDec:Specifier VarDec (23)
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (23)
+[m[0;32;32m'h3'->ID
+[m[1;33m     VarDec:ID (23)
+[m[0;32;32m')'->RP
+[m[1;33m     ParamDec:Specifier VarDec (23)
+[m[1;33m     VarList:ParamDec (23)
+[m[1;33m     VarList:ParamDec COMMA VarList (23)
+[m[1;33m     VarList:ParamDec COMMA VarList (23)
+[m[1;33m     FunDec:ID LP VarList RP (23)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (24)
+[m[0;32;32m'list[100'->ID
+[m[1;33m     VarDec:ID (24)
+[m[0;32;32m'.'->DOT
+[m[1;33m     Dec:VarDec (24)
+[m[1;33m     DecList:Dec (24)
+[mError type B at Line 24: in position(15-15), '.' syntax error 
+Wrong Def:error Specifier DecList
+[0;32;32m'0'->INT
+[m[0;32;32m']'->RB
+[m[0;32;32m';'->SEMI
+[m[0;32;32mNN
+[m[0;32;32m'struct'NONE->STRUCT
+[0;32;32m'st'->ID
+[m[0;32;32m'{'->LC
+[m[1;33m     OptTag:ID (25)
+[m[0;32;32mNN
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (26)
+[m[0;32;32m'hhh'->ID
+[m[1;33m     VarDec:ID (26)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (26)
+[m[1;33m     DecList:Dec (26)
+[m[1;33m     Def:Specifier DecList SEMI (26)
+[m[0;32;32mNN
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (27)
+[m[0;32;32m'ttt'->ID
+[m[1;33m     VarDec:ID (27)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (27)
+[m[1;33m     DecList:Dec (27)
+[m[1;33m     Def:Specifier DecList SEMI (27)
+[m[0;32;32mNN
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (28)
+[m[0;32;32m'ppp'->ID
+[m[1;33m     VarDec:ID (28)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (28)
+[m[1;33m     DecList:Dec (28)
+[m[1;33m     Def:Specifier DecList SEMI (28)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     DefList:empty (28)
+[m[1;33m     DefList:Def DefList (28)
+[m[1;33m     DefList:Def DefList (27)
+[m[1;33m     DefList:Def DefList (26)
+[m[1;33m     StructSpecifier:STRUCT OptTag LC DefList RC (25)
+[m[1;33m     Specifier:StructSpecifier (25)
+[m[0;32;32m't'->ID
+[m[1;33m     VarDec:ID (29)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (29)
+[m[1;33m     DecList:Dec (29)
+[m[1;33m     Def:Specifier DecList SEMI (25)
+[mWrong Def:error Def
+Wrong Def:error Def
+Wrong Def:error Def
+Wrong Def:error Def
+Wrong Def:error Def
+[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'list[1]'->ID
+[m[1;33m     DefList:empty (29)
+[m[1;33m     DefList:Def DefList (24)
+[m[1;33m     DefList:Def DefList (24)
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (31)
+[m[0;32;32m't'->ID
+[m[0;32;32m'.'->DOT
+[m[1;33m     Exp:ID (31)
+[m[0;32;32m'hhh'->ID
+[m[1;33m     Exp:Exp DOT ID (31)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp ASSIGNOP Exp (31)
+[m[1;33m     Stmt:Exp SEMI (31)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (31)
+[m[1;33m     StmtList:Stmt StmtList (31)
+[m[1;33m     CompSt:LC DefList StmtList RC (23)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (23)
+[m[1;33m     ExtDefList:empty (32)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (23)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'shsort'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m's[4]'->ID
+[m[1;33m     VarDec:ID (1)
+[m[0;32;32m','->COMMA
+[m[1;33m     ParamDec:Specifier VarDec (1)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'n'->ID
+[m[1;33m     VarDec:ID (1)
+[m[0;32;32m')'->RP
+[m[1;33m     ParamDec:Specifier VarDec (1)
+[m[1;33m     VarList:ParamDec (1)
+[m[1;33m     VarList:ParamDec COMMA VarList (1)
+[m[1;33m     FunDec:ID LP VarList RP (1)
+[m[0;32;32mNN
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (3)
+[m[0;32;32m'i'->ID
+[m[1;33m     VarDec:ID (3)
+[m[0;32;32m','->COMMA
+[m[1;33m     Dec:VarDec (3)
+[m[0;32;32m'j'->ID
+[m[1;33m     VarDec:ID (3)
+[m[0;32;32m','->COMMA
+[m[1;33m     Dec:VarDec (3)
+[m[0;32;32m'd'->ID
+[m[1;33m     VarDec:ID (3)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (3)
+[m[1;33m     DecList:Dec (3)
+[m[1;33m     DecList:Dec COMMA DecList (3)
+[m[1;33m     DecList:Dec COMMA DecList (3)
+[m[1;33m     Def:Specifier DecList SEMI (3)
+[m[0;32;32mNN
+[m[0;32;32m'd'->ID
+[m[1;33m     DefList:empty (3)
+[m[1;33m     DefList:Def DefList (3)
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (4)
+[m[0;32;32m'n'->ID
+[m[0;32;32m'/'->DIV
+[m[1;33m     Exp:ID (4)
+[m[0;32;32m'2'->INT
+[m[1;33m     Exp:INT (4)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp DIV Exp (4)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (4)
+[m[1;33m     Stmt:Exp SEMI (4)
+[m[0;32;32mNN
+[m[0;32;32m'while'->WHILE
+[m[0;32;32m'('->LP
+[m[0;32;32m'd'->ID
+[m[0;32;32m'>'->RELOP
+[m[1;33m     Exp:ID (5)
+[m[0;32;32m'='->ASSIGNOP
+[mError type B at Line 5: in position(15-15), '=' syntax error 
+[0;32;32m'1'->INT
+[m[0;32;32m')'->RP
+[m[0;32;32mNN
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'i'->ID
+[m[1;33m     DefList:empty (6)
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (7)
+[m[0;32;32m'd'->ID
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (7)
+[m[0;32;32m'1'->INT
+[m[1;33m     Exp:INT (7)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp PLUS Exp (7)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (7)
+[m[1;33m     Stmt:Exp SEMI (7)
+[m[0;32;32mNN
+[m[0;32;32m'while'->WHILE
+[m[0;32;32m'('->LP
+[m[0;32;32m'i'->ID
+[m[0;32;32m'<='->RELOP
+[m[1;33m     Exp:ID (8)
+[m[0;32;32m'n'->ID
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:ID (8)
+[m[1;33m     Exp:Exp RELOP Exp (8)
+[m[0;32;32mNN
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m's[0]'->ID
+[m[1;33m     DefList:empty (9)
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (10)
+[m[0;32;32m's[i]'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (10)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (10)
+[m[1;33m     Stmt:Exp SEMI (10)
+[m[0;32;32mNN
+[m[0;32;32m'j'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (11)
+[m[0;32;32m'i'->ID
+[m[0;32;32m'-'->MINUS
+[m[1;33m     Exp:ID (11)
+[m[0;32;32m'd'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (11)
+[m[1;33m     Exp:Exp MINUS Exp (11)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (11)
+[m[1;33m     Stmt:Exp SEMI (11)
+[m[0;32;32mNN
+[m[0;32;32m'while'->WHILE
+[m[0;32;32m'('->LP
+[m[0;32;32m'('->LP
+[m[0;32;32m'j'->ID
+[m[0;32;32m'>'->RELOP
+[m[1;33m     Exp:ID (12)
+[m[0;32;32m'0'->INT
+[m[1;33m     Exp:INT (12)
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:Exp RELOP Exp (12)
+[m[1;33m     Exp:LP Exp RP (12)
+[m[0;32;32m'&&'->AND
+[m[0;32;32m'('->LP
+[m[0;32;32m's[0]'->ID
+[m[0;32;32m'<'->RELOP
+[m[1;33m     Exp:ID (12)
+[m[0;32;32m's[j]'->ID
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:ID (12)
+[m[1;33m     Exp:Exp RELOP Exp (12)
+[m[1;33m     Exp:LP Exp RP (12)
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:Exp AND Exp (12)
+[m[0;32;32mNN
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m's[j'->ID
+[m[1;33m     DefList:empty (13)
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (14)
+[m[0;32;32m'd]'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (14)
+[m[1;33m     Exp:Exp PLUS Exp (14)
+[m[0;32;32m's[j]'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (14)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (14)
+[m[1;33m     Stmt:Exp SEMI (14)
+[m[0;32;32mNN
+[m[0;32;32m'j'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (15)
+[m[0;32;32m'j'->ID
+[m[0;32;32m'-'->MINUS
+[m[1;33m     Exp:ID (15)
+[m[0;32;32m'd'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (15)
+[m[1;33m     Exp:Exp MINUS Exp (15)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (15)
+[m[1;33m     Stmt:Exp SEMI (15)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (15)
+[m[1;33m     StmtList:Stmt StmtList (15)
+[m[1;33m     StmtList:Stmt StmtList (14)
+[m[1;33m     CompSt:LC DefList StmtList RC (13)
+[m[1;33m     Stmt:CompSt (13)
+[m[1;33m     Stmt:6WHILE LP Exp RP Stmt (12)
+[m[0;32;32mNN
+[m[0;32;32m's[j'->ID
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (17)
+[m[0;32;32m'd]'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (17)
+[m[1;33m     Exp:Exp PLUS Exp (17)
+[m[0;32;32m's[0]'->ID
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (17)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (17)
+[m[1;33m     Stmt:Exp SEMI (17)
+[m[0;32;32mNN
+[m[0;32;32m'i'->ID
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (18)
+[m[0;32;32m'+'->PLUS
+[mError type B at Line 18: in position(15-15), '+' syntax error 
+Wrong Stmt:Exp error in line 18
+[0;32;32m';'->SEMI
+[mWrong Stmt:error SEMI
+Wrong Stmt:error Stmt
+[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (18)
+[m[1;33m     StmtList:Stmt StmtList (18)
+[m[1;33m     StmtList:Stmt StmtList (18)
+[m[1;33m     StmtList:Stmt StmtList (17)
+[m[1;33m     StmtList:Stmt StmtList (12)
+[m[1;33m     StmtList:Stmt StmtList (11)
+[m[1;33m     StmtList:Stmt StmtList (10)
+[m[1;33m     CompSt:LC DefList StmtList RC (9)
+[m[1;33m     Stmt:CompSt (9)
+[m[1;33m     Stmt:6WHILE LP Exp RP Stmt (8)
+[m[0;32;32mNN
+[m[0;32;32m'd'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (20)
+[m[0;32;32m'd'->ID
+[m[0;32;32m'/'->DIV
+[m[1;33m     Exp:ID (20)
+[m[0;32;32m'2'->INT
+[m[1;33m     Exp:INT (20)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp DIV Exp (20)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (20)
+[m[1;33m     Stmt:Exp SEMI (20)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (20)
+[m[1;33m     StmtList:Stmt StmtList (20)
+[m[1;33m     StmtList:Stmt StmtList (8)
+[m[1;33m     StmtList:Stmt StmtList (7)
+[m[1;33m     CompSt:LC DefList StmtList RC (6)
+[m[1;33m     Stmt:CompSt (6)
+[mWrong Stmt: error while
+[0;32;32mNN
+[m[0;32;32m'return'->RETURN
+[m[0;32;32m'0'->INT
+[m[1;33m     Exp:INT (22)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:RETURN Exp SEMI (22)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (22)
+[m[1;33m     StmtList:Stmt StmtList (22)
+[m[1;33m     StmtList:Stmt StmtList (5)
+[m[1;33m     StmtList:Stmt StmtList (4)
+[m[1;33m     CompSt:LC DefList StmtList RC (2)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (1)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (24)
+[m[0;32;32m'main'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (24)
+[m[0;32;32mNN
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (26)
+[m[0;32;32m'a[4]'->ID
+[m[1;33m     VarDec:ID (26)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec (26)
+[m[1;33m     DecList:Dec (26)
+[m[1;33m     Def:Specifier DecList SEMI (26)
+[m[0;32;32mNN
+[m[0;32;32m'a[0]'->ID
+[m[1;33m     DefList:empty (26)
+[m[1;33m     DefList:Def DefList (26)
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (27)
+[m[0;32;32m'2'->INT
+[m[1;33m     Exp:INT (27)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp ASSIGNOP Exp (27)
+[m[1;33m     Stmt:Exp SEMI (27)
+[m[0;32;32mNN
+[m[0;32;32m'a[1]'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (28)
+[m[0;32;32m'4'->INT
+[m[1;33m     Exp:INT (28)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp ASSIGNOP Exp (28)
+[m[1;33m     Stmt:Exp SEMI (28)
+[m[0;32;32mNN
+[m[0;32;32m'a[2]'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (29)
+[m[0;32;32m'3'->INT
+[m[1;33m     Exp:INT (29)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp ASSIGNOP Exp (29)
+[m[1;33m     Stmt:Exp SEMI (29)
+[m[0;32;32mNN
+[m[0;32;32m'a[3]]'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (30)
+[m[0;32;32m'1'->INT
+[m[1;33m     Exp:INT (30)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp ASSIGNOP Exp (30)
+[m[1;33m     Stmt:Exp SEMI (30)
+[m[0;32;32mNN
+[m[0;32;32m'a[3]'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (31)
+[m[0;32;32m'10'->INT
+[m[1;33m     Exp:INT (31)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp ASSIGNOP Exp (31)
+[m[1;33m     Stmt:Exp SEMI (31)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[mError type B at Line 32: in position(5-7), 'int' syntax error 
+[0;32;32m'n'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (32)
+[m[0;32;32m'4'->INT
+[m[1;33m     Exp:INT (32)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp ASSIGNOP Exp (32)
+[m[1;33m     Stmt:Exp SEMI (32)
+[mWrong Stmt:error Stmt
+Wrong Stmt:error Stmt
+[0;32;32mNN
+[m[0;32;32m'shsort'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'a'->ID
+[m[0;32;32m','->COMMA
+[m[1;33m     Exp:ID (33)
+[m[0;32;32m'n'->ID
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:ID (33)
+[m[1;33m     Args:Exp (33)
+[m[1;33m     Args:Exp COMMA Args (33)
+[m[1;33m     Exp:ID LP Args RP (33)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:Exp SEMI (33)
+[m[0;32;32mNN
+[m[0;32;32m'return'->RETURN
+[m[0;32;32m'0'->INT
+[m[1;33m     Exp:INT (34)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:RETURN Exp SEMI (34)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (34)
+[m[1;33m     StmtList:Stmt StmtList (34)
+[m[1;33m     StmtList:Stmt StmtList (33)
+[m[1;33m     StmtList:Stmt StmtList (32)
+[m[1;33m     StmtList:Stmt StmtList (31)
+[m[1;33m     StmtList:Stmt StmtList (30)
+[m[1;33m     StmtList:Stmt StmtList (29)
+[m[1;33m     StmtList:Stmt StmtList (28)
+[m[1;33m     StmtList:Stmt StmtList (27)
+[m[1;33m     CompSt:LC DefList StmtList RC (25)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (24)
+[m[1;33m     ExtDefList:empty (35)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (24)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'Octal'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (1)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (2)
+[m[0;32;32m'o1'->ID
+[m[1;33m     VarDec:ID (2)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'0'->INT
+[m[1;33m     Exp:INT (2)
+[m[0;32;32m'9888'->INT
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (2)
+[m[1;33m     DecList:Dec (2)
+[mError type B at Line 2: in position(13-16), '9888' syntax error 
+Wrong Def:error Specifier DecList
+[1;33m     DefList:empty (2)
+[m[1;33m     DefList:Def DefList (2)
+[m[1;33m     Exp:INT (2)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:Exp SEMI (2)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[mError type B at Line 3: in position(3-5), 'int' syntax error 
+[0;32;32m'o2'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (3)
+[m[0;32;32m'01234567'->INT
+[m[1;33m     Exp:INT (3)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp ASSIGNOP Exp (3)
+[m[1;33m     Stmt:Exp SEMI (3)
+[mWrong Stmt:error Stmt
+Wrong Stmt:error Stmt
+[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[mError type B at Line 4: in position(3-5), 'int' syntax error 
+[0;32;32m'o3'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (4)
+[m[0;32;32m'o2'->ID
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (4)
+[m[0;32;32m'o1'->ID
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (4)
+[m[1;33m     Exp:Exp PLUS Exp (4)
+[m[0;32;32m'0526454'->INT
+[m[1;33m     Exp:INT (4)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp PLUS Exp (4)
+[m[1;33m     Exp:Exp ASSIGNOP Exp (4)
+[m[1;33m     Stmt:Exp SEMI (4)
+[mWrong Stmt:error Stmt
+Wrong Stmt:error Stmt
+[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (4)
+[m[1;33m     StmtList:Stmt StmtList (4)
+[m[1;33m     StmtList:Stmt StmtList (3)
+[m[1;33m     StmtList:Stmt StmtList (2)
+[m[1;33m     CompSt:LC DefList StmtList RC (1)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (1)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (7)
+[m[0;32;32m'Hex'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (7)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (8)
+[m[0;32;32m'h1'->ID
+[m[1;33m     VarDec:ID (8)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'0xfffffff'->INT
+[m[1;33m     Exp:INT (8)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (8)
+[m[1;33m     DecList:Dec (8)
+[m[1;33m     Def:Specifier DecList SEMI (8)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (9)
+[m[0;32;32m'h2'->ID
+[m[1;33m     VarDec:ID (9)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'-'->MINUS
+[m[0;32;32m'0x14daf'->INT
+[m[1;33m     Exp:INT (9)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:MINUS Exp (9)
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (9)
+[m[1;33m     DecList:Dec (9)
+[m[1;33m     Def:Specifier DecList SEMI (9)
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (10)
+[m[0;32;32m'h3'->ID
+[m[1;33m     VarDec:ID (10)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'h1'->ID
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (10)
+[m[0;32;32m'h2'->ID
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (10)
+[m[1;33m     Exp:Exp PLUS Exp (10)
+[m[0;32;32m'0'->INT
+[m[1;33m     Exp:INT (10)
+[m[0;32;32m'xggg'->ID
+[m[1;33m     Exp:Exp PLUS Exp (10)
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (10)
+[m[1;33m     DecList:Dec (10)
+[mError type B at Line 10: in position(23-26), 'xggg' syntax error 
+Wrong Def:error Specifier DecList
+[1;33m     DefList:empty (10)
+[m[1;33m     DefList:Def DefList (10)
+[m[1;33m     DefList:Def DefList (9)
+[m[1;33m     DefList:Def DefList (8)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (10)
+[m[1;33m     Stmt:Exp SEMI (10)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (10)
+[m[1;33m     StmtList:Stmt StmtList (10)
+[m[1;33m     CompSt:LC DefList StmtList RC (7)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (7)
+[m[1;33m     ExtDefList:empty (11)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (7)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (1)
+[m[0;32;32m'float_error'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (1)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'float'->TYPE
+[m[1;33m     Specifier:TYPE (2)
+[m[0;32;32m'f1'->ID
+[m[1;33m     VarDec:ID (2)
+[m[0;32;32m'='->ASSIGNOP
+[m[0;32;32m'0.114514'->FLOAT
+[m[1;33m     Exp:FLOAT (2)
+[m[0;32;32m'e'->ID
+[m[1;33m     Dec:VarDec ASSIGNOP Exp (2)
+[m[1;33m     DecList:Dec (2)
+[mError type B at Line 2: in position(22-22), 'e' syntax error 
+Wrong Def:error Specifier DecList
+[1;33m     DefList:empty (2)
+[m[1;33m     DefList:Def DefList (2)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:ID (2)
+[m[1;33m     Stmt:Exp SEMI (2)
+[m[0;32;32mNN
+[m[0;32;32m'float'->TYPE
+[mError type B at Line 3: in position(3-7), 'float' syntax error 
+[0;32;32m'f2'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (3)
+[m[0;32;32m'123.1e+10'->FLOAT
+[m[1;33m     Exp:FLOAT (3)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Exp:Exp ASSIGNOP Exp (3)
+[m[1;33m     Stmt:Exp SEMI (3)
+[mWrong Stmt:error Stmt
+Wrong Stmt:error Stmt
+[0;32;32mNN
+[m[0;32;32m'float'->TYPE
+[mError type B at Line 4: in position(3-7), 'float' syntax error 
+[0;32;32m'f3'->ID
+[m[0;32;32m'='->ASSIGNOP
+[m[1;33m     Exp:ID (4)
+[m[0;32;32m'f1'->ID
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (4)
+[m[0;32;32m'f2'->ID
+[m[0;32;32m'+'->PLUS
+[m[1;33m     Exp:ID (4)
+[m[1;33m     Exp:Exp PLUS Exp (4)
+[m[0;32;32m'127.2'->FLOAT
+[m[1;33m     Exp:FLOAT (4)
+[m[0;32;32m'.'->DOT
+[m[0;32;32m'2.1'->FLOAT
+[mWrong Stmt:Exp error in line 4
+Wrong Stmt:error Stmt
+Wrong Stmt:error Stmt
+[1;33m     Exp:FLOAT (4)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:Exp SEMI (4)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (4)
+[m[1;33m     StmtList:Stmt StmtList (4)
+[m[1;33m     StmtList:Stmt StmtList (4)
+[m[1;33m     StmtList:Stmt StmtList (3)
+[m[1;33m     StmtList:Stmt StmtList (2)
+[m[1;33m     CompSt:LC DefList StmtList RC (1)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (1)
+[m[1;33m     ExtDefList:empty (5)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (1)
+[m[1;33m     Program:ExtDefList (1)
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32mNN
+[m[0;32;32m'int'->TYPE
+[m[1;33m     Specifier:TYPE (49)
+[m[0;32;32m'main'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     FunDec:ID LP RP (49)
+[m[0;32;32m'{'->LC
+[m[0;32;32mNN
+[m[0;32;32m'hello'->ID
+[m[1;33m     DefList:empty (49)
+[m[0;32;32m'('->LP
+[m[0;32;32m')'->RP
+[m[1;33m     Exp:ID LP RP (50)
+[m[0;32;32m';'->SEMI
+[m[1;33m     Stmt:Exp SEMI (50)
+[m[0;32;32mNN
+[m[0;32;32m'error_func'->ID
+[m[0;32;32m'('->LP
+[m[0;32;32m'int'->TYPE
+[mError type B at Line 51: in position(14-16), 'int' syntax error 
+[0;32;32m'b'->ID
+[m[0;32;32m')'->RP
+[mWrong Exp:ID LP error RP
+[0;32;32m';'->SEMI
+[m[1;33m     Stmt:Exp SEMI (51)
+[m[0;32;32mNN
+[m[0;32;32m'}'->RC
+[m[1;33m     StmtList:empty (51)
+[m[1;33m     StmtList:Stmt StmtList (51)
+[m[1;33m     StmtList:Stmt StmtList (50)
+[m[1;33m     CompSt:LC DefList StmtList RC (49)
+[m[1;33m     ExtDef:Specifier FunDec CompSt (49)
+[m[1;33m     ExtDefList:empty (52)
+[m[1;33m     ExtDefList:ExtDef ExtDefList (49)
+[m[1;33m     Program:ExtDefList (49)
+[m./normalTest_1/inputs/A-1.cmm should print err
+
+
+./normalTest_1/inputs/A-10.cmm should print err
+
+
+./normalTest_1/inputs/A-2.cmm should print err
+
+
+./normalTest_1/inputs/A-3.cmm should print err
+
+
+./normalTest_1/inputs/A-4.cmm should print err
+
+
+./normalTest_1/inputs/A-5.cmm should print err
+
+
+./normalTest_1/inputs/A-6.cmm should print err
+
+
+./normalTest_1/inputs/A-7.cmm should print err
+
+
+./normalTest_1/inputs/A-8.cmm should print err
+
+
+./normalTest_1/inputs/A-9.cmm should print err
+
+
+./normalTest_1/inputs/B-1.cmm should print err
+
+
+./normalTest_1/inputs/B-2.cmm should print err
+
+
+./normalTest_1/inputs/E1-1.cmm should print err
+
+
+./normalTest_1/inputs/E2-1.cmm should print err
+
+
+./normalTest_1/inputs/E3-1.cmm should print err
+
+
+8 8 23

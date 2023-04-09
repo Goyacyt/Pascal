@@ -27,7 +27,7 @@ int main(int argc, char** argv){
 			perror(argv[1]);
 			return 1;
 		}
-		//printf("--------test file <%s>---------\n",argv[1]);
+		printf("--------test file <%s>---------\n",argv[1]);
 	}
     yyrestart(yyin);
     yyparse();
