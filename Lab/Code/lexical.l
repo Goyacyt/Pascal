@@ -5,6 +5,7 @@
     extern int sim;
     extern int error_line;
     extern int haserror;
+    extern int error_line;
     #define YY_USER_ACTION  \
         yylloc.first_line=yylloc.last_line=yylineno;    \
         yylloc.first_column=yycolumn;   \
@@ -113,14 +114,5 @@ WHILE "while"
 {ID} {if(!sim) {printf(GREEN"\'%s\'->ID\n"NONE,yytext);} yylval=add_token("ID", TYPE_ID, yytext);  return ID;}
 \n {if(!sim) {printf(GREEN"NN\n"NONE);}yycolumn=1;}
 [\t\f\r\v ] {}
-
-
-.   {
-    if(error_line!=yylineno){
-    printf("Error type A at Line %d: Mysterious characters \'%s\'\n",yylineno,yytext);
-    error_line=yylineno;
-    }
-    haserror=1;
-    }
-    
+.  {if(yylineno!=error_line){printf("ERROR TYPE A at line %d: Mysterious characters \'%s\'\n",yylineno,yytext);error_line=yylineno;}haserror=1;}
 %%
