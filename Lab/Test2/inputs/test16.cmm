@@ -1,11 +1,13 @@
-struct Position{
+struct Position
+{
     float x;
 };
-struct Position{
+
+struct Position
+{
     int y;
 };
 
 int main()
 {
-    
 }

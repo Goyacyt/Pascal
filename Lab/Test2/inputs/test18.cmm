@@ -2,10 +2,9 @@ int func(int a);
 
 int func(int a)
 {
-    return l;
+    return 1;
 }
 
 int main()
 {
-    
 }

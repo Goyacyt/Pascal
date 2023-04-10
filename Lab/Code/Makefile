@@ -35,14 +35,12 @@ syntax-c: $(YFILE)
 .PHONY: clean test
 
 test:
-	./parser ../Test2/test10.cmm
+	./parser ../Test2/test23.cmm
 
 test-all:
-	./parser ../Test2/test0.cmm
-	./parser ../Test2/test1.cmm
-	./parser ../Test2/test2.cmm
-	./parser ../Test2/test3.cmm
-	./parser ../Test2/test4.cmm
+	./parser ../Test2/test15.cmm
+	./parser ../Test2/test16.cmm
+
 clean:
 	rm -f parser lex.yy.c syntax.tab.c syntax.tab.h syntax.output
 	rm -f $(OBJS) $(OBJS:.o=.d)

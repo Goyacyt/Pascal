@@ -1,8 +1,12 @@
 import os
 import subprocess
 correct, hasexp,total = 0,0, 0
-
-
+RED="\033[1;31m"
+NONE="\033[0m"
+LBLUE="\033[1;36m"
+PURPLE="\033[1;35m"
+YELLOW="\033[1;33m"
+GREEN="\033[1;42m"
 def get_output(res_list):
     err = set()
     for res in res_list:
@@ -27,36 +31,46 @@ def result_same(res_list1, res_list2):
 #     args=['rm -rf /home/lyt/myfile/Pascal/Lab/normalTests_1/inputs/C-2.cmm'],shell=True)
 # subprocess.call(
 #     args=['rm -rf /home/lyt/myfile/Pascal/Lab/normalTests_1/expects/C-2.exp'], shell=True)
-input_list = subprocess.getoutput('find ./normalTest_1/inputs/*.cmm').split('\n')
-
+input_list = subprocess.getoutput('find ~/myfile/Pascal/Lab/Test2/inputs/*.cmm').split('\n')
 for file_name in input_list:
     total += 1
     flag = True
-
-    std_file_name = file_name[:15]+'expects/'+file_name[22:-4]+'.exp'
-    #print(std_file_name)
+    #print(file_name)
+    std_file_name = file_name[:34]+'expects/'+file_name[41:-4]+'.exp'
+    #print(RED+"std"+NONE,std_file_name)
+    print(YELLOW+std_file_name[42:-4]+NONE)
     if os.path.exists(std_file_name):
         hasexp+=1
         std_file = open(std_file_name)
         std_res_list = std_file.readlines()
         res_list = subprocess.getoutput(
-            '/home/myfile/Pascal/Lab/Code/parser '+file_name).split('\n')
-        #print('/home/myfile/Pascal/Lab/Code/parser ' + file_name)
+            '~/myfile/Pascal/Lab/Code/parser '+file_name).split('\n')
+        #print('~/myfile/Pascal/Lab/Code/parser ' + file_name)
         if result_same(std_res_list, res_list) == False:
-            print("test error")
-            subprocess.call(args=['cp', file_name,
-                              '/home/myfile/Pascal/Lab/normalTest_1/inputs'])
-            subprocess.call(args=['cp', std_file_name,
-                              '/home/myfile/Pascal/Lab/normalTest_1/expects'])
-            #print(sorted(list(get_output(std_res_list))))
-            #print(sorted(list(get_output(res_list))))
+            print(RED+"!!test error"+NONE)
+            print("my output:")
+            subprocess.run(['/home/lyt/myfile/Pascal/Lab/Code/parser',file_name])
+            std_file = open(std_file_name)
+            std_res_list = std_file.readlines()
+            print(NONE+"standard output:"+NONE)
+            print(std_res_list)
+        
         else:
-         correct += 1
+            print(GREEN+"pass!"+NONE)
+            print("my output:")
+            subprocess.run(['/home/lyt/myfile/Pascal/Lab/Code/parser',file_name])
+            std_file = open(std_file_name)
+            std_res_list = std_file.readlines()
+            print(NONE+"standard output:"+NONE)
+            print(std_res_list)
+            correct += 1
         #if correct < hasexp:
         #    break
     else:
-        print(file_name,"should print err")
-        subprocess.run(['./Code/parser',file_name])
-        print("\n")
+        print(LBLUE+"not exit expect file:"+NONE,file_name)
+    #     print(file_name,"should print err")
+    #     subprocess.run(['/home/lyt/myfile/Pascal/Lab/Code/parser',file_name])
+    #     print("\n")
+    print("\n")
 
 print(correct, hasexp,total)

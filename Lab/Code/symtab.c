@@ -3,9 +3,10 @@
 #include "tree.h"
 HashNode hash_tab[HASHTAB_SIZE+1];
 HashNode stack[STACK_SIZE+1];
+node* declare_func[100];
 extern int de;
 extern int sdep;
-
+int decfun_num=0;
 //TODO:错误15涉及到压到不同层栈的问题，还没有解决
 
 unsigned int hash_fun(char* name){
@@ -46,7 +47,7 @@ HashNode get(char* name){
     return NULL;
 }
 
-HashNode add_sym(FieldList value,int stack_dep){
+HashNode add_sym(FieldList value,int stack_dep,int line){
     debug("add_sym begin");
     int pos=hash_fun(value->name);
     debugi("hash pos",pos); 
@@ -62,6 +63,7 @@ HashNode add_sym(FieldList value,int stack_dep){
     //HashNode stack_head=stack[stack_dep];//这一层栈的表头
     HashNode p = (HashNode)malloc(sizeof (struct HashNode_));
     assert(p!=NULL);
+    p->first_line=line;
     p->stack_dep=stack_dep;
     p->value=value;
     p->slot_next=NULL;
@@ -115,6 +117,20 @@ int pop_stack(){
     return sdep;
 }
 
+void check_decfun(){
+    HashNode stack_node=stack[0];
+    while(stack_node!=NULL){
+        if((stack_node->value->type->kind==FUNCTION)&&
+        (stack_node->value->type->u.function.declare==DECLARED))
+            eprintf(18,stack_node->first_line,"Function declared but not defined");
+        stack_node=stack_node->stack_next;
+    }
+    return;
+}
+
+
+
+
 void Program(node* root){
     debug("program");
     init_hashtab();
@@ -122,6 +138,8 @@ void Program(node* root){
     if(root->son!=NULL){
         ExtDefList(root->son);
     }
+    assert(sdep==0);
+    check_decfun();
     return ;
 }
 void ExtDefList(node* root){
@@ -146,19 +164,18 @@ void ExtDef(node* root){
     if(strcmp(son2->name,"ExtDecList")==0){ //ExtDef->Specifier ExtDecList SEMI
         //son3=son2->bro;
         ExtDecList(son2,specifier_type);
-    }else if(strcmp(son2->name,"FunDec")==0){ //ExtDef->Specifier FunDef CompSt
+    }else if(strcmp(son2->name,"FunDec")==0){ 
         son3=son2->bro;
-        if(strcmp(son3->name,"CompSt")==0){
-            FunDec(son2,specifier_type,0);
+        if(strcmp(son3->name,"CompSt")==0){ 
+            //ExtDef->Specifier FunDef CompSt ： 函数定义
             push_stack();
+            FunDec(son2,specifier_type,0);
             CompSt(son3,specifier_type);
             pop_stack();
         }
-        // else{
-        //     push_stack();
-        //     FunDec(son2,specifier_type,1);
-        //     pop_stack();
-        // }
+        else{ //ExtDef->Specifier FunDef ：函数声明
+            FunDec(son2,specifier_type,1);
+        }
     }else if(strcmp(son2->name,"SEMI")==0){
         //这个其实不用做什么？
     }else{
@@ -237,7 +254,7 @@ Type StructSpecifier(node* root){
         pop_stack();
         type->u.structure=deflist_field;
         
-        add_sym(struct_field,sdep);//添加结构体名字的定义信息
+        add_sym(struct_field,sdep,line);//添加结构体名字的定义信息
     }else if(root->son_num=2){  //StructSpecifier->STRUCT Tag
         node* son2=root->son->bro;
         char* struct_name=Tag(son2);
@@ -277,7 +294,6 @@ void FunDec(node* root,Type type,int declare){
     node* id=root->son;
     char* fun_name=ID(id);
     HashNode this=get(fun_name);
-
     field->name=fun_name;
     Type FunType=(Type)malloc(sizeof(struct Type_));
     FunType->kind=FUNCTION;
@@ -328,7 +344,9 @@ void FunDec(node* root,Type type,int declare){
     }else{
         FunType->u.function.declare=DEFINED;
     }
-    add_sym(field,sdep);
+    if(this==NULL){
+        add_sym(field,0,line);
+    }
     debug("before fundec return");
     return ;
 }
@@ -489,7 +507,7 @@ FieldList VarDec(node* root,Type type,Type elemtype){
             subtype->u.array.elem=type;
             field->type=elemtype;
         }
-        add_sym(field,sdep);
+        add_sym(field,sdep,line);
         return field;
     }else if(root->son_num==4){
         node* vardec=root->son;
@@ -600,7 +618,7 @@ void Stmt(node* root,Type type){
 Type Exp(node* root){
     debug("Exp");
     int line=root->first_line;
-    printf("%d\n",root->son_num);
+    //printf("%d\n",root->son_num);
     Type type=NULL;
     if(root->son_num==1){
         debug("ID INT FLOAT");
@@ -688,15 +706,15 @@ Type Exp(node* root){
             }
         }else if(strcmp(son1->name,"Exp")==0&&strcmp(son3->name,"Exp")==0){
             debug("Exp->exp 各种操作 exp");
-            printf("%s\n",son2->name);
+            //printf("%s\n",son2->name);
 
             int errortype=7;
             if(strcmp(son2->name,"ASSIGNOP")==0){   //Exp->Exp ASSIGNOP Exp
                 errortype=5;
-                if(! ((son1->son_num==1)&&(strcmp(son1->son->name,"ID")==0) ) ||
+                if(!( ((son1->son_num==1)&&(strcmp(son1->son->name,"ID")==0) ) ||
                ((son1->son_num==3)&&((strcmp(son1->son->bro->name,"DOT")==0)||(strcmp(son1->son->name,"LP")==0)) )   ||
-               ((son1->son_num==4)&&(strcmp(son1->son->name,"EXP")==0) )
-                ){
+               ((son1->son_num==4)&&(strcmp(son1->son->name,"Exp")==0) ) ))
+                {
                     eprintf(6,line,"lvalue required as left operand of assignment");
                     return type;
                 }
@@ -888,7 +906,8 @@ void debug(char* s){
 }
 
 void debugi(char* s,int d){
-    printf("%s %d\n",s,d);
+    if(de)
+        printf("%s %d\n",s,d);
 }
 
 void eprintf(int error_number,int line,char* message){
