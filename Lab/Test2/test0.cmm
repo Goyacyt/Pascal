@@ -1,0 +1,9 @@
+int main(){
+    int j=0;
+    j=j+1;
+}
+int test(){
+    int a,b,m=0;
+    m=a*b+a;
+    return m;
+}
