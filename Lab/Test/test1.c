@@ -4,5 +4,5 @@ int main(){
     }
 }
 int test(){
-    int j=0;
+    int a[10]];
 }
