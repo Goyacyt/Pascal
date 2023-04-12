@@ -517,6 +517,8 @@ FieldList VarDec(node* root,Type type,Type elemtype){
         field->name=id;
         if(elemtype->kind==STRUCTURE||elemtype->kind==BASIC){
             field->type=elemtype;
+        }else if(elemtype->kind==FUNCTION){
+            debug("VarDec function error");
         }else{
             Type subtype=elemtype;
             while(subtype->u.array.elem!=NULL){
@@ -852,41 +854,16 @@ int CompareType(Type left,Type right){//比较类型信息，相同输出1，不
          }else if(left->kind==ARRAY){
             Type sub_left=left,sub_right=right;
             int end=0;
-            while(sub_left!=NULL&&sub_right!=NULL){
-                if(sub_left->kind!=ARRAY){
-                    if(sub_right->kind==BASIC&&sub_right->u.basirc==sub_left->u.basirc){
-                        end=1;
-                    }else{
-                        res=0;
-                    }
+            while(sub_left->kind==ARRAY&&sub_right->kind==ARRAY){
+                if(sub_left->u.array.size!=sub_right->u.array.size){
+                    res=0;
                     break;
-                }else if(sub_right->kind!=ARRAY){
-                    if(sub_left->kind==BASIC&&sub_left->u.basirc==sub_right->u.basirc){
-                        end=1;
-                    }else{
-                        res=0;
-                    }
-                    break;
-                }else{
-                    if(sub_left->u.array.size!=sub_right->u.array.size){
-                        res=0;
-                        break;
-                    }
-                    sub_left=sub_left->u.array.elem;
-                    sub_right=sub_right->u.array.elem;
                 }
+                sub_left=sub_left->u.array.elem;
+                sub_right=sub_right->u.array.elem;
             }
-            if(sub_left->kind!=BASIC||sub_right->kind!=BASIC){
-                //数组维度不一致
-                res=0;
-            }
+            res=CompareType(sub_left,sub_right);
          }else if(left->kind==STRUCTURE){
-            /*char* name_left=left->u.structure->name;
-            char* name_right=right->u.structure->name;
-            if(strcmp(name_left,name_right)!=0){
-                res=0;
-            }
-            */
             //实现的：结构体的结构等价
             FieldList field1=left->u.structure;
             FieldList field2=right->u.structure;
