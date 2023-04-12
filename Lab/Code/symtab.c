@@ -173,7 +173,9 @@ void ExtDef(node* root){
             pop_stack();
         }
         else{ //ExtDef->Specifier FunDef ：函数声明
+            push_stack();
             FunDec(son2,specifier_type,1);
+            pop_stack();
         }
     }else if(strcmp(son2->name,"SEMI")==0){
         //这个其实不用做什么？
@@ -508,7 +510,7 @@ FieldList VarDec(node* root,Type type,Type elemtype){
                 eprintf(3,line,"Redefined variable name");
                 return NULL;
             }
-            if(this->value->type->kind==STRUCTURE){
+            if(this->value->type->kind==STRUCTURE_NAME){
                 eprintf(3,line,"definition of variable name the same as structure name before");
                 return NULL;
             }
