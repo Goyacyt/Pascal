@@ -1,0 +1,11 @@
+int func()
+{
+    int i=20;
+    return i;
+}
+
+int main()
+{
+    int i;
+    i=func();
+}

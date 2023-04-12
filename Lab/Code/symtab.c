@@ -2,10 +2,10 @@
 #include <string.h>
 #include "tree.h"
 HashNode hash_tab[HASHTAB_SIZE+1];
-HashNode stack[STACK_SIZE];
+HashNode stack[STACK_SIZE+1];
+node* declare_func[100];
 extern int de;
 extern int sdep;
-
 //TODO:错误15涉及到压到不同层栈的问题，还没有解决
 
 unsigned int hash_fun(char* name){
@@ -46,7 +46,7 @@ HashNode get(char* name){
     return NULL;
 }
 
-HashNode add_sym(FieldList value,int stack_dep){
+HashNode add_sym(FieldList value,int stack_dep,int line){
     debug("add_sym begin");
     int pos=hash_fun(value->name);
     debugi("hash pos",pos); 
@@ -62,6 +62,7 @@ HashNode add_sym(FieldList value,int stack_dep){
     //HashNode stack_head=stack[stack_dep];//这一层栈的表头
     HashNode p = (HashNode)malloc(sizeof (struct HashNode_));
     assert(p!=NULL);
+    p->first_line=line;
     p->stack_dep=stack_dep;
     p->value=value;
     p->slot_next=NULL;
@@ -115,6 +116,20 @@ int pop_stack(){
     return sdep;
 }
 
+void check_decfun(){
+    HashNode stack_node=stack[0];
+    while(stack_node!=NULL){
+        if((stack_node->value->type->kind==FUNCTION)&&
+        (stack_node->value->type->u.function.declare==DECLARED))
+            eprintf(18,stack_node->first_line,"Function declared but not defined");
+        stack_node=stack_node->stack_next;
+    }
+    return;
+}
+
+
+
+
 void Program(node* root){
     debug("program");
     init_hashtab();
@@ -122,6 +137,8 @@ void Program(node* root){
     if(root->son!=NULL){
         ExtDefList(root->son);
     }
+    assert(sdep==0);
+    check_decfun();
     return ;
 }
 void ExtDefList(node* root){
@@ -143,20 +160,20 @@ void ExtDef(node* root){
     son1=root->son;
     Type specifier_type=Specifier(son1);
     son2=son1->bro;
-    if(strcmp(son2->name,"ExtDecList")==0){
+    if(strcmp(son2->name,"ExtDecList")==0){ //ExtDef->Specifier ExtDecList SEMI
         //son3=son2->bro;
         ExtDecList(son2,specifier_type);
-    }else if(strcmp(son2->name,"FunDec")==0){
+    }else if(strcmp(son2->name,"FunDec")==0){ 
         son3=son2->bro;
-        if(strcmp(son3->name,"CompSt")==0){
+        if(strcmp(son3->name,"CompSt")==0){ 
+            //ExtDef->Specifier FunDef CompSt ： 函数定义
             push_stack();
             FunDec(son2,specifier_type,0);
             CompSt(son3,specifier_type);
             pop_stack();
-        }else{
-            push_stack();
+        }
+        else{ //ExtDef->Specifier FunDef ：函数声明
             FunDec(son2,specifier_type,1);
-            pop_stack();
         }
     }else if(strcmp(son2->name,"SEMI")==0){
         //这个其实不用做什么？
@@ -212,7 +229,7 @@ Type StructSpecifier(node* root){
     debug("StructSpecifier");
     int line=root->first_line;
     Type type=NULL;
-    if(root->son_num==5){
+    if(root->son_num==5){   //StructSpecifier->STRUCT OptTag { DefList }
         type=(Type)malloc(sizeof(struct Type_));
         node* son2=root->son->bro;
         node* deflist;
@@ -225,6 +242,7 @@ Type StructSpecifier(node* root){
             }
             deflist=son2->bro->bro;
         }else{
+            debug("what's this?");
             deflist=son2->bro;
         }
         FieldList struct_field=(FieldList)malloc(sizeof(struct FieldList_));
@@ -236,13 +254,13 @@ Type StructSpecifier(node* root){
         pop_stack();
         type->u.structure=deflist_field;
         
-        add_sym(struct_field,sdep);//添加结构体名字的定义信息
-    }else if(root->son_num=2){
+        add_sym(struct_field,sdep,line);//添加结构体名字的定义信息
+    }else if(root->son_num=2){  //StructSpecifier->STRUCT Tag
         node* son2=root->son->bro;
         char* struct_name=Tag(son2);
         HashNode this=get(struct_name);
         if(this==NULL){
-            printf("Error type 17 at Line %d:Undefined Structure Type\n",line);
+            eprintf(17,line,"Undefined Structure Type");
         }else{
             type=this->value->type;
         }
@@ -281,7 +299,7 @@ void FunDec(node* root,Type type,int declare){
     FunType->kind=FUNCTION;
     FunType->u.function.ret=type;
     FieldList varlist_field;
-    if(root->son_num==4){
+    if(root->son_num==4){   //FunDec->ID ( VarList )
         node* varlist=id->bro->bro;
         varlist_field=VarList(varlist);
         FunType->u.function.param=varlist_field;
@@ -293,10 +311,7 @@ void FunDec(node* root,Type type,int declare){
     field->type=FunType;
     if(this!=NULL){
         Type before_type=this->value->type;
-        if(before_type->kind!=FUNCTION){
-            eprintf(4,line,"Repeated definition of function:the name before is not a function");
-            return ;
-        }else{
+        if(before_type->kind==FUNCTION){
             if(!declare){
                 //这是函数定义
                 if(before_type->u.function.declare==DECLARED){
@@ -326,7 +341,9 @@ void FunDec(node* root,Type type,int declare){
     }else{
         FunType->u.function.declare=DEFINED;
     }
-    add_sym(field,sdep);
+    if(this==NULL){
+        add_sym(field,0,line);
+    }
     debug("before fundec return");
     return ;
 }
@@ -383,7 +400,10 @@ FieldList Def(node* root,int stru){
     node* specifier=root->son;
     node* declist=specifier->bro;
     Type specifier_type=Specifier(specifier);
-    return DecList(declist,specifier_type,stru);
+    if(specifier_type!=NULL)
+        return DecList(declist,specifier_type,stru);
+    else
+        return NULL;
 }
 
 FieldList DefList(node* root,int stru){
@@ -394,8 +414,9 @@ FieldList DefList(node* root,int stru){
     }else{
         node* def=root->son;
         FieldList def_field=Def(def,stru);
-
         node* deflist=def->bro;
+        if(def_field==NULL)
+            return DefList(deflist,stru);
         FieldList deflist_field=DefList(deflist,stru);
         def_field->tail=deflist_field;
         return def_field;
@@ -405,15 +426,16 @@ FieldList DefList(node* root,int stru){
 
 FieldList DecList(node* root,Type type,int stru){
     debug("DecList");
-    if(root->son_num==1){
+    if(root->son_num==1){   //DecList->Dec
         debug("declist->dec");
         node* dec=root->son;
         return Dec(dec,type,stru);
-    }else if(root->son_num==3){
+    }else if(root->son_num==3){ //DecList->Dec COMMA DecList
         node* dec=root->son;
         FieldList dec_field=Dec(dec,type,stru);
         node* declist=dec->bro->bro;
         FieldList declist_field=DecList(declist,type,stru);
+        if(dec_field==NULL) return declist_field; 
         dec_field->tail=declist_field;
         return dec_field;
     }else{
@@ -427,9 +449,22 @@ FieldList Dec(node* root,Type type,int stru){
     debug("Dec");
     node* vardec=root->son;
     FieldList vardec_field=NULL;
-    if(root->son_num==1){
+    if(root->son_num==1){   //Dec->VarDec
+        if(stru==1){
+            node* inner_vardec=vardec;
+            while(inner_vardec->son_num==4){    //bug find in A-20
+                inner_vardec=inner_vardec->son;
+            }
+            if(inner_vardec->son_num==1){   
+                HashNode this=get(ID(inner_vardec->son));
+                if((this!=NULL)&&(this->stack_dep==sdep)){
+                    eprintf(15,line,"Redefined field");
+                    return vardec_field;
+                }
+            }
+        }
         vardec_field=VarDec(vardec,type,type);
-    }else if(root->son_num==3){
+    }else if(root->son_num==3){ //Dec->VarDec ASSIGNOP Exp
         if(stru){
             eprintf(15,line,"Assign value when defining struct variable");
             return vardec_field;
@@ -463,6 +498,10 @@ FieldList VarDec(node* root,Type type,Type elemtype){
                 eprintf(3,line,"Redefined variable name");
                 return NULL;
             }
+            if(elemtype->kind==STRUCTURE){
+                eprintf(3,line,"definition of variable name the same as structure name before");
+                return NULL;
+            }
         }
         FieldList field=(FieldList)malloc(sizeof(struct FieldList_));
         field->name=id;
@@ -476,7 +515,7 @@ FieldList VarDec(node* root,Type type,Type elemtype){
             subtype->u.array.elem=type;
             field->type=elemtype;
         }
-        add_sym(field,sdep);
+        add_sym(field,sdep,line);
         return field;
     }else if(root->son_num==4){
         node* vardec=root->son;
@@ -587,17 +626,17 @@ void Stmt(node* root,Type type){
 Type Exp(node* root){
     debug("Exp");
     int line=root->first_line;
-    printf("%d\n",root->son_num);
+    //printf("%d\n",root->son_num);
     Type type=NULL;
     if(root->son_num==1){
         debug("ID INT FLOAT");
         node* son=root->son;
-        if(strcmp(son->name,"ID")==0){
+        if(strcmp(son->name,"ID")==0){  //Exp->ID
             debug("Exp->ID");
             char* name=ID(son);
             HashNode this=get(name);
             if(this==NULL){
-                printf("Error type 1 at Line %d : Undefined ID in Exp\n",line);
+                eprintf(1,line,"Undefined ID in Exp");
             }else{
                 //函数的ID是不应该进入到这里的
                 //结构体到这里只需要直接反应结构体信息,所以只有数组的type需要处理一下
@@ -610,12 +649,12 @@ Type Exp(node* root){
                 }
                 */
             }
-        }else if(strcmp(son->name,"INT")==0){
+        }else if(strcmp(son->name,"INT")==0){   //Exp->INT
             debug("Exp->INT");
             type=(Type)malloc(sizeof(struct Type_));
             type->kind=BASIC;
             type->u.basirc=INT;
-        }else if(strcmp(son->name,"FLOAT")==0){
+        }else if(strcmp(son->name,"FLOAT")==0){ //Exp->FLOAT
             debug("Exp->FLOAT");
             type=(Type)malloc(sizeof(struct Type_));
             type->kind=BASIC;
@@ -633,14 +672,14 @@ Type Exp(node* root){
         debug(son1->name);
         debug(son2->name);
         debug(son3->name);
-        if(strcmp(son1->name,"Exp")==0&&strcmp(son2->name,"DOT")==0){
+        if(strcmp(son1->name,"Exp")==0&&strcmp(son2->name,"DOT")==0){   //Exp->Exp DOT ID
             debug("Exp->Exp DOT ID");
             Type struct_type=Exp(son1);
             if(struct_type->kind!=STRUCTURE){
-                printf("Error type 13 at Line %d : Not a structure variable\n",line);
+                eprintf(13,line,"Not a structure variable");
                 type=NULL;
             }else{
-                FieldList struct_field=struct_type->u.structure->tail;
+                FieldList struct_field=struct_type->u.structure;
                 char* id_name=ID(son3);
                 FieldList sub_field=struct_field;
                 type=NULL;
@@ -652,44 +691,53 @@ Type Exp(node* root){
                     sub_field=sub_field->tail;
                 }
                 if(type==NULL){
-                    printf("Error type 14 at Line %d : Undefined variable in structure variable\n",line);
+                    eprintf(14,line, "Undefined variable in structure variable");
                 }
             }
-        }else if(strcmp(son1->name,"ID")==0){
+        }else if(strcmp(son1->name,"ID")==0){   //Exp->ID LP RP
             debug("Exp->ID LP RP");
             char* funid_name=ID(son1);
             HashNode this=get(funid_name);
             if(this==NULL){
-                printf("Error type 2 at Line %d : Undefined function %s\n",line,funid_name);
+                printf(RED"Error type 2 at Line %d : Undefined function %s\n"NONE,line,funid_name);
+
             }else{
                 if(this->value->type->kind!=FUNCTION){
                     eprintf(11,line,"() used for a not function variable");
                 }else if(this->value->type->u.function.declare==DECLARED){
                     eprintf(18,line,"Function declared but not defined");
                 }else if(this->value->type->u.function.param!=NULL){
-                    printf("Error type 9 at Line %d : There should be no paramof %s \n",line,funid_name);
+                    printf(RED"Error type 9 at Line %d : There should be no paramof %s\n"NONE,line,funid_name);                    
                 }else{
                     type=this->value->type->u.function.ret;
                 }
             }
         }else if(strcmp(son1->name,"Exp")==0&&strcmp(son3->name,"Exp")==0){
             debug("Exp->exp 各种操作 exp");
-            printf("%s\n",son2->name);
+            //printf("%s\n",son2->name);
+
+            int errortype=7;
+            if(strcmp(son2->name,"ASSIGNOP")==0){   //Exp->Exp ASSIGNOP Exp
+                errortype=5;
+                if(!( ((son1->son_num==1)&&(strcmp(son1->son->name,"ID")==0) ) ||
+               ((son1->son_num==3)&&((strcmp(son1->son->bro->name,"DOT")==0)||(strcmp(son1->son->name,"LP")==0)) )   ||
+               ((son1->son_num==4)&&(strcmp(son1->son->name,"Exp")==0) ) ))
+                {
+                    eprintf(6,line,"lvalue required as left operand of assignment");
+                    return type;
+                }
+            }
+
             Type left=Exp(son1);
             debug("finish son1");
             Type right=Exp(son3);
             debug("finish son3");
-            //比较两边类型是否一致
-            //TODO: 只有右值的表达式，还没有做
-            int errortype=7;
-            if(strcmp(son2->name,"ASSIGNOP")==0){
-                errortype=5;
-            }
+
             if(left==NULL||right==NULL){
                 return type;//也就是exp1或exp2有一个是出错了，所以返回了空的类型信息，就不需要再比较下去了
             }
             if(left->kind!=right->kind){
-                printf("Error type %d at Line %d : Operation type not match at kind level \n",errortype,line);
+                eprintf(errortype,line,"Operation type not match at kind level");
             }else{
                 if(left->kind==BASIC){
                     if(left->u.basirc!=right->u.basirc){
@@ -714,18 +762,22 @@ Type Exp(node* root){
                     }
                 }
             }
-        }else if(strcmp(son1->name,"LP")==0){
+        }else if(strcmp(son1->name,"LP")==0){   //Exp->( Exp )
             debug("Exp->(Exp)");
             type=Exp(son2);
         }
     }else if(root->son_num==4){
-        if(strcmp(root->son->name,"ID")==0){
+        if(strcmp(root->son->name,"ID")==0){    //Exp->ID( Args )
             debug("Exp=>ID (args)");
             char* id_name=ID(root->son);
             HashNode this=get(id_name);
             if(this==NULL){
-                printf("Error type 2 at Line %d : Undefined Function\n",line);
+                eprintf(2,line,"Undefined Function");
             }else{
+                if(this->value->type->kind!=FUNCTION){
+                    eprintf(11,line,"() used for a not function variable");
+                    return type;
+                }
                 type=this->value->type->u.function.ret;
                 FieldList id_param=this->value->type->u.function.param;
                 FieldList exp_param=Args(root->son->bro->bro);
@@ -733,22 +785,22 @@ Type Exp(node* root){
                 FieldList sub_exp=exp_param;
                 while(sub_id!=NULL||sub_exp!=NULL){
                     if(sub_id==NULL){
-                        printf("Error type 9 at Line %d : Function param not match \n",line);
+                        eprintf(9,line,"Function param not match");
                         break;
                     }
                     if(sub_exp==NULL){
-                        printf("Error type 9 at Line %d : Function param not match \n",line);
+                        eprintf(9,line,"Function param not match");
                         break;
                     }
                     if(!CompareType(sub_id->type,sub_exp->type)){
-                        printf("Error type 9 at Line %d : Function param not match \n",line);
+                        eprintf(9,line,"Function param not match");
                         break;
                     }
                     sub_id=sub_id->tail;
                     sub_exp=sub_exp->tail;
                 }
             }
-        }else if(strcmp(root->son->name,"Exp")==0){
+        }else if(strcmp(root->son->name,"Exp")==0){ //Exp->Exp [ Exp ]
             debug("Exp-> exp[exp]第二个exp一定得是整数");
             node* exp1=root->son;
             node* exp2=exp1->bro->bro;
@@ -784,15 +836,18 @@ int CompareType(Type left,Type right){//比较类型信息，相同输出1，不
             }
          }else if(left->kind==ARRAY){
             Type sub_left=left,sub_right=right;
+            int end=0;
             while(sub_left!=NULL&&sub_right!=NULL){
                 if(sub_left->kind!=ARRAY){
                     if(sub_right->kind==BASIC&&sub_right->u.basirc==sub_left->u.basirc){
+                        end=1;
                     }else{
                         res=0;
                     }
                     break;
                 }else if(sub_right->kind!=ARRAY){
                     if(sub_left->kind==BASIC&&sub_left->u.basirc==sub_right->u.basirc){
+                        end=1;
                     }else{
                         res=0;
                     }
@@ -806,7 +861,7 @@ int CompareType(Type left,Type right){//比较类型信息，相同输出1，不
                     sub_right=sub_right->u.array.elem;
                 }
             }
-            if(sub_left!=NULL||sub_right!=NULL){
+            if(sub_left->kind!=BASIC||sub_right->kind!=BASIC){
                 //数组维度不一致
                 res=0;
             }
@@ -862,9 +917,10 @@ void debug(char* s){
 }
 
 void debugi(char* s,int d){
-    printf("%s %d\n",s,d);
+    if(de)
+        printf("%s %d\n",s,d);
 }
 
 void eprintf(int error_number,int line,char* message){
-    printf("Error type %d at Line %d : %s\n",error_number,line,message);
+    printf(RED"Error type %d at Line %d : %s\n"NONE,error_number,line,message);
 }

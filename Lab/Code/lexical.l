@@ -17,7 +17,7 @@
 %option yylineno
 yylineno=1;
 
-letter [_a-zA-z]
+letter [_a-zA-Z]
 digit [0-9]
 INT 0|([1-9]{digit}*)|(00)|(0[1-7][0-7]*)|(0x0)|(0x[1-9A-Fa-f][0-9A-Fa-f]*)|(0X0)|(0X[1-9A-Fa-f][0-9A-Fa-f]*)
 EXPPART [Ee][+-]?{INT}

@@ -11,6 +11,7 @@
 typedef struct Type_* Type;
 typedef struct FieldList_* FieldList;
 typedef struct HashNode_* HashNode;
+typedef struct DecFun_List_* DecFun_List;
 struct Type_{
     enum{BASIC,ARRAY,STRUCTURE,FUNCTION} kind;
     union{
@@ -35,20 +36,23 @@ struct FieldList_{
 };//在结构体定义的时候，name为结构体的名字,type中的structure 指向一个新的fieldlist，从那里开始结构体里面变量的记录
 
 struct HashNode_{
+    int first_line;
+    int stack_dep;
     FieldList value;
     HashNode slot_next;
     HashNode stack_next;
-    int stack_dep;
 };
 
+
 extern HashNode hash_tab[HASHTAB_SIZE+1];
-extern HashNode stack[STACK_SIZE];
+extern HashNode stack[STACK_SIZE+1];
 
 
 void init_hashtab();
 void init_stack();
 HashNode get(char* name);  //得到符号name对应的HashNode指针,查找出来是空指针就可以报错了
-HashNode add_sym(FieldList value,int stack_dep);  //将域结构为value的符号插入到符号表中，返回其对应的HashNode结构
+HashNode add_sym(FieldList value,int stack_dep,int line);  //将域结构为value的符号插入到符号表中，返回其对应的HashNode结构
+void check_decfun();
 int push_stack();
 int pop_stack();
 void Program(node* root);

@@ -5,7 +5,7 @@
 CC = gcc
 FLEX = flex
 BISON = bison
-CFLAGS = -std=c99
+CFLAGS = -std=c99 -g
 
 # 编译目标：src目录下的所有.c文件
 CFILES = $(shell find ./ -name "*.c")
@@ -18,10 +18,10 @@ LFO = $(LFC:.c=.o)
 YFO = $(YFC:.c=.o)
 
 parser: syntax $(filter-out $(LFO),$(OBJS))
-	$(CC) -o parser $(filter-out $(LFO),$(OBJS)) -lfl -g
+	$(CC) -o parser $(filter-out $(LFO),$(OBJS)) -lfl
 
 syntax: lexical syntax-c
-	$(CC) -c $(YFC) -o $(YFO) -g
+	$(CC) -c $(YFC) -o $(YFO)
 
 lexical: $(LFILE)
 	$(FLEX) -o $(LFC) $(LFILE)
@@ -29,29 +29,18 @@ lexical: $(LFILE)
 syntax-c: $(YFILE)
 	$(BISON) -o $(YFC) -d -v $(YFILE)
 
-symtab:symtab.h symtab.c
-	$(CC) $(CFLAGS) symtab.h symtab.c -g
-
-tree: tree.h tree.c
-	$(CC) $(CFLAGS) tree.h tree.c -g
-
-#symtab.o: tree.h tree.c symtab.h symtab.c
-#	$(CC) $(CFLAGS) tree.h tree.c symtab.h symtab.c -o symtab.o
-
-#-include $(patsubst %.o, %.d, $(OBJS))
+-include $(patsubst %.o, %.d, $(OBJS))
 
 # 定义的一些伪目标
 .PHONY: clean test
 
 test:
-	./parser ../Test/test3.cmm
+	./parser ../Test2/test23.cmm
+
 test-all:
-	./parser ../Test/test1.cmm
-	./parser ../Test/test2.cmm
-	./parser ../Test/test3.cmm
-	./parser ../Test/test4.cmm
-	./parser ../Test/test5.cmm
-	./parser ../Test/test6.cmm
+	./parser ../Test2/test15.cmm
+	./parser ../Test2/test16.cmm
+
 clean:
 	rm -f parser lex.yy.c syntax.tab.c syntax.tab.h syntax.output
 	rm -f $(OBJS) $(OBJS:.o=.d)

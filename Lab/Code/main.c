@@ -22,8 +22,8 @@ int main(int argc, char** argv){
 	bisonsim=1;
     errorsim=0;
 	haserror=0;
-    syntax=0;
-    de=0;
+    syntax=1;
+    de=1;
     error_line=0;//记录上一个出错的行数，如果当前错误仍然在这一行，就不要输出
 	if (argc==1){
 		return 1;
@@ -39,7 +39,7 @@ int main(int argc, char** argv){
     yyparse();
     fclose(yyin);
 	if(haserror==0&&syntax==1)	{
-		print_tree(root, 0);
+		//print_tree(root, 0);
 	}
     Program(root);
     return 0;
