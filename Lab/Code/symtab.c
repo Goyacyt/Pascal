@@ -452,10 +452,10 @@ FieldList Dec(node* root,Type type,int stru){
     if(root->son_num==1){   //Dec->VarDec
         if(stru==1){
             node* inner_vardec=vardec;
-            while(inner_vardec->son_num==4){
+            while(inner_vardec->son_num==4){    //bug find in A-20
                 inner_vardec=inner_vardec->son;
             }
-            if(inner_vardec->son_num==1){
+            if(inner_vardec->son_num==1){   
                 HashNode this=get(ID(inner_vardec->son));
                 if((this!=NULL)&&(this->stack_dep==sdep)){
                     eprintf(15,line,"Redefined field");
