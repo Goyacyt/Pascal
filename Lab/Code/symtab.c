@@ -47,6 +47,9 @@ HashNode get(char* name){
 }
 
 HashNode add_sym(FieldList value,int stack_dep,int line){
+    if(strcmp(value->name,"Stack")==0){
+        
+    }
     debug("add_sym begin");
     int pos=hash_fun(value->name);
     debugi("hash pos",pos); 
@@ -250,9 +253,9 @@ Type StructSpecifier(node* root){
         FieldList hash_struct_field=(FieldList)malloc(sizeof(struct FieldList_));
         Type hash_type=(Type)malloc(sizeof(struct Type_));
         hash_struct_field->name=struct_name;
-        hash_struct_field->type=hash_type;
         type->kind=STRUCTURE;
         hash_type->kind=STRUCTURE_NAME;
+        hash_struct_field->type=hash_type;
         push_stack();
         FieldList deflist_field=DefList(deflist,1);
         pop_stack();
@@ -269,8 +272,16 @@ Type StructSpecifier(node* root){
         if(this==NULL){
             eprintf(17,line,"Undefined Structure Type");
         }else{
-            type=this->value->type;
-            type->kind=STRUCTURE;
+            //type=this->value->type;
+            if(this->value->type->kind!=STRUCTURE_NAME){
+                eprintf(17,line,"Undefined Structure Type");
+                type=NULL;
+            }else{
+                //==STRUCTURE
+                type=(Type)malloc(sizeof(struct Type_));
+                type->kind=STRUCTURE;
+                type->u=this->value->type->u;
+            }
         }
     }else{
         printf("StructSpecifier error\n");
@@ -517,11 +528,14 @@ FieldList VarDec(node* root,Type type,Type elemtype){
         }
         FieldList field=(FieldList)malloc(sizeof(struct FieldList_));
         field->name=id;
-        if(elemtype->kind==STRUCTURE||elemtype->kind==BASIC){
+        if(elemtype==NULL){
+            return NULL;
+        }
+        if(elemtype->kind==STRUCTURE||elemtype->kind==BASIC||elemtype->kind==STRUCTURE_NAME){
             field->type=elemtype;
         }else if(elemtype->kind==FUNCTION){
             debug("VarDec function error");
-        }else{
+        }else{//==ARRAY
             Type subtype=elemtype;
             while(subtype->u.array.elem!=NULL){
                 subtype=subtype->u.array.elem;
