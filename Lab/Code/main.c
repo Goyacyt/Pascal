@@ -23,7 +23,7 @@ int main(int argc, char** argv){
     errorsim=0;
 	haserror=0;
     syntax=1;
-    de=1;
+    de=0;
     error_line=0;//记录上一个出错的行数，如果当前错误仍然在这一行，就不要输出
 	if (argc==1){
 		return 1;

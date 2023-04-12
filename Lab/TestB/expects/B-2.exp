@@ -1,0 +1,3 @@
+Error type 14 at line 8: no member named '_x' in 'struct Vector'
+Error type 7 at line 17: cannot add a struct type and an integer
+Error type 17 at line 32: use undefined structure type 'Mass'

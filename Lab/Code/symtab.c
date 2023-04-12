@@ -248,7 +248,7 @@ Type StructSpecifier(node* root){
         FieldList struct_field=(FieldList)malloc(sizeof(struct FieldList_));
         struct_field->name=struct_name;
         struct_field->type=type;
-        type->kind=STRUCTURE;
+        type->kind=STRUCTURE_NAME;
         push_stack();
         FieldList deflist_field=DefList(deflist,1);
         pop_stack();
@@ -263,6 +263,7 @@ Type StructSpecifier(node* root){
             eprintf(17,line,"Undefined Structure Type");
         }else{
             type=this->value->type;
+            type->kind=STRUCTURE;
         }
     }else{
         printf("StructSpecifier error\n");
@@ -415,13 +416,13 @@ FieldList DefList(node* root,int stru){
         node* def=root->son;
         FieldList def_field=Def(def,stru);
         node* deflist=def->bro;
-        if(def_field==NULL)
-            return DefList(deflist,stru);
         FieldList deflist_field=DefList(deflist,stru);
+        if(def_field==NULL){
+            return deflist_field;
+        }
         def_field->tail=deflist_field;
         return def_field;
     }
-    return NULL;
 }
 
 FieldList DecList(node* root,Type type,int stru){
@@ -452,14 +453,14 @@ FieldList Dec(node* root,Type type,int stru){
     if(root->son_num==1){   //Dec->VarDec
         if(stru==1){
             node* inner_vardec=vardec;
-            while(inner_vardec->son_num==4){    //bug find in A-20
+            while(inner_vardec->son_num==4){//数组Vardec    //bug find in A-20
                 inner_vardec=inner_vardec->son;
             }
             if(inner_vardec->son_num==1){   
                 HashNode this=get(ID(inner_vardec->son));
                 if((this!=NULL)&&(this->stack_dep==sdep)){
                     eprintf(15,line,"Redefined field");
-                    return vardec_field;
+                    return vardec_field;//return NULL
                 }
             }
         }
@@ -467,12 +468,16 @@ FieldList Dec(node* root,Type type,int stru){
     }else if(root->son_num==3){ //Dec->VarDec ASSIGNOP Exp
         if(stru){
             eprintf(15,line,"Assign value when defining struct variable");
-            return vardec_field;
+            return vardec_field;//return NULL
         }
 
         node* exp=vardec->bro->bro;
         vardec_field=VarDec(vardec,type,type);
         Type exp_type=Exp(exp);
+        if(vardec_field==NULL||exp_type==NULL){
+            //其中一个出错
+            return NULL;
+        }
         Type vardec_type=vardec_field->type;
         if(vardec_type->kind==ARRAY||exp_type->kind==ARRAY){
             eprintf(5,line,"Assign array to some variable");
@@ -498,7 +503,7 @@ FieldList VarDec(node* root,Type type,Type elemtype){
                 eprintf(3,line,"Redefined variable name");
                 return NULL;
             }
-            if(elemtype->kind==STRUCTURE){
+            if(this->value->type->kind==STRUCTURE){
                 eprintf(3,line,"definition of variable name the same as structure name before");
                 return NULL;
             }
@@ -554,11 +559,13 @@ FieldList VarList(node* root){
         node* varlist=paramdec->bro->bro;
         FieldList param_field=ParamDec(paramdec);
         FieldList varlist_field=VarList(varlist);
+        if(param_field==NULL){
+            return varlist_field;
+        }
         param_field->tail=varlist_field;
         return param_field;
     }
     printf("VarList error\n");
-    return NULL;
 }
 
 FieldList ParamDec(node* root){
@@ -596,9 +603,11 @@ void Stmt(node* root,Type type){
         node* exp=root->son->bro;
         Type exp_type=Exp(exp);
         //返回值实际上只能是int float 和结构体类型
-        int comp=CompareType(exp_type,type);
-        if(!comp){
-            eprintf(8,line,"Return type not match in function");
+        if(exp_type!=NULL){
+            int comp=CompareType(exp_type,type);
+            if(!comp){
+                eprintf(8,line,"Return type not match in function");
+            }
         }
     }else if(root->son_num==5){//Stmt->if lp exp rp stmt
                                //Stmt->while lp exp rp stmt
@@ -627,7 +636,7 @@ Type Exp(node* root){
     debug("Exp");
     int line=root->first_line;
     //printf("%d\n",root->son_num);
-    Type type=NULL;
+    Type type=NULL;//出现错误时一律return NULL
     if(root->son_num==1){
         debug("ID INT FLOAT");
         node* son=root->son;
@@ -636,10 +645,10 @@ Type Exp(node* root){
             char* name=ID(son);
             HashNode this=get(name);
             if(this==NULL){
-                eprintf(1,line,"Undefined ID in Exp");
+                eprintf(1,line,"Undefined ID in Exp");//是普通变量或者是结构体变量
             }else{
                 //函数的ID是不应该进入到这里的
-                //结构体到这里只需要直接反应结构体信息,所以只有数组的type需要处理一下
+                //结构体到这里只需要直接反应结构体信息,所以只有数组的type需要处理一下？？？TODO
                 type=this->value->type;
                 /*
                 if(type->kind==ARRAY){
@@ -665,33 +674,31 @@ Type Exp(node* root){
         node* exp=root->son->bro;
         type=Exp(exp);
     }else if(root->son_num==3){
-        debug("数量是三个");
         node* son1=root->son;
         node* son2=son1->bro;
         node* son3=son2->bro;
-        debug(son1->name);
-        debug(son2->name);
-        debug(son3->name);
         if(strcmp(son1->name,"Exp")==0&&strcmp(son2->name,"DOT")==0){   //Exp->Exp DOT ID
             debug("Exp->Exp DOT ID");
             Type struct_type=Exp(son1);
-            if(struct_type->kind!=STRUCTURE){
-                eprintf(13,line,"Not a structure variable");
-                type=NULL;
-            }else{
-                FieldList struct_field=struct_type->u.structure;
-                char* id_name=ID(son3);
-                FieldList sub_field=struct_field;
-                type=NULL;
-                while(sub_field!=NULL){
-                    if(strcmp(sub_field->name,id_name)==0){
-                        type=sub_field->type;
-                        break;
+            if(struct_type!=NULL){
+                if(struct_type->kind!=STRUCTURE){
+                    eprintf(13,line,"Not a structure variable");
+                    type=NULL;
+                }else{
+                    FieldList struct_field=struct_type->u.structure;
+                    char* id_name=ID(son3);
+                    FieldList sub_field=struct_field;
+                    type=NULL;
+                    while(sub_field!=NULL){
+                        if(strcmp(sub_field->name,id_name)==0){
+                            type=sub_field->type;
+                            break;
+                        }
+                        sub_field=sub_field->tail;
                     }
-                    sub_field=sub_field->tail;
-                }
-                if(type==NULL){
-                    eprintf(14,line, "Undefined variable in structure variable");
+                    if(type==NULL){
+                        eprintf(14,line, "Undefined variable in structure variable");
+                    }
                 }
             }
         }else if(strcmp(son1->name,"ID")==0){   //Exp->ID LP RP
@@ -800,19 +807,22 @@ Type Exp(node* root){
                     sub_exp=sub_exp->tail;
                 }
             }
-        }else if(strcmp(root->son->name,"Exp")==0){ //Exp->Exp [ Exp ]
-            debug("Exp-> exp[exp]第二个exp一定得是整数");
+        }else if(strcmp(root->son->name,"Exp")==0){ //Exp->Exp [ Exp ] 第二个exp一定得是整数
             node* exp1=root->son;
             node* exp2=exp1->bro->bro;
             Type exp2_type=Exp(exp2);
-            if(exp2_type->kind!=BASIC||exp2_type->u.basirc!=INT){
-                eprintf(12,line,"array access operator is not int");
-            }
-            Type exp1_type=Exp(exp1);
-            if(exp1_type->kind!=ARRAY){
-                eprintf(10,line,"[] used for a not array variable");
-            }else{
-                type=exp1_type->u.array.elem;
+            if(exp2_type!=NULL){
+                if(exp2_type->kind!=BASIC||exp2_type->u.basirc!=INT){
+                    eprintf(12,line,"array access operator is not int");
+                }
+                Type exp1_type=Exp(exp1);
+                if(exp1_type!=NULL){
+                    if(exp1_type->kind!=ARRAY){
+                        eprintf(10,line,"[] used for a not array variable");
+                    }else{
+                        type=exp1_type->u.array.elem;
+                    }
+                }
             }
         }
     }
@@ -904,8 +914,16 @@ FieldList Args(node* root){
         field->type=exp_type;
         field->tail=NULL;
     }else if(root->son_num==3){
-        field->type=Exp(root->son);
-        field->tail=Args(root->son->bro->bro);
+        Type exp_type=Exp(root->son);
+        FieldList args_field=Args(root->son->bro->bro);
+        if(exp_type==NULL){
+            field=args_field;
+        }else{
+            FieldList exp_field=(FieldList)malloc(sizeof(struct FieldList_));
+            exp_field->type=exp_type;
+            exp_field->tail=args_field;
+            field=exp_field;
+        }
     }
     return field;
 }

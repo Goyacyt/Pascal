@@ -47,25 +47,25 @@ def result_same(std_res, my_res):
 #     args=['rm -rf /home/lyt/myfile/Pascal/Lab/normalTests_1/inputs/C-2.cmm'],shell=True)
 # subprocess.call(
 #     args=['rm -rf /home/lyt/myfile/Pascal/Lab/normalTests_1/expects/C-2.exp'], shell=True)
-input_list = subprocess.getoutput('find ~/myfile/Pascal/Lab/'+testfile+'/inputs/*.cmm').split('\n')
+input_list = subprocess.getoutput('find ../'+testfile+'/inputs/*.cmm').split('\n')
 for file_name in input_list:
     total += 1
     flag = True
-    #print(file_name)
-    std_file_name = file_name[:34]+'expects/'+file_name[41:-4]+'.exp'
-    #print(RED+"std"+NONE,std_file_name)
+    print(file_name)
+    std_file_name = file_name[:9]+'expects/'+file_name[16:-4]+'.exp'
+    print("std"+NONE,std_file_name)
     print(YELLOW+std_file_name[42:-4]+NONE)
     if os.path.exists(std_file_name):
         hasexp+=1
         std_file = open(std_file_name)
         std_res_list = std_file.readlines()
         res_list = subprocess.getoutput(
-            '~/myfile/Pascal/Lab/Code/parser '+file_name).split('\n')
+            './parser '+file_name).split('\n')
         #print('~/myfile/Pascal/Lab/Code/parser ' + file_name)
         if result_same(std_res_list, res_list) == False:
             print(RED+"!!test error"+NONE)
             print("my output:")
-            subprocess.run(['/home/lyt/myfile/Pascal/Lab/Code/parser',file_name])
+            subprocess.run(['./parser',file_name])
             #print(res_list)
             std_file = open(std_file_name)
             std_res_list = std_file.readlines()
@@ -75,7 +75,7 @@ for file_name in input_list:
         else:
             print(GREEN+"pass!"+NONE)
             print("my output:")
-            subprocess.run(['/home/lyt/myfile/Pascal/Lab/Code/parser',file_name])
+            subprocess.run(['./parser',file_name])
             #print(res_list)
             std_file = open(std_file_name)
             std_res_list = std_file.readlines()
@@ -87,7 +87,7 @@ for file_name in input_list:
     else:
         print(LBLUE+"miss expect file:"+NONE,file_name)
         print("my output:")
-        subprocess.run(['/home/lyt/myfile/Pascal/Lab/Code/parser',file_name])
+        subprocess.run(['./parser',file_name])
     print("\n")
 
 print(correct, hasexp,total)

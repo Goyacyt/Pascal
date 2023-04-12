@@ -1,0 +1,5 @@
+Error type 15 at line 3: cannot assign default value to structuremember at definition
+Error type 5 at line 9: type mismatch for assignment statement
+Error type 8 at line 12: type mismatch for return
+Error type 9 at line 91: function call arguments mismatch with function parameters
+Error type 11 at line 94: called object type 'int' is not a function
