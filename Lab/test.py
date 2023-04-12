@@ -51,10 +51,10 @@ input_list = subprocess.getoutput('find ../'+testfile+'/inputs/*.cmm').split('\n
 for file_name in input_list:
     total += 1
     flag = True
-    print(file_name)
+    #print(file_name)
     std_file_name = file_name[:9]+'expects/'+file_name[16:-4]+'.exp'
-    print("std"+NONE,std_file_name)
-    print(YELLOW+std_file_name[42:-4]+NONE)
+    #print("std"+NONE,std_file_name)
+    print(YELLOW+std_file_name[16:-4]+NONE)
     if os.path.exists(std_file_name):
         hasexp+=1
         std_file = open(std_file_name)

@@ -39,7 +39,7 @@ int main(int argc, char** argv){
     yyparse();
     fclose(yyin);
 	if(haserror==0&&syntax==1)	{
-		//print_tree(root, 0);
+		print_tree(root, 0);
 	}
     Program(root);
     return 0;

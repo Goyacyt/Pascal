@@ -173,7 +173,9 @@ void ExtDef(node* root){
             pop_stack();
         }
         else{ //ExtDef->Specifier FunDef ：函数声明
+            push_stack();
             FunDec(son2,specifier_type,1);
+            pop_stack();
         }
     }else if(strcmp(son2->name,"SEMI")==0){
         //这个其实不用做什么？
@@ -508,7 +510,7 @@ FieldList VarDec(node* root,Type type,Type elemtype){
                 eprintf(3,line,"Redefined variable name");
                 return NULL;
             }
-            if(this->value->type->kind==STRUCTURE){
+            if(this->value->type->kind==STRUCTURE_NAME){
                 eprintf(3,line,"definition of variable name the same as structure name before");
                 return NULL;
             }
@@ -605,7 +607,9 @@ void Stmt(node* root,Type type){
         Exp(exp);
     }else if(root->son_num==1){//Stmt->CompSt
         node* compst=root->son;
+        push_stack();   //bug in E2.2
         CompSt(compst,type);//这里应该也需要传入类型，因为可以函数中途return
+        pop_stack();
     }else if(root->son_num==3){//Stmt->REtURN Exp Semi
         node* exp=root->son->bro;
         Type exp_type=Exp(exp);
@@ -750,7 +754,13 @@ Type Exp(node* root){
             if(left==NULL||right==NULL){
                 return type;//也就是exp1或exp2有一个是出错了，所以返回了空的类型信息，就不需要再比较下去了
             }
-            if(left->kind!=right->kind){
+            if((strcmp(son2->name,"AND")==0)||(strcmp(son2->name,"OR")==0)){
+                Type type=(Type)malloc(sizeof(struct Type_));
+                type->kind=BASIC;
+                type->u.basirc=INT;
+                return type;
+            }
+            else if(left->kind!=right->kind){
                 eprintf(errortype,line,"Operation type not match at kind level");
             }else{
                 if(left->kind==BASIC){
@@ -853,7 +863,6 @@ int CompareType(Type left,Type right){//比较类型信息，相同输出1，不
             }
          }else if(left->kind==ARRAY){
             Type sub_left=left,sub_right=right;
-            int end=0;
             while(sub_left->kind==ARRAY&&sub_right->kind==ARRAY){
                 if(sub_left->u.array.size!=sub_right->u.array.size){
                     res=0;
