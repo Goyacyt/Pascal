@@ -233,7 +233,7 @@ Type StructSpecifier(node* root){
         type=(Type)malloc(sizeof(struct Type_));
         node* son2=root->son->bro;
         node* deflist;
-        char* struct_name;
+        char* struct_name=NULL;
         if(strcmp(son2->name,"OptTag")==0){
             struct_name=OptTag(son2);
             HashNode this=get(struct_name);
@@ -245,16 +245,21 @@ Type StructSpecifier(node* root){
             debug("what's this?");
             deflist=son2->bro;
         }
-        FieldList struct_field=(FieldList)malloc(sizeof(struct FieldList_));
-        struct_field->name=struct_name;
-        struct_field->type=type;
-        type->kind=STRUCTURE_NAME;
+        FieldList hash_struct_field=(FieldList)malloc(sizeof(struct FieldList_));
+        Type hash_type=(Type)malloc(sizeof(struct Type_));
+        hash_struct_field->name=struct_name;
+        hash_struct_field->type=hash_type;
+        type->kind=STRUCTURE;
+        hash_type->kind=STRUCTURE_NAME;
         push_stack();
         FieldList deflist_field=DefList(deflist,1);
         pop_stack();
         type->u.structure=deflist_field;
+        hash_type->u.structure=deflist_field;
         
-        add_sym(struct_field,sdep,line);//添加结构体名字的定义信息
+        if(struct_name!=NULL){
+            add_sym(hash_struct_field,sdep,line);//添加结构体名字的定义信息
+        }
     }else if(root->son_num=2){  //StructSpecifier->STRUCT Tag
         node* son2=root->son->bro;
         char* struct_name=Tag(son2);
