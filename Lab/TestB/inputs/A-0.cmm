@@ -1,0 +1,13 @@
+struct TEST{
+    int X;
+    float Y;
+};
+
+int TEST(float a){
+    return a;
+    int i,
+    j;
+}
+int main(){
+    TEST.X=3;
+}

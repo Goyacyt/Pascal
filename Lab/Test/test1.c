@@ -1,8 +1,7 @@
+#include<stdio.h>
+#include<stdbool.h>
+typedef unsigned char boolean;
 int main(){
-    if(1){
-        int j=0;
-    }
-}
-int test(){
-    int j=0;
+    boolean a;
+    bool b;
 }

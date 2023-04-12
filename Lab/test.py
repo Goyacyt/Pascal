@@ -1,29 +1,45 @@
 import os
 import subprocess
 correct, hasexp,total = 0,0, 0
-RED="\033[1;31m"
+
 NONE="\033[0m"
+RED="\033[1;41m"
 LBLUE="\033[1;36m"
 PURPLE="\033[1;35m"
 YELLOW="\033[1;33m"
 GREEN="\033[1;42m"
+testfile='TestB'
+
 def get_output(res_list):
-    err = set()
+    err = dict()
     for res in res_list:
         if 'Error' not in res:
             break
-        line = res.strip().split(' ')[5].strip(':')
-        err.add(int(line))
+        res = res.strip().split(' ')
+        if res[5].strip(':') not in err:
+            err[res[5].strip(':')] = set()
+        err[res[5].strip(':')].add(res[2])
     return err
 
 
-def result_same(res_list1, res_list2):
-    err1 = get_output(res_list1)
-    err2 = get_output(res_list2)
-    if len(err1) != len(err2):
+def result_same(std_res, my_res):
+    err_std = get_output(std_res)
+    err_my = get_output(my_res)
+    std_lines = set(err_std.keys())
+    my_lines = set(err_my.keys())
+    if len(std_lines.difference(my_lines)) or len(my_lines.difference(std_lines)):
+        print("line diff")
+        print("standard: ",err_std,", diff in:",std_lines.difference(my_lines))
+        print("my: ",err_my,", diff in:",my_lines.difference(std_lines))
         return False
-    if len(err1.difference(err2)):
-        return False
+    for line in std_lines:
+        if len(err_std[line].difference(err_my[line])):
+            print("type diff in "+line)
+            print(err_std[line])
+            print(err_my[line])
+            print(err_std[line].difference(err_my[line]))
+            return False
+
     return True
 
 
@@ -31,7 +47,7 @@ def result_same(res_list1, res_list2):
 #     args=['rm -rf /home/lyt/myfile/Pascal/Lab/normalTests_1/inputs/C-2.cmm'],shell=True)
 # subprocess.call(
 #     args=['rm -rf /home/lyt/myfile/Pascal/Lab/normalTests_1/expects/C-2.exp'], shell=True)
-input_list = subprocess.getoutput('find ~/myfile/Pascal/Lab/Test2/inputs/*.cmm').split('\n')
+input_list = subprocess.getoutput('find ~/myfile/Pascal/Lab/'+testfile+'/inputs/*.cmm').split('\n')
 for file_name in input_list:
     total += 1
     flag = True
@@ -50,6 +66,7 @@ for file_name in input_list:
             print(RED+"!!test error"+NONE)
             print("my output:")
             subprocess.run(['/home/lyt/myfile/Pascal/Lab/Code/parser',file_name])
+            #print(res_list)
             std_file = open(std_file_name)
             std_res_list = std_file.readlines()
             print(NONE+"standard output:"+NONE)
@@ -59,6 +76,7 @@ for file_name in input_list:
             print(GREEN+"pass!"+NONE)
             print("my output:")
             subprocess.run(['/home/lyt/myfile/Pascal/Lab/Code/parser',file_name])
+            #print(res_list)
             std_file = open(std_file_name)
             std_res_list = std_file.readlines()
             print(NONE+"standard output:"+NONE)
@@ -67,10 +85,9 @@ for file_name in input_list:
         #if correct < hasexp:
         #    break
     else:
-        print(LBLUE+"not exit expect file:"+NONE,file_name)
-    #     print(file_name,"should print err")
-    #     subprocess.run(['/home/lyt/myfile/Pascal/Lab/Code/parser',file_name])
-    #     print("\n")
+        print(LBLUE+"miss expect file:"+NONE,file_name)
+        print("my output:")
+        subprocess.run(['/home/lyt/myfile/Pascal/Lab/Code/parser',file_name])
     print("\n")
 
 print(correct, hasexp,total)
