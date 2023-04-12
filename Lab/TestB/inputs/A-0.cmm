@@ -5,9 +5,8 @@ struct TEST{
 
 int TEST(float a){
     return a;
-    int i,
-    j;
 }
+struct TEST test;
 int main(){
     TEST.X=3;
 }

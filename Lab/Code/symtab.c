@@ -899,11 +899,15 @@ int CompareType(Type left,Type right){//比较类型信息，相同输出1，不
 FieldList Args(node* root){
     debug("Args");
     FieldList field=(FieldList)malloc(sizeof(struct FieldList_));
-    if(root->son_num==1){
+    if(root->son_num==1){   //Args->Exp
         Type exp_type=Exp(root->son);
+        if(exp_type==NULL)  return NULL;//exp_type不可为空
         field->type=exp_type;
         field->tail=NULL;
-    }else if(root->son_num==3){
+    }else if(root->son_num==3){ //Args->Exp , Args
+        Type exp_type=Exp(root->son);
+        FieldList args=Args(root->son->bro->bro);
+        if(exp_type==NULL)   return NULL;    //若shiExp
         field->type=Exp(root->son);
         field->tail=Args(root->son->bro->bro);
     }
