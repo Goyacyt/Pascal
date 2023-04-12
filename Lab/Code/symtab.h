@@ -13,7 +13,7 @@ typedef struct FieldList_* FieldList;
 typedef struct HashNode_* HashNode;
 typedef struct DecFun_List_* DecFun_List;
 struct Type_{
-    enum{BASIC,ARRAY,STRUCTURE,FUNCTION} kind;
+    enum{BASIC,ARRAY,STRUCTURE,FUNCTION,STRUCTURE_NAME} kind;
     union{
         enum {INT,FLOAT} basirc;//基本类型
         struct{

@@ -1,0 +1,2 @@
+Error type 3 at line 109: duplicate variable definition 'i'
+Error type 1 at line 119: undefined variable 'i'

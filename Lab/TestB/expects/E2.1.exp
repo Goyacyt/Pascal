@@ -1,0 +1,4 @@
+Error type 18 at line 43: undefined function 'binOperator'
+Error type 19 at line 45: conflicting types for 'binOperator'
+Error type 18 at line 68: undefined function 'mulOperation'
+Error type 18 at line 70: undefined function 'equal'

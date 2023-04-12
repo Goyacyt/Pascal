@@ -1,7 +1,6 @@
-#include<stdio.h>
-#include<stdbool.h>
-typedef unsigned char boolean;
+struct H{
+    int i;
+};
 int main(){
-    boolean a;
-    bool b;
+    int H=0;
 }
