@@ -10,7 +10,6 @@
       "request": "launch",
       "program": "${workspaceFolder}/Code/parser",
       "args": ["${workspaceFolder}/TestB/inputs/A-3.cmm"],
-      //"args": ["${workspaceFolder}/Test/test1.c"],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],

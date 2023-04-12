@@ -6,6 +6,7 @@ struct TEST{
 int TEST(float a){
     return a;
 }
+struct TEST test;
 int main(){
     TEST.X=3;
 }
