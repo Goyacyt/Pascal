@@ -2,11 +2,19 @@
 struct TEST{
     int X;
     float Y;
-};
+}test;
+
+struct TEST2{
+    int X;
+    float Y;
+}test2;
 
 int TEST(float a){
     return a;
 }
 int main(){
-    TEST.X=1;
+    int a=0;
+    float c=1.4;
+    if(!c)
+        
 }

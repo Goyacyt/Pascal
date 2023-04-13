@@ -1,6 +1,6 @@
 struct {
     int _stk[100];
-    int _top = -1;
+    int _top=-1;
 } stkVM;
 int STK_MDEP;
 int errno;

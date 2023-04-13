@@ -47,6 +47,9 @@ HashNode get(char* name){
 }
 
 HashNode add_sym(FieldList value,int stack_dep,int line){
+    if(strcmp(value->name,"Stack")==0){
+        
+    }
     debug("add_sym begin");
     int pos=hash_fun(value->name);
     debugi("hash pos",pos); 
@@ -250,9 +253,9 @@ Type StructSpecifier(node* root){
         FieldList hash_struct_field=(FieldList)malloc(sizeof(struct FieldList_));
         Type hash_type=(Type)malloc(sizeof(struct Type_));
         hash_struct_field->name=struct_name;
-        hash_struct_field->type=hash_type;
         type->kind=STRUCTURE;
         hash_type->kind=STRUCTURE_NAME;
+        hash_struct_field->type=hash_type;
         push_stack();
         FieldList deflist_field=DefList(deflist,1);
         pop_stack();
@@ -260,7 +263,7 @@ Type StructSpecifier(node* root){
         hash_type->u.structure=deflist_field;
         
         if(struct_name!=NULL){
-            add_sym(hash_struct_field,sdep,line);//添加结构体名字的定义信息
+            add_sym(hash_struct_field,0,line);//添加结构体名字的定义信息
         }
     }else if(root->son_num=2){  //StructSpecifier->STRUCT Tag
         node* son2=root->son->bro;
@@ -269,8 +272,16 @@ Type StructSpecifier(node* root){
         if(this==NULL){
             eprintf(17,line,"Undefined Structure Type");
         }else{
-            type=this->value->type;
-            type->kind=STRUCTURE;
+            //type=this->value->type;
+            if(this->value->type->kind!=STRUCTURE_NAME){
+                eprintf(17,line,"Undefined Structure Type");
+                type=NULL;
+            }else{
+                //==STRUCTURE
+                type=(Type)malloc(sizeof(struct Type_));
+                type->kind=STRUCTURE;
+                type->u=this->value->type->u;
+            }
         }
     }else{
         printf("StructSpecifier error\n");
@@ -502,7 +513,7 @@ FieldList Dec(node* root,Type type,int stru){
 FieldList VarDec(node* root,Type type,Type elemtype){
     int line=root->first_line;
     debug("VarDec");
-    if(root->son_num==1){
+    if(root->son_num==1){   //VarDec->ID
         char* id=ID(root->son);
         HashNode this=get(id);
         if(this!=NULL){
@@ -517,11 +528,14 @@ FieldList VarDec(node* root,Type type,Type elemtype){
         }
         FieldList field=(FieldList)malloc(sizeof(struct FieldList_));
         field->name=id;
-        if(elemtype->kind==STRUCTURE||elemtype->kind==BASIC){
+        if(elemtype==NULL){
+            return NULL;
+        }
+        if(elemtype->kind==STRUCTURE||elemtype->kind==BASIC||elemtype->kind==STRUCTURE_NAME){
             field->type=elemtype;
         }else if(elemtype->kind==FUNCTION){
             debug("VarDec function error");
-        }else{
+        }else{//==ARRAY
             Type subtype=elemtype;
             while(subtype->u.array.elem!=NULL){
                 subtype=subtype->u.array.elem;
@@ -531,7 +545,7 @@ FieldList VarDec(node* root,Type type,Type elemtype){
         }
         add_sym(field,sdep,line);
         return field;
-    }else if(root->son_num==4){
+    }else if(root->son_num==4){ //VarDec->VarDec [ INT ]
         node* vardec=root->son;
         node* int_node=vardec->bro->bro;
         if(elemtype->kind==ARRAY){//不是第一层数组嵌套
@@ -623,14 +637,24 @@ void Stmt(node* root,Type type){
     }else if(root->son_num==5){//Stmt->if lp exp rp stmt
                                //Stmt->while lp exp rp stmt
         node* exp=root->son->bro->bro;
-        Exp(exp);
+        Type exp_type=NULL;
+        exp_type=Exp(exp);
+        if(exp_type!=NULL){
+            if((exp_type->kind!=BASIC)||(exp_type->u.basirc!=INT))
+                eprintf(7,line,"Not INT for condition of IF or WHILE");
+        }
         node* stmt=exp->bro->bro;
         push_stack();
         Stmt(stmt,type);
         pop_stack();
     }else if(root->son_num==7){
         node* exp=root->son->bro->bro;
-        Exp(exp);
+        Type exp_type=NULL;
+        exp_type=Exp(exp);
+        if(exp_type!=NULL){
+            if((exp_type->kind!=BASIC)||(exp_type->u.basirc!=INT))
+                eprintf(7,line,"Not INT for condition of IF ELSE");
+        }
         node* stmt1=exp->bro->bro;
         push_stack();
         Stmt(stmt1,type);
@@ -682,8 +706,24 @@ Type Exp(node* root){
         }
     }else if(root->son_num==2){
         debug(" MINUS EXP    NOT EXP");
-        node* exp=root->son->bro;
-        type=Exp(exp);
+        if(strcmp(root->son->name,"MINUS")==0){
+            node* exp=root->son->bro;
+            type=Exp(exp);
+        }
+        if(strcmp(root->son->name,"NOT")==0){
+            Type logictype=(Type)malloc(sizeof(struct Type_));
+            logictype->kind=BASIC;
+            logictype->u.basirc=INT;
+            if(logictype->kind!=BASIC){
+                eprintf(7,line,"Operation for logic caculate not INT");
+                return logictype;
+            }
+            else if(logictype->u.basirc!=INT){
+                eprintf(7,line,"Operation for logic caculate not INT");
+                return logictype;
+            }
+
+        }
     }else if(root->son_num==3){
         node* son1=root->son;
         node* son2=son1->bro;
@@ -734,57 +774,75 @@ Type Exp(node* root){
             debug("Exp->exp 各种操作 exp");
             //printf("%s\n",son2->name);
 
-            int errortype=7;
-            if(strcmp(son2->name,"ASSIGNOP")==0){   //Exp->Exp ASSIGNOP Exp
-                errortype=5;
-                if(!( ((son1->son_num==1)&&(strcmp(son1->son->name,"ID")==0) ) ||
-               ((son1->son_num==3)&&((strcmp(son1->son->bro->name,"DOT")==0)||(strcmp(son1->son->name,"LP")==0)) )   ||
-               ((son1->son_num==4)&&(strcmp(son1->son->name,"Exp")==0) ) ))
-                {
-                    eprintf(6,line,"lvalue required as left operand of assignment");
-                    return type;
-                }
-            }
-
             Type left=Exp(son1);
             debug("finish son1");
             Type right=Exp(son3);
             debug("finish son3");
-
             if(left==NULL||right==NULL){
                 return type;//也就是exp1或exp2有一个是出错了，所以返回了空的类型信息，就不需要再比较下去了
             }
-            if((strcmp(son2->name,"AND")==0)||(strcmp(son2->name,"OR")==0)){
-                Type type=(Type)malloc(sizeof(struct Type_));
-                type->kind=BASIC;
-                type->u.basirc=INT;
-                return type;
+            else if(strcmp(son2->name,"ASSIGNOP")==0){   //Exp->Exp ASSIGNOP Exp
+                if(!( ((son1->son_num==1)&&(strcmp(son1->son->name,"ID")==0) ) ||
+               ((son1->son_num==3)&&((strcmp(son1->son->bro->name,"DOT")==0)||(strcmp(son1->son->name,"LP")==0)) )   ||
+               ((son1->son_num==4)&&(strcmp(son1->son->name,"Exp")==0) ) ))
+                    eprintf(6,line,"lvalue required as left operand of assignment");
+                else if(left->kind==BASIC){
+                    if(left->u.basirc!=right->u.basirc)
+                        printf("Error type 5 at Line %d : Operation type not match. Left is %d and right is %d \n",line,left->u.basirc,right->u.basirc);
+                    else
+                        type=left;
+                }
+                else if(left->kind!=STRUCTURE) //STRUCTURE是可以赋值，其他不可以
+                    printf("Error type 5 at Line %d : Operation type not match. They are %d \n",line,left->kind);
+                else{
+                    if(!CompareType(left,right)){
+                        eprintf(5,line,"Type not match in ASSIGNOP");
+                    }
+                }
             }
-            else if(left->kind!=right->kind){
-                eprintf(errortype,line,"Operation type not match at kind level");
-            }else{
-                if(left->kind==BASIC){
+            else if(strcmp(son2->name,"RELOP")==0){ //Exp RELOP Exp
+                Type reloptype=(Type)malloc(sizeof(struct Type_));
+                reloptype->kind=BASIC;
+                reloptype->u.basirc=INT;
+                if(left->kind!=BASIC||right->kind!=BASIC){
+                    eprintf(7,line,"Wrong operation type surrounding RELOP");
+                    return reloptype;
+                }
+                else if((left->u.basirc!=INT) && (left->u.basirc!=FLOAT)){
+                    eprintf(7,line,"Operation type left by RELOP not INT or FLOAT");
+                    return reloptype;
+                }
+                else if((right->u.basirc!=INT) && (right->u.basirc!=FLOAT)){
+                    eprintf(7,line,"Operation type right by RELOP not INT or FLOAT");
+                    return reloptype;
+                }
+                else if(left->u.basirc!=right->u.basirc){
+                    eprintf(7,line,"Operation type surrounding RELOP not match");
+                    return reloptype;
+                }
+            }
+            else if((strcmp(son2->name,"AND")==0)||(strcmp(son2->name,"OR")==0)){
+                Type logictype=(Type)malloc(sizeof(struct Type_));
+                logictype->kind=BASIC;
+                logictype->u.basirc=INT;
+                if((left->kind!=BASIC)||(right->kind!=BASIC))
+                    eprintf(7,line,"Operation for logic caculate not INT");
+                else if((left->u.basirc!=INT)|| (right->u.basirc!=INT))
+                    eprintf(7,line,"Operation for logic caculate not INT");
+                return logictype;
+            }
+            else{  //PLUS,MINUS,STAR,DIV
+                if(left->kind!=right->kind)
+                    eprintf(7,line,"Operation type not match at kind level");
+                else if(left->kind==BASIC){
                     if(left->u.basirc!=right->u.basirc){
-                        printf("Error type %d at Line %d : Operation type not match. Left is %d and right is %d \n",errortype,line,left->u.basirc,right->u.basirc);
+                        printf("Error type 7 at Line %d : Operation type not match. Left is %d and right is %d \n",line,left->u.basirc,right->u.basirc);
                     }else{
                         type=left;
                     }
-                }else{
-                    //TODO:not sure
-                    //函数肯定不能做这些操作，数组应该也不可以，但结构体应该可以进行赋值
-                    if(strcmp(son2->name,"ASSIGNOP")==0){
-                        if(left->kind!=STRUCTURE){
-                             printf("Error type %d at Line %d : Operation type not match. They are %d \n",errortype,line,left->kind);
-                        }//STRUCTURE是可以赋值，其他不可以
-                        else{
-                            if(!CompareType(left,right)){
-                                eprintf(5,line,"Type not match in ASSIGNOP");
-                            }
-                        }
-                    }else{
-                        printf("Error type %d at Line %d : Operation type not match. They are %d \n",errortype,line,left->kind);
-                    }
                 }
+                else
+                    eprintf(7,line,"Operation type not BASIC for +-*/");
             }
         }else if(strcmp(son1->name,"LP")==0){   //Exp->( Exp )
             debug("Exp->(Exp)");
@@ -864,10 +922,6 @@ int CompareType(Type left,Type right){//比较类型信息，相同输出1，不
          }else if(left->kind==ARRAY){
             Type sub_left=left,sub_right=right;
             while(sub_left->kind==ARRAY&&sub_right->kind==ARRAY){
-                if(sub_left->u.array.size!=sub_right->u.array.size){
-                    res=0;
-                    break;
-                }
                 sub_left=sub_left->u.array.elem;
                 sub_right=sub_right->u.array.elem;
             }

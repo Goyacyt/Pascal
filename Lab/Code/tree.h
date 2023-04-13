@@ -6,13 +6,13 @@
 
 #define YYSTYPE node*
 
-#define NONE "\033[m"
-#define RED "\033[0;32;31m"
+//#define NONE "\033[m"
+//#define RED "\033[0;32;31m"
 #define BLUE "\033[0;32;34m"
 #define GREEN "\033[0;32;32m"
 #define YELLOW "\033[1;33m"
-// #define NONE
-// #define RED
+#define NONE
+#define RED
 
 typedef struct NODE{
     char name[32];

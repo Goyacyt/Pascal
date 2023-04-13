@@ -8,7 +8,7 @@ LBLUE="\033[1;36m"
 PURPLE="\033[1;35m"
 YELLOW="\033[1;33m"
 GREEN="\033[1;42m"
-testfile='TestB'
+testfile='Test2'
 
 def get_output(res_list):
     err = dict()
