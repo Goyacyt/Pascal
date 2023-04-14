@@ -1,0 +1,7 @@
+int fun(int x[10][2],int y[4][3][7]);
+int main(){
+    int a[5][3];
+    int c;
+    c=fun(a,a);   
+    return c;
+}

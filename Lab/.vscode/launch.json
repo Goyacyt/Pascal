@@ -9,7 +9,7 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/Code/parser",
-      "args": ["${workspaceFolder}/Test/test3.c"],
+      "args": ["${workspaceFolder}/TestTools/tests/ZZ01.cmm"],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
