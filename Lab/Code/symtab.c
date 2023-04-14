@@ -713,15 +713,18 @@ Type Exp(node* root){
             node* exp=root->son->bro;
             type=Exp(exp);
         }
-        if(strcmp(root->son->name,"NOT")==0){
+        else if(strcmp(root->son->name,"NOT")==0){
             Type logictype=(Type)malloc(sizeof(struct Type_));
             logictype->kind=BASIC;
             logictype->u.basirc=INT;
-            if(logictype->kind!=BASIC){
+            type=Exp(root->son->bro);
+            if(type==NULL)
+                return logictype;
+            if(type->kind!=BASIC){
                 eprintf(7,line,"Operation for logic caculate not INT");
                 return logictype;
             }
-            else if(logictype->u.basirc!=INT){
+            else if(type->u.basirc!=INT){
                 eprintf(7,line,"Operation for logic caculate not INT");
                 return logictype;
             }
@@ -786,7 +789,7 @@ Type Exp(node* root){
             }
             else if(strcmp(son2->name,"ASSIGNOP")==0){   //Exp->Exp ASSIGNOP Exp
                 if(!( ((son1->son_num==1)&&(strcmp(son1->son->name,"ID")==0) ) ||
-               ((son1->son_num==3)&&((strcmp(son1->son->bro->name,"DOT")==0)||(strcmp(son1->son->name,"LP")==0)) )   ||
+               ((son1->son_num==3)&&((strcmp(son1->son->bro->name,"DOT")==0)) )   ||
                ((son1->son_num==4)&&(strcmp(son1->son->name,"Exp")==0) ) ))
                     eprintf(6,line,"lvalue required as left operand of assignment");
                 else if(left->kind==BASIC){
