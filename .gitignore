@@ -1,1 +1,10 @@
-/TestTool
+*/TestTools
+*.o
+*.gv
+*.swp
+syntax.output
+syntax.tab.c
+syntax.tab.h
+lex.yy.c
+
+
