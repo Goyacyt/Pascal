@@ -458,11 +458,14 @@ FieldList DefList(node* root,int stru){
         if(def_field==NULL){
             return deflist_field;
         }
+
         FieldList last_def_field=def_field;
         while(last_def_field->tail!=NULL){
             last_def_field=last_def_field->tail;
         }
         last_def_field->tail=deflist_field;
+
+        //def_field->tail=deflist_field;
         return def_field;
     }
 }
@@ -479,7 +482,12 @@ FieldList DecList(node* root,Type type,int stru){
         node* declist=dec->bro->bro;
         FieldList declist_field=DecList(declist,type,stru);
         if(dec_field==NULL) return declist_field; 
-        dec_field->tail=declist_field;
+        FieldList sub_field=dec_field;
+        while(sub_field->tail!=NULL){
+            sub_field=sub_field->tail;
+        }
+        sub_field->tail=declist_field;
+        //dec_field->tail=declist_field;
         return dec_field;
     }else{
         printf("Declist error\n");
@@ -552,6 +560,7 @@ FieldList VarDec(node* root,Type type,Type elemtype){
         }
         FieldList field=(FieldList)malloc(sizeof(struct FieldList_));
         field->name=id;
+        field->tail=NULL;
         if(elemtype==NULL){
             return NULL;
         }
@@ -789,8 +798,6 @@ Type Exp(node* root){
             }else{
                 if(this->value->type->kind!=FUNCTION){
                     eprintf(11,line,"() used for a not function variable");
-                }else if(this->value->type->u.function.declare==DECLARED){
-                    eprintf(18,line,"Function declared but not defined");
                 }else if(this->value->type->u.function.param!=NULL){
                     printf("Error type 9 at Line %d: There should be no paramof %s.\n",line,funid_name);                    
                 }else{
@@ -834,17 +841,14 @@ Type Exp(node* root){
                 reloptype->u.basirc=INT;
                 if(left->kind!=BASIC||right->kind!=BASIC){
                     eprintf(7,line,"Wrong operation type surrounding RELOP");
-                    return reloptype;
                 }else if((left->u.basirc!=INT) && (left->u.basirc!=FLOAT)){
                     eprintf(7,line,"Operation type left by RELOP not INT or FLOAT");
-                    return reloptype;
                 }else if((right->u.basirc!=INT) && (right->u.basirc!=FLOAT)){
                     eprintf(7,line,"Operation type right by RELOP not INT or FLOAT");
-                    return reloptype;
                 }else if(left->u.basirc!=right->u.basirc){
                     eprintf(7,line,"Operation type surrounding RELOP not match");
-                    return reloptype;
                 }
+                return reloptype;
             }else if((strcmp(son2->name,"AND")==0)||(strcmp(son2->name,"OR")==0)){//Exp->Exp AND OR Exp
                 Type logictype=(Type)malloc(sizeof(struct Type_));
                 logictype->kind=BASIC;
