@@ -73,7 +73,7 @@ ExtDef: Specifier ExtDecList SEMI   {if(!bisonsim)  {printf(YELLOW"     ExtDef:S
 ExtDecList: VarDec  {if(!bisonsim)  {printf(YELLOW"     ExtDecList:VarDec (%d)\n"NONE,@$.first_line);}
         $$=add_nonterminal("ExtDecList", @$.first_line, NOTTOKEN, 1,$1);}
     | VarDec COMMA ExtDecList   {if(!bisonsim)  {printf(YELLOW"     ExtDecList:VarDec COMMA ExtDecList (%d)\n"NONE,@$.first_line);}
-         $$=add_nonterminal("ExtDefList", @$.first_line, NOTTOKEN, 3,$1,$2,$3);}
+         $$=add_nonterminal("ExtDecList", @$.first_line, NOTTOKEN, 3,$1,$2,$3);}
 ;
 
 //declare Specifiers

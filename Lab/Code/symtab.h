@@ -13,14 +13,19 @@ typedef struct FieldList_* FieldList;
 typedef struct HashNode_* HashNode;
 typedef struct DecFun_List_* DecFun_List;
 struct Type_{
-    enum{BASIC,ARRAY,STRUCTURE,FUNCTION,STRUCTURE_NAME} kind;
+    enum{BASIC,ARRAY,STRUCTURE,STRUCTURE_NAME,FUNCTION} kind;
     union{
         enum {INT,FLOAT} basirc;//基本类型
         struct{
             Type elem;//嵌套
             int size;
         }array;//数组类型信息：元素类型+数组大小
-        FieldList structure;    //结构体类型信息是一个链表
+           //结构体类型信息是一个链表
+        FieldList structval;
+        struct{
+            int defok;
+            FieldList structure;
+        }structtype;
         struct{
             int paramnum;//形参个数
             enum {DECLARED,DEFINED} declare;//如果有声明没有定义就是DECLARE,只要有定义就是DEFILED

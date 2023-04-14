@@ -183,7 +183,14 @@ void ExtDef(node* root){
     }else if(strcmp(son2->name,"SEMI")==0){
         //这个其实不用做什么？
     }else{
-        printf("ExtDef error\n");
+        printf("！！！！ExtDef error in line %d,",root->first_line);
+        node *son=son1;
+        printf("ExtDef->");
+        while(son!=NULL){
+            printf("%s ",son->name);
+            son=son->bro;
+        }
+        printf("\n");
     }
     return ;
 }
@@ -256,18 +263,23 @@ Type StructSpecifier(node* root){
         type->kind=STRUCTURE;
         hash_type->kind=STRUCTURE_NAME;
         hash_struct_field->type=hash_type;
-        FieldList deflist_field=NULL;
-        if(strcmp(deflist->name,"DefList")==0){  //DefList可能没有
-            push_stack();
-            deflist_field=DefList(deflist,1);
-            pop_stack();
-        }
-        type->u.structure=deflist_field;
-        hash_type->u.structure=deflist_field;
-        
+               
+        type->u.structval=NULL;
+        hash_type->u.structtype.structure=NULL;
+        hash_type->u.structtype.defok=0;
         if(struct_name!=NULL){
             add_sym(hash_struct_field,0,line);//添加结构体名字的定义信息
         }
+        if(strcmp(deflist->name,"DefList")==0){  //DefList可能没有
+            push_stack();
+            FieldList deflist_field=DefList(deflist,1);
+            type->u.structval=deflist_field;
+            hash_type->u.structtype.structure=deflist_field;
+            hash_type->u.structtype.defok=1;
+            pop_stack();
+        }
+
+        
     }else if(root->son_num=2){  //StructSpecifier->STRUCT Tag
         node* son2=root->son->bro;
         char* struct_name=Tag(son2);
@@ -279,11 +291,16 @@ Type StructSpecifier(node* root){
             if(this->value->type->kind!=STRUCTURE_NAME){
                 eprintf(17,line,"Undefined Structure Type");
                 type=NULL;
-            }else{
+            }
+            else if(this->value->type->u.structtype.defok==0){        
+                eprintf(17,line,"Use struct val in STRUCT itself");
+                type=NULL;
+            }
+            else{
                 //==STRUCTURE
                 type=(Type)malloc(sizeof(struct Type_));
                 type->kind=STRUCTURE;
-                type->u=this->value->type->u;
+                type->u.structval=this->value->type->u.structtype.structure;
             }
         }
     }else{
@@ -742,7 +759,7 @@ Type Exp(node* root){
                     eprintf(13,line,"Not a structure variable");
                     type=NULL;
                 }else{
-                    FieldList struct_field=struct_type->u.structure;
+                    FieldList struct_field=struct_type->u.structval;
                     char* id_name=ID(son3);
                     FieldList sub_field=struct_field;
                     type=NULL;
@@ -794,7 +811,7 @@ Type Exp(node* root){
                     eprintf(6,line,"lvalue required as left operand of assignment");
                 else if(left->kind==BASIC){
                     if(left->u.basirc!=right->u.basirc)
-                        printf("Error type 5 at Line %d : Operation type not match, Left is %d and right is %d.\n",line,left->u.basirc,right->u.basirc);
+                        printf("Error type 5 at Line %d: Operation type not match, Left is %d and right is %d.\n",line,left->u.basirc,right->u.basirc);
                     else
                         type=left;
                 }else if(left->kind!=right->kind){//左右类型不匹配
@@ -930,8 +947,8 @@ int CompareType(Type left,Type right){//比较类型信息，相同输出1，不
             res=CompareType(sub_left,sub_right);
          }else if(left->kind==STRUCTURE){
             //实现的：结构体的结构等价
-            FieldList field1=left->u.structure;
-            FieldList field2=right->u.structure;
+            FieldList field1=left->u.structval;
+            FieldList field2=right->u.structval;
             while(field1!=NULL&&field2!=NULL){
                 if(!CompareType(field1->type,field2->type)){
                     res=0;
