@@ -795,8 +795,8 @@ Type Exp(node* root){
                     else
                         type=left;
                 }
-                else if(left->kind!=STRUCTURE) //STRUCTURE是可以赋值，其他不可以
-                    printf("Error type 5 at Line %d: Operation type not match, They are %d.\n",line,left->kind);
+                else if(left->kind!=right->kind) //STRUCTURE是可以赋值，其他不可以  //等价数组
+                    printf("Error type 5 at Line %d: Operation type not match, They are %d,%d.\n",line,left->kind,right->kind);
                 else{
                     if(!CompareType(left,right)){
                         eprintf(5,line,"Type not match in ASSIGNOP");
