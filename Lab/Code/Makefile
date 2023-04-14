@@ -18,7 +18,7 @@ LFO = $(LFC:.c=.o)
 YFO = $(YFC:.c=.o)
 
 parser: syntax $(filter-out $(LFO),$(OBJS))
-	$(CC) -o parser $(filter-out $(LFO),$(OBJS)) -lfl
+	$(CC) -o parser $(filter-out $(LFO),$(OBJS)) -lfl -ly
 
 syntax: lexical syntax-c
 	$(CC) -c $(YFC) -o $(YFO)
@@ -35,11 +35,11 @@ syntax-c: $(YFILE)
 .PHONY: clean test
 
 test:
-	./parser ../Test2/test23.cmm
+	./parser ../Test2/inputs/test23.cmm
 
 test-all:
-	./parser ../Test2/test15.cmm
-	./parser ../Test2/test16.cmm
+	./parser ../Test2/inputs/test15.cmm
+	./parser ../Test2/inputs/test16.cmm
 
 clean:
 	rm -f parser lex.yy.c syntax.tab.c syntax.tab.h syntax.output

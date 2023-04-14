@@ -338,6 +338,11 @@ void FunDec(node* root,Type type,int declare){
     FunType->kind=FUNCTION;
     FunType->u.function.ret=type;
     FieldList varlist_field;
+    if(declare){
+        FunType->u.function.declare=DECLARED;
+    }else{
+        FunType->u.function.declare=DEFINED;
+    }
     if(root->son_num==4){   //FunDec->ID ( VarList )
         node* varlist=id->bro->bro;
         varlist_field=VarList(varlist);
@@ -356,11 +361,9 @@ void FunDec(node* root,Type type,int declare){
                 if(before_type->u.function.declare==DECLARED){
                     if(!CompareParam(before_type,FunType)){
                         eprintf(19,line,"Confliction between definition and declaration");
-                        return ;
-                    }else{
-                        this->value->type->u.function.declare=DEFINED;
-                        return ;
                     }
+                    this->value->type->u.function.declare=DEFINED;
+                    return ;
                 }else{
                     eprintf(4,line,"Repeated defintion of function");
                     return ;
@@ -368,18 +371,13 @@ void FunDec(node* root,Type type,int declare){
             }else{
                 //这是函数声明,前面有声明或者定义都可以，只要匹配就行
                 if(!CompareParam(before_type,FunType)){
-                    eprintf(19,line,"Confliction bwtween declaration and dedinition or confliction between declaration and declaration.Here is decalration");
+                    eprintf(19,line,"Confliction bwtween declaration and definition or confliction between declaration and declaration.Here is decalration");
                 }
                 return ;
             }
         }
     }//函数不存在嵌套定义，所以不需要检查sdep
 
-    if(declare){
-        FunType->u.function.declare=DECLARED;
-    }else{
-        FunType->u.function.declare=DEFINED;
-    }
     if(this==NULL){
         add_sym(field,0,line);
     }
