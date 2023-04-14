@@ -1,4 +1,12 @@
+struct P{
+  int a[98], b;
+}p;
+struct H{
+    int a[98],c;
+};
 int main(){
-    int i=0;
-    (i)=i;
+    struct H t;
+  int b;
+  p.b = b;
+  t=p;
 }
