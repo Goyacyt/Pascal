@@ -1,4 +1,3 @@
-int main(){
-    int i=0;
-    (i)=i;
-}
+struct FF{
+    int money;
+}players[111],RMBPlayer;

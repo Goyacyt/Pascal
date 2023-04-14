@@ -1450,7 +1450,7 @@ yyreduce:
   case 15: /* ExtDecList: VarDec COMMA ExtDecList  */
 #line 75 "./syntax.y"
                                 {if(!bisonsim)  {printf(YELLOW"     ExtDecList:VarDec COMMA ExtDecList (%d)\n"NONE,(yyloc).first_line);}
-         yyval=add_nonterminal("ExtDefList", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
+         yyval=add_nonterminal("ExtDecList", (yyloc).first_line, NOTTOKEN, 3,yyvsp[-2],yyvsp[-1],yyvsp[0]);}
 #line 1455 "./syntax.tab.c"
     break;
 
