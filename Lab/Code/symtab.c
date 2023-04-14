@@ -246,7 +246,7 @@ Type StructSpecifier(node* root){
                 eprintf(16,line,"The name of this structure has been defined");
             }
             deflist=son2->bro->bro;
-        }else{
+        }else if(strcmp(son2->name,"LC")==0){  //  don't have OptTag
             debug("what's this?");
             deflist=son2->bro;
         }
@@ -256,9 +256,12 @@ Type StructSpecifier(node* root){
         type->kind=STRUCTURE;
         hash_type->kind=STRUCTURE_NAME;
         hash_struct_field->type=hash_type;
-        push_stack();
-        FieldList deflist_field=DefList(deflist,1);
-        pop_stack();
+        FieldList deflist_field=NULL;
+        if(strcmp(deflist->name,"DefList")==0){  //DefList可能没有
+            push_stack();
+            deflist_field=DefList(deflist,1);
+            pop_stack();
+        }
         type->u.structure=deflist_field;
         hash_type->u.structure=deflist_field;
         
@@ -757,7 +760,7 @@ Type Exp(node* root){
             char* funid_name=ID(son1);
             HashNode this=get(funid_name);
             if(this==NULL){
-                printf(RED"Error type 2 at Line %d : Undefined function %s\n"NONE,line,funid_name);
+                printf("Error type 2 at Line %d: Undefined function %s.\n",line,funid_name);
 
             }else{
                 if(this->value->type->kind!=FUNCTION){
@@ -765,7 +768,7 @@ Type Exp(node* root){
                 }else if(this->value->type->u.function.declare==DECLARED){
                     eprintf(18,line,"Function declared but not defined");
                 }else if(this->value->type->u.function.param!=NULL){
-                    printf(RED"Error type 9 at Line %d : There should be no paramof %s\n"NONE,line,funid_name);                    
+                    printf("Error type 9 at Line %d: There should be no paramof %s.\n",line,funid_name);                    
                 }else{
                     type=this->value->type->u.function.ret;
                 }
@@ -788,12 +791,12 @@ Type Exp(node* root){
                     eprintf(6,line,"lvalue required as left operand of assignment");
                 else if(left->kind==BASIC){
                     if(left->u.basirc!=right->u.basirc)
-                        printf("Error type 5 at Line %d : Operation type not match. Left is %d and right is %d \n",line,left->u.basirc,right->u.basirc);
+                        printf("Error type 5 at Line %d : Operation type not match, Left is %d and right is %d.\n",line,left->u.basirc,right->u.basirc);
                     else
                         type=left;
                 }
                 else if(left->kind!=STRUCTURE) //STRUCTURE是可以赋值，其他不可以
-                    printf("Error type 5 at Line %d : Operation type not match. They are %d \n",line,left->kind);
+                    printf("Error type 5 at Line %d: Operation type not match, They are %d.\n",line,left->kind);
                 else{
                     if(!CompareType(left,right)){
                         eprintf(5,line,"Type not match in ASSIGNOP");
@@ -836,7 +839,7 @@ Type Exp(node* root){
                     eprintf(7,line,"Operation type not match at kind level");
                 else if(left->kind==BASIC){
                     if(left->u.basirc!=right->u.basirc){
-                        printf("Error type 7 at Line %d : Operation type not match. Left is %d and right is %d \n",line,left->u.basirc,right->u.basirc);
+                        printf("Error type 7 at Line %d: Operation type not match, Left is %d and right is %d.\n",line,left->u.basirc,right->u.basirc);
                     }else{
                         type=left;
                     }
@@ -986,5 +989,5 @@ void debugi(char* s,int d){
 }
 
 void eprintf(int error_number,int line,char* message){
-    printf(RED"Error type %d at Line %d : %s\n"NONE,error_number,line,message);
+    printf("Error type %d at Line %d: %s.\n",error_number,line,message);
 }

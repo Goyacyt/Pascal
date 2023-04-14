@@ -1,0 +1,19 @@
+int main(){
+    int a=1,b=2;
+    float c=3.5,d=5.39;
+    struct E{
+        int x[2][3];
+        float y;
+    }e;
+    struct F{
+        int y[2][3];
+        float x;
+    }f;
+    e=f;
+    if(a==b){
+        return a;
+    }
+    else{
+       return b;
+   }
+}
