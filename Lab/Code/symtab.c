@@ -458,7 +458,11 @@ FieldList DefList(node* root,int stru){
         if(def_field==NULL){
             return deflist_field;
         }
-        def_field->tail=deflist_field;
+        FieldList last_def_field=def_field;
+        while(last_def_field->tail!=NULL){
+            last_def_field=last_def_field->tail;
+        }
+        last_def_field->tail=deflist_field;
         return def_field;
     }
 }
