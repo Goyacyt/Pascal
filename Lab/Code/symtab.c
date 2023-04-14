@@ -263,7 +263,7 @@ Type StructSpecifier(node* root){
         hash_type->u.structure=deflist_field;
         
         if(struct_name!=NULL){
-            add_sym(hash_struct_field,sdep,line);//添加结构体名字的定义信息
+            add_sym(hash_struct_field,0,line);//添加结构体名字的定义信息
         }
     }else if(root->son_num=2){  //StructSpecifier->STRUCT Tag
         node* son2=root->son->bro;
@@ -878,10 +878,7 @@ int CompareType(Type left,Type right){//比较类型信息，相同输出1，不
          }else if(left->kind==ARRAY){
             Type sub_left=left,sub_right=right;
             while(sub_left->kind==ARRAY&&sub_right->kind==ARRAY){
-                if(sub_left->u.array.size!=sub_right->u.array.size){
-                    res=0;
-                    break;
-                }
+                //只要维数相同就行
                 sub_left=sub_left->u.array.elem;
                 sub_right=sub_right->u.array.elem;
             }

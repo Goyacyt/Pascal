@@ -1,0 +1,15 @@
+int func() 
+{ 
+    int A; 
+    return 0; 
+}  
+int func2() 
+{ 
+    struct A{int b;} c; 
+    return 0; 
+}  
+int main() 
+{  
+    int A;
+    return 0;
+}
