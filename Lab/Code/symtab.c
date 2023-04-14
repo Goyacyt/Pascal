@@ -786,7 +786,7 @@ Type Exp(node* root){
             }
             else if(strcmp(son2->name,"ASSIGNOP")==0){   //Exp->Exp ASSIGNOP Exp
                 if(!( ((son1->son_num==1)&&(strcmp(son1->son->name,"ID")==0) ) ||
-               ((son1->son_num==3)&&((strcmp(son1->son->bro->name,"DOT")==0)||(strcmp(son1->son->name,"LP")==0)) )   ||
+               ((son1->son_num==3)&&((strcmp(son1->son->bro->name,"DOT")==0)) )   ||
                ((son1->son_num==4)&&(strcmp(son1->son->name,"Exp")==0) ) ))
                     eprintf(6,line,"lvalue required as left operand of assignment");
                 else if(left->kind==BASIC){
@@ -794,37 +794,34 @@ Type Exp(node* root){
                         printf("Error type 5 at Line %d : Operation type not match, Left is %d and right is %d.\n",line,left->u.basirc,right->u.basirc);
                     else
                         type=left;
-                }
-                else if(left->kind!=right->kind) //STRUCTURE是可以赋值，其他不可以  //等价数组
+                }else if(left->kind!=right->kind){//左右类型不匹配
                     printf("Error type 5 at Line %d: Operation type not match, They are %d,%d.\n",line,left->kind,right->kind);
-                else{
+                }else{//类型相同，但要做进一步检查
+                //数组也可以赋值：
                     if(!CompareType(left,right)){
                         eprintf(5,line,"Type not match in ASSIGNOP");
+                    }else{
+                        type=left;
                     }
                 }
-            }
-            else if(strcmp(son2->name,"RELOP")==0){ //Exp RELOP Exp
+            }else if(strcmp(son2->name,"RELOP")==0){ //Exp RELOP Exp
                 Type reloptype=(Type)malloc(sizeof(struct Type_));
                 reloptype->kind=BASIC;
                 reloptype->u.basirc=INT;
                 if(left->kind!=BASIC||right->kind!=BASIC){
                     eprintf(7,line,"Wrong operation type surrounding RELOP");
                     return reloptype;
-                }
-                else if((left->u.basirc!=INT) && (left->u.basirc!=FLOAT)){
+                }else if((left->u.basirc!=INT) && (left->u.basirc!=FLOAT)){
                     eprintf(7,line,"Operation type left by RELOP not INT or FLOAT");
                     return reloptype;
-                }
-                else if((right->u.basirc!=INT) && (right->u.basirc!=FLOAT)){
+                }else if((right->u.basirc!=INT) && (right->u.basirc!=FLOAT)){
                     eprintf(7,line,"Operation type right by RELOP not INT or FLOAT");
                     return reloptype;
-                }
-                else if(left->u.basirc!=right->u.basirc){
+                }else if(left->u.basirc!=right->u.basirc){
                     eprintf(7,line,"Operation type surrounding RELOP not match");
                     return reloptype;
                 }
-            }
-            else if((strcmp(son2->name,"AND")==0)||(strcmp(son2->name,"OR")==0)){
+            }else if((strcmp(son2->name,"AND")==0)||(strcmp(son2->name,"OR")==0)){//Exp->Exp AND OR Exp
                 Type logictype=(Type)malloc(sizeof(struct Type_));
                 logictype->kind=BASIC;
                 logictype->u.basirc=INT;
@@ -833,19 +830,18 @@ Type Exp(node* root){
                 else if((left->u.basirc!=INT)|| (right->u.basirc!=INT))
                     eprintf(7,line,"Operation for logic caculate not INT");
                 return logictype;
-            }
-            else{  //PLUS,MINUS,STAR,DIV
-                if(left->kind!=right->kind)
+            }else{  //PLUS,MINUS,STAR,DIV
+                if(left->kind!=right->kind){
                     eprintf(7,line,"Operation type not match at kind level");
-                else if(left->kind==BASIC){
+                }else if(left->kind==BASIC){
                     if(left->u.basirc!=right->u.basirc){
                         printf("Error type 7 at Line %d: Operation type not match, Left is %d and right is %d.\n",line,left->u.basirc,right->u.basirc);
                     }else{
                         type=left;
                     }
-                }
-                else
+                }else{
                     eprintf(7,line,"Operation type not BASIC for +-*/");
+                }
             }
         }else if(strcmp(son1->name,"LP")==0){   //Exp->( Exp )
             debug("Exp->(Exp)");
