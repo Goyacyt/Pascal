@@ -81,7 +81,7 @@ WHILE "while"
 {SEMI} {if(!sim) {printf(GREEN"\'%s\'->SEMI\n"NONE,yytext);} yylval=add_token("SEMI", OTHERTOKEN, NULL); return SEMI;}
 {COMMA} {if(!sim)  {printf(GREEN"\'%s\'->COMMA\n"NONE,yytext);}  yylval=add_token("COMMA", OTHERTOKEN, NULL);    return COMMA;}
 {ASSIGNOP} {if(!sim) {printf(GREEN"\'%s\'->ASSIGNOP\n"NONE,yytext);} yylval=add_token("ASSIGNOP", OTHERTOKEN, NULL);    return ASSIGNOP;}
-{RELOP} {if(!sim) {printf(GREEN"\'%s\'->RELOP\n"NONE,yytext);}   yylval=add_token("RELOP", OTHERTOKEN, NULL);    return RELOP;}
+{RELOP} {if(!sim) {printf(GREEN"\'%s\'->RELOP\n"NONE,yytext);}   yylval=add_token("RELOP", TYPE_RELOP, yytext);    return RELOP;}
 {PLUS} {if(!sim) {printf(GREEN"\'%s\'->PLUS\n"NONE,yytext);} yylval=add_token("PLUS", OTHERTOKEN, NULL);    return PLUS;}
 {MINUS} {if(!sim) {printf(GREEN"\'%s\'->MINUS\n"NONE,yytext);}   yylval=add_token("MINUS", OTHERTOKEN, NULL);    return MINUS;}
 {STAR} {if(!sim) {printf(GREEN"\'%s\'->STAR\n"NONE,yytext);} yylval=add_token("STAR", OTHERTOKEN, NULL);    return STAR;}

@@ -4,7 +4,7 @@
 HashNode hash_tab[HASHTAB_SIZE+1];
 HashNode stack[STACK_SIZE+1];
 node* declare_func[100];
-extern int de;
+extern int semantic_de;
 extern int sdep;
 //TODO:错误15涉及到压到不同层栈的问题，还没有解决
 
@@ -411,6 +411,7 @@ int CompareParam(Type left,Type right){
 
 char* ID(node* root){
     debug("ID");
+    assert(root->type==TYPE_ID);
     return root->val.id_val;
 }
 
@@ -812,9 +813,9 @@ Type Exp(node* root){
                 return type;//也就是exp1或exp2有一个是出错了，所以返回了空的类型信息，就不需要再比较下去了
             }
             else if(strcmp(son2->name,"ASSIGNOP")==0){   //Exp->Exp ASSIGNOP Exp
-                if(!( ((son1->son_num==1)&&(strcmp(son1->son->name,"ID")==0) ) ||
-               ((son1->son_num==3)&&((strcmp(son1->son->bro->name,"DOT")==0)) )   ||
-               ((son1->son_num==4)&&(strcmp(son1->son->name,"Exp")==0) ) ))
+                if(!( ((son1->son_num==1)&&(strcmp(son1->son->name,"ID")==0) ) ||   //Exp->ID
+               ((son1->son_num==3)&&((strcmp(son1->son->bro->name,"DOT")==0)) )   ||    //Exp->Exp.ID
+               ((son1->son_num==4)&&(strcmp(son1->son->name,"Exp")==0) ) ))  //Exp->Exp [ Exp ]
                     eprintf(6,line,"lvalue required as left operand of assignment");
                 else if(left->kind==BASIC){
                     if(left->u.basirc!=right->u.basirc)
@@ -998,13 +999,13 @@ FieldList Args(node* root){
 }
 
 void debug(char* s){
-    if(de){
+    if(semantic_de){
         printf("%s\n",s);
     }
 }
 
 void debugi(char* s,int d){
-    if(de)
+    if(semantic_de)
         printf("%s %d\n",s,d);
 }
 

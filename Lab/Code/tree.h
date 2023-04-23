@@ -17,13 +17,14 @@
 typedef struct NODE{
     char name[32];
     int first_line;
-    enum TYPE{OTHERTOKEN,NOTTOKEN,TYPE_ID,TYPE_TYPE,TYPE_INT,TYPE_FLOAT} type;
+    enum TYPE{OTHERTOKEN,NOTTOKEN,TYPE_ID,TYPE_TYPE,TYPE_INT,TYPE_FLOAT,TYPE_RELOP} type;
     int son_num;
     union{
         char id_val[32];
         char type_val[32];
         int int_val;
         float float_val;
+        char relop_val[5];
     }val;
     struct NODE* bro;
     struct NODE* son;

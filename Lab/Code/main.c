@@ -7,12 +7,13 @@ void yyrestart(FILE *file); //重置yyin指针为开头
 extern FILE* yyin;
 int sim;
 extern int yydebug;                // bison debug mode
+int semantic_de;
+int intercode_de;
 int bisonsim;
 int errorsim;
 int error_line;
 int haserror;
 int syntax;
-int de;
 int sdep;
 node* root;
 
@@ -22,8 +23,9 @@ int main(int argc, char** argv){
 	bisonsim=1;
     errorsim=0;
 	haserror=0;
-    syntax=0;
-    de=0;
+    syntax=1;
+    semantic_de=0;
+	intercode_de=1;
     error_line=0;//记录上一个出错的行数，如果当前错误仍然在这一行，就不要输出
 	if (argc==1){
 		return 1;

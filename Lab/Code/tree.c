@@ -49,6 +49,9 @@ node* add_token(char* name, int type, void* val){
         case TYPE_TYPE:
             sscanf(val,"%s",p->val.type_val);
             break;
+        case TYPE_RELOP:
+            sscanf(val,"%s",p->val.relop_val);
+            break;
         default:    break;
     }
     return p;
@@ -103,6 +106,9 @@ void print_tree(node* cur_node, int dep){
                 break;
             case TYPE_FLOAT:
                 printf("FLOAT: %f\n",cur_node->val.float_val);
+                break;
+            case TYPE_RELOP:
+                printf("RELOP(%s)\n",cur_node->val.relop_val);
                 break;
             default:
                 break;
