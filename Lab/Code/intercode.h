@@ -15,7 +15,10 @@ struct Operand_{
         int no;
         int number;
     };
-    Type type;  //for array and structture
+    struct{
+        Type type;  //for array and structture
+        int param;
+    };
 };
 
 struct InterCode_{

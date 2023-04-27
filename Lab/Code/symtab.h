@@ -38,6 +38,7 @@ struct FieldList_{
     char* name; //域名
     Type type;  //域类型
     FieldList tail; //下一域
+    enum{notPARAM,isPARAM}param;
 };//在结构体定义的时候，name为结构体的名字,type中的structure 指向一个新的fieldlist，从那里开始结构体里面变量的记录
 
 struct HashNode_{
@@ -66,7 +67,7 @@ void ExtDefList(node* root);
 void ExtDef(node* root);
 Type Specifier(node* root);
 void ExtDecList(node* root,Type type);
-FieldList VarDec(node* root,Type type,Type elemtype);
+FieldList VarDec(node* root,Type type,Type elemtype,int isparam);
 void FunDec(node* root,Type type,int declare);
 int CompareParam(Type now,Type before);
 char* OptTag(node* root);

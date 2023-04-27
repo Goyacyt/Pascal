@@ -314,50 +314,51 @@ int get_size(Type type){
     return size;
 }
 
-Operand get_value(Operand addr){
+Operand get_value(Operand addr){    //value_op:=*addr
     assert(addr->kind==OP_ADDRESS||addr->kind==OP_ARRAYNAME||addr->kind==OP_STRUCTURENAME);
     Operand value_op=gen_op(OP_TEMP,NULL,-1);
     insert_ir(gen_ir(IR_GETVAL,value_op,addr,NULL));
     return value_op;
 }
 
-Operand get_address(Operand value){
+Operand get_address(Operand value){ //addr_op:=&value
+    assert(value->kind==OP_ADDRESS||value->kind==OP_ARRAYNAME||value->kind==OP_STRUCTURENAME);
     Operand addr_op=gen_op(OP_ADDRESS,NULL,-1);
-    insert_ir(gen_ir(IR_GETADDR,value,addr_op,NULL));
+    insert_ir(gen_ir(IR_GETADDR,addr_op,value,NULL));
     return addr_op;
 }
 
-FieldList get_struname_field(node* root){  //root:exp->exp.id
-    assert(root->son_num==3);
-    node* struname=root->son;
-    assert(strcmp(struname->bro->name,"DOT")==0);
-    assert(struname->bro->bro->type==TYPE_ID);
-    while(struname->son_num==3){
-        struname=struname->son;
-    }
-    if(struname->son_num!=1) assert(0);
-    HashNode struct_hashnode=get(ID(struname));
-    assert(struct_hashnode!=NULL);
-    FieldList struct_field=struct_hashnode->value;
-    assert(struct_field->type->kind==STRUCTURE);
-    return struct_field;
-}
+// FieldList get_struname_field(node* root){  //root:exp->exp.id
+//     assert(root->son_num==3);
+//     node* struname=root->son;
+//     assert(strcmp(struname->bro->name,"DOT")==0);
+//     assert(struname->bro->bro->type==TYPE_ID);
+//     while(struname->son_num==3){
+//         struname=struname->son;
+//     }
+//     if(struname->son_num!=1) assert(0);
+//     HashNode struct_hashnode=get(ID(struname));
+//     assert(struct_hashnode!=NULL);
+//     FieldList struct_field=struct_hashnode->value;
+//     assert(struct_field->type->kind==STRUCTURE);
+//     return struct_field;
+// }
 
-FieldList get_arrname_field(node* root){  //Exp->Exp [ INT ]
-    assert(root->son_num==4);
-    node* arrname=root->son;
-    assert(strcmp(arrname->bro->name,"LB")==0);
-    assert(arrname->bro->bro->type==TYPE_INT);
-    while(arrname->son_num==4){
-        arrname=arrname->son;
-    }
-    if(arrname->son_num!=1) assert(0);
-    HashNode arr_hashnode=get(ID(arrname));
-    assert(arr_hashnode!=NULL);
-    FieldList arr_field=arr_hashnode->value;
-    assert(arr_field->type->kind==ARRAY);
-    return arr_field;
-}
+// FieldList get_arrname_field(node* root){  //Exp->Exp [ INT ]
+//     assert(root->son_num==4);
+//     node* arrname=root->son;
+//     assert(strcmp(arrname->bro->name,"LB")==0);
+//     assert(arrname->bro->bro->type==TYPE_INT);
+//     while(arrname->son_num==4){
+//         arrname=arrname->son;
+//     }
+//     if(arrname->son_num!=1) assert(0);
+//     HashNode arr_hashnode=get(ID(arrname));
+//     assert(arr_hashnode!=NULL);
+//     FieldList arr_field=arr_hashnode->value;
+//     assert(arr_field->type->kind==ARRAY);
+//     return arr_field;
+// }
 
 
 void translate_Program(node* root) {    // Program -> ExtDefList
@@ -428,9 +429,21 @@ void translate_FunDec(node* root){
         FieldList varlist_field=function_field->type->u.function.param;
         while(varlist_field!=NULL){
             assert(varlist_field->type->kind==BASIC||varlist_field->type->kind==STRUCTURE||varlist_field->type->kind==ARRAY);
-            Operand param=gen_op(OP_VARIABLE,varlist_field->name,-1);              
-            
-            InterCode funparam_ir=gen_ir(IR_PARAM,param,NULL,NULL);
+            Operand param=NULL;
+            switch(varlist_field->type->kind){
+                case BASIC:
+                    param=gen_op(OP_VARIABLE,varlist_field->name,-1);
+                    break;
+                case STRUCTURE:
+                    param=gen_op(OP_ARRAYNAME,varlist_field->name,-1);
+                    param->param=isPARAM;
+                    break;
+                case ARRAY:
+                    param=gen_op(OP_ARRAYNAME,varlist_field->name,-1);
+                    param->param=isPARAM;
+                    break;
+            }
+            InterCode funparam_ir=gen_ir(IR_PARAM,param,NULL,NULL); //[PARAM op]
             insert_ir(funparam_ir);
 
             varlist_field=varlist_field->tail;
@@ -534,6 +547,7 @@ Operand translate_VarDec(node* root){
                 break;
             case STRUCTURE:
                 id_op=gen_op(OP_STRUCTURENAME,vardec_field->name,-1);
+                id_op->param=notPARAM;
                 vardec_ir->kind=IR_DEC;
                 vardec_ir->u.dec.size=get_size(vardec_field->type);
                 vardec_ir->u.dec.var=id_op;
@@ -541,6 +555,7 @@ Operand translate_VarDec(node* root){
                 break;
             case ARRAY:
                 id_op=gen_op(OP_ARRAYNAME,vardec_field->name,-1);
+                id_op->param=notPARAM;
                 vardec_ir->kind=IR_DEC;
                 vardec_ir->u.dec.size=get_size(vardec_field->type);
                 vardec_ir->u.dec.var=id_op;
@@ -581,6 +596,8 @@ void translate_Stmt(node* root){
         node* exp=root->son->bro;
         Operand t=gen_op(OP_TEMP,NULL,-1);
         translate_Exp(exp,t);
+        if(t->kind==OP_ADDRESS||t->kind==OP_ARRAYNAME||t->kind==OP_STRUCTURENAME)
+            t=get_value(t);
         //返回值只能是int/float
         InterCode return_ir=gen_ir(IR_RETURN,t,NULL,NULL);
         insert_ir(return_ir);
@@ -661,6 +678,14 @@ void translate_Cond(node* root,Operand label_true,Operand label_false){
         assert(relop->type==TYPE_RELOP);
         Operand t1=gen_op(OP_TEMP,NULL,-1);
         Operand t2=gen_op(OP_TEMP,NULL,-1);
+
+        translate_Exp(exp1,t1);
+        if(t1->kind==OP_ADDRESS||t1->kind==OP_ARRAYNAME||t1->kind==OP_STRUCTURENAME)
+            t1=get_value(t1);
+        translate_Exp(exp2,t2);
+        if(t2->kind==OP_ADDRESS||t2->kind==OP_ARRAYNAME||t2->kind==OP_STRUCTURENAME)
+            t2=get_value(t2);
+
         InterCode ifgoto_ir=(InterCode)malloc(sizeof(struct InterCode_));
         assert(ifgoto_ir!=NULL);
         ifgoto_ir->kind=IR_IFGOTO;
@@ -670,8 +695,6 @@ void translate_Cond(node* root,Operand label_true,Operand label_false){
         sscanf(relop->val.relop_val,"%s",ifgoto_ir->u.ifgoto.relop);
         InterCode goto_ir=gen_ir(IR_GOTO,label_false,NULL,NULL);
 
-        translate_Exp(exp1,t1);
-        translate_Exp(exp2,t2);
         insert_ir(ifgoto_ir);
         insert_ir(goto_ir);
     }
@@ -700,6 +723,9 @@ void translate_Cond(node* root,Operand label_true,Operand label_false){
     }
     else{
         Operand t=gen_op(OP_TEMP,NULL,-1);
+        translate_Exp(root,t);
+        if(t->kind==OP_ADDRESS||t->kind==OP_ARRAYNAME||t->kind==OP_STRUCTURENAME)
+            t=get_value(t);        
         Operand c=gen_op(OP_CONSTANT,NULL,0);
         InterCode ifgoto_ir=(InterCode)malloc(sizeof(struct InterCode_));;
         assert(ifgoto_ir!=NULL);
@@ -735,11 +761,13 @@ void translate_Exp(node* root,Operand place){
                     place->kind=OP_ARRAYNAME;
                     place->type=id_field->type;
                     place->name=idchar;
+                    place->param=id_field->param;
                     break;
                 case STRUCTURE:
                     place->kind=OP_STRUCTURENAME;
                     place->type=id_field->type;
                     place->name=idchar;
+                    place->param=id_field->param;
                     break;
                 defalut: assert(0);
             }
@@ -758,6 +786,8 @@ void translate_Exp(node* root,Operand place){
             node* exp=root->son->bro;
             Operand t1=gen_op(OP_TEMP,NULL,-1);
             Operand c=gen_op(OP_CONSTANT,NULL,0);
+            if(t1->kind==OP_ADDRESS||t1->kind==OP_ARRAYNAME||t1->kind==OP_STRUCTURENAME)
+                t1=get_value(t1);
             InterCode neg_ir=gen_ir(IR_SUB,c,t1,place);
             translate_Exp(exp,t1);
             insert_ir(neg_ir);
@@ -808,51 +838,67 @@ void translate_Exp(node* root,Operand place){
             Operand t2=gen_op(OP_TEMP,NULL,-1);
             translate_Exp(exp1,t1);
             translate_Exp(exp2,t2);
-            InterCode assign_ir=gen_ir(IR_ASSIGN,t1,t2,NULL);
-            insert_ir(assign_ir);
+            if(t1->kind==OP_ADDRESS||t1->kind==OP_ARRAYNAME||t1->kind==OP_STRUCTURENAME)
+                t1=get_value(t1);
+            if(t2->kind==OP_ADDRESS||t2->kind==OP_ARRAYNAME||t2->kind==OP_STRUCTURENAME)
+                t2=get_value(t2);
+            insert_ir(gen_ir(IR_ASSIGN,t1,t2,NULL));
         }
         else if(strcmp(root->son->bro->name,"PLUS")==0){
             node* exp1=root->son;
             node* exp2=exp1->bro->bro;
-            Operand t1=gen_op(OP_LABEL,NULL,-1);
-            Operand t2=gen_op(OP_LABEL,NULL,-1);
-            InterCode add_ir=gen_ir(IR_ADD,t1,t2,place);
+            Operand t1=gen_op(OP_TEMP,NULL,-1);
+            Operand t2=gen_op(OP_TEMP,NULL,-1);
 
             translate_Exp(exp1,t1);
             translate_Exp(exp2,t2);
-            insert_ir(add_ir);
+            if(t1->kind==OP_ADDRESS||t1->kind==OP_ARRAYNAME||t1->kind==OP_STRUCTURENAME)
+                t1=get_value(t1);
+            if(t2->kind==OP_ADDRESS||t2->kind==OP_ARRAYNAME||t2->kind==OP_STRUCTURENAME)
+                t2=get_value(t2);
+            insert_ir(gen_ir(IR_ADD,t1,t2,place));
         }
         else if(strcmp(root->son->bro->name,"MINUS")==0){
             node* exp1=root->son;
             node* exp2=exp1->bro->bro;
-            Operand t1=gen_op(OP_LABEL,NULL,-1);
-            Operand t2=gen_op(OP_LABEL,NULL,-1);
-            InterCode sub_ir=gen_ir(IR_SUB,t1,t2,place);
+            Operand t1=gen_op(OP_TEMP,NULL,-1);
+            Operand t2=gen_op(OP_TEMP,NULL,-1);
 
             translate_Exp(exp1,t1);
             translate_Exp(exp2,t2);
-            insert_ir(sub_ir);
+            if(t1->kind==OP_ADDRESS||t1->kind==OP_ARRAYNAME||t1->kind==OP_STRUCTURENAME)
+                t1=get_value(t1);
+            if(t2->kind==OP_ADDRESS||t2->kind==OP_ARRAYNAME||t2->kind==OP_STRUCTURENAME)
+                t2=get_value(t2);
+            insert_ir(gen_ir(IR_SUB,t1,t2,place));
         }
         else if(strcmp(root->son->bro->name,"STAR")==0){
             node* exp1=root->son;
             node* exp2=exp1->bro->bro;
-            Operand t1=gen_op(OP_LABEL,NULL,-1);
-            Operand t2=gen_op(OP_LABEL,NULL,-1);
-            InterCode mul_ir=gen_ir(IR_MUL,t1,t2,place);
+            Operand t1=gen_op(OP_TEMP,NULL,-1);
+            Operand t2=gen_op(OP_TEMP,NULL,-1);
 
             translate_Exp(exp1,t1);
             translate_Exp(exp2,t2);
-            insert_ir(mul_ir);
+            if(t1->kind==OP_ADDRESS||t1->kind==OP_ARRAYNAME||t1->kind==OP_STRUCTURENAME)
+                t1=get_value(t1);
+            if(t2->kind==OP_ADDRESS||t2->kind==OP_ARRAYNAME||t2->kind==OP_STRUCTURENAME)
+                t2=get_value(t2);
+            insert_ir(gen_ir(IR_MUL,t1,t2,place));
         }
         else if(strcmp(root->son->bro->name,"DIV")==0){
             node* exp1=root->son;
             node* exp2=exp1->bro->bro;
-            Operand t1=gen_op(OP_LABEL,NULL,-1);
-            Operand t2=gen_op(OP_LABEL,NULL,-1);
-            InterCode div_ir=gen_ir(IR_DIV,t1,t2,place);
+            Operand t1=gen_op(OP_TEMP,NULL,-1);
+            Operand t2=gen_op(OP_TEMP,NULL,-1);
+
             translate_Exp(exp1,t1);
             translate_Exp(exp2,t2);
-            insert_ir(div_ir);
+            if(t1->kind==OP_ADDRESS||t1->kind==OP_ARRAYNAME||t1->kind==OP_STRUCTURENAME)
+                t1=get_value(t1);
+            if(t2->kind==OP_ADDRESS||t2->kind==OP_ARRAYNAME||t2->kind==OP_STRUCTURENAME)
+                t2=get_value(t2);
+            insert_ir(gen_ir(IR_DIV,t1,t2,place));
         }
 
         else if(strcmp(root->son->name,"ID")==0){   //Exp->ID ( )
@@ -892,17 +938,18 @@ void translate_Exp(node* root,Operand place){
             if(base_op->kind==OP_STRUCTURENAME){
                 assert(exp->son->type==TYPE_ID);
                 assert(base_op->type->kind==STRUCTURE);
-                base_op=get_address(base_op);
+                if(base_op->param==notPARAM)    base_op=get_address(base_op);
             }
-            else
+            else{
                 assert(base_op->kind==OP_ADDRESS);
-            
+                if(base_op->param==notPARAM)    base_op=get_address(base_op);
+            }
             Operand offset=gen_op(OP_CONSTANT,NULL,off);
             insert_ir(gen_ir(IR_ADD,base_op,offset,place));
         }
 
         else if(strcmp(root->son->name,"LP")==0){    //Exp->(Exp)
-            translate_Exp(root->son,place);
+            translate_Exp(root->son->bro,place);
         }
         else assert(0);
     }
@@ -930,6 +977,7 @@ void translate_Exp(node* root,Operand place){
             if(strcmp(funct_field->name,"write")==0){
                 call_ir=gen_ir(IR_WRITE,arglist_head->arg,NULL,NULL);
                 insert_ir(call_ir);
+                insert_ir(gen_ir(IR_ASSIGN,place,gen_op(OP_CONSTANT,NULL,0),NULL));
             }
             else{
                 ArgList arglist=arglist_head;

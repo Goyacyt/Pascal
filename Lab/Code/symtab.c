@@ -244,10 +244,10 @@ void ExtDecList(node* root,Type type){
     if(root->son_num==3){
         son2=son1->bro;
         son3=son2->bro;
-        VarDec(son1,type,type);
+        VarDec(son1,type,type,0);
         ExtDecList(son3,type);
     }else if(root->son_num==1){
-        VarDec(son1,type,type);
+        VarDec(son1,type,type,0);
     }else{
         printf("ExtDecList error\n");
     }
@@ -552,7 +552,7 @@ FieldList Dec(node* root,Type type,int stru){
                 }
             }
         }
-        vardec_field=VarDec(vardec,type,type);
+        vardec_field=VarDec(vardec,type,type,0);
     }else if(root->son_num==3){ //Dec->VarDec ASSIGNOP Exp
         if(stru){
             eprintf(15,line,"Assign value when defining struct variable");
@@ -560,7 +560,7 @@ FieldList Dec(node* root,Type type,int stru){
         }
 
         node* exp=vardec->bro->bro;
-        vardec_field=VarDec(vardec,type,type);
+        vardec_field=VarDec(vardec,type,type,0);
         Type exp_type=Exp(exp);
         if(vardec_field==NULL||exp_type==NULL){
             //其中一个出错
@@ -580,7 +580,7 @@ FieldList Dec(node* root,Type type,int stru){
     return vardec_field;
 }
 
-FieldList VarDec(node* root,Type type,Type elemtype){
+FieldList VarDec(node* root,Type type,Type elemtype,int isparam){
     int line=root->first_line;
     debug("VarDec");
     if(root->son_num==1){   //VarDec->ID
@@ -614,6 +614,8 @@ FieldList VarDec(node* root,Type type,Type elemtype){
             subtype->u.array.elem=type;
             field->type=elemtype;
         }
+        if(isparam) field->param=isPARAM;
+        else    field->param=notPARAM;
         add_sym(field,sdep,line);
         return field;
     }else if(root->son_num==4){ //VarDec->VarDec [ INT ]
@@ -629,14 +631,14 @@ FieldList VarDec(node* root,Type type,Type elemtype){
                 subtype=subtype->u.array.elem;
             }
             subtype->u.array.elem=thistype;
-            return VarDec(vardec,type,elemtype);
+            return VarDec(vardec,type,elemtype,isparam);
         }else{
             //是第一层数组嵌套
             Type thistype=(Type)malloc(sizeof(struct Type_));
             thistype->kind=ARRAY;
             thistype->u.array.size=int_node->val.int_val;
             thistype->u.array.elem=NULL;
-            return VarDec(vardec,type,thistype);
+            return VarDec(vardec,type,thistype,isparam);
         }
     }
     printf("VarDec error\n");
@@ -667,7 +669,7 @@ FieldList ParamDec(node* root){
     node* specifier=root->son;
     Type type=Specifier(specifier);
     node* vardec=specifier->bro;
-    return VarDec(vardec,type,type);
+    return VarDec(vardec,type,type,1);
 }
 
 void StmtList(node* root,Type type){
