@@ -898,7 +898,7 @@ void translate_Exp(node* root,Operand place){
                 assert(base_op->kind==OP_ADDRESS);
             
             Operand offset=gen_op(OP_CONSTANT,NULL,off);
-            insert_ir(gen_ir(IR_ADD,base_op,offset,NULL));
+            insert_ir(gen_ir(IR_ADD,base_op,offset,place));
         }
 
         else if(strcmp(root->son->name,"LP")==0){    //Exp->(Exp)
