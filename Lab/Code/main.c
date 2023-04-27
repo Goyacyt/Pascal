@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include"tree.h"
 #include "symtab.h"
+#include "intercode.h"
 int yylex();    //词法分析
 int yyparse();  //对输入文件语法分析
 void yyrestart(FILE *file); //重置yyin指针为开头
@@ -15,6 +16,7 @@ int error_line;
 int haserror;
 int syntax;
 int sdep;
+int intercode;
 node* root;
 
 int main(int argc, char** argv){
@@ -25,8 +27,9 @@ int main(int argc, char** argv){
 	haserror=0;
     syntax=1;
     semantic_de=0;
-	intercode_de=1;
+	intercode_de=0;
     error_line=0;//记录上一个出错的行数，如果当前错误仍然在这一行，就不要输出
+	intercode=1;
 	if (argc==1){
 		return 1;
 	}
@@ -44,5 +47,6 @@ int main(int argc, char** argv){
 		print_tree(root, 0);
 	}
     Program(root);
+	translate_Program(root);
     return 0;
 }

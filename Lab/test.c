@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include <stdlib.h>
 struct TEST{
     int X;
     float Y;
@@ -13,8 +14,10 @@ int TEST(float a){
     return a;
 }
 int main(){
+    struct TEST* tt=(struct TEST*)malloc(sizeof(struct TEST));
+    tt->X=2;
     int a=0;
+    
     float c=1.4;
-    if(!c)
         
 }

@@ -1,10 +1,30 @@
-struct Position{
-    float x,y;
-};
+//struct Position{
+//    float x,y;
+//};
+
+struct S {
+    int   x,y;
+    float z;
+    int   arr[10][20];
+    struct C{
+        int hhh;
+    }c;
+    struct {
+        float farr[10];
+        int   di,ci;
+    } b[10];
+}s;
 
 int main()
 {
+    /*
     struct Position p;
     if(p.n==3.7)
         return 0;
+        */
+}
+
+int main(){
+    struct S s;
+    s.b[4]=3;
 }

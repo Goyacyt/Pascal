@@ -60,6 +60,7 @@ HashNode add_sym(FieldList value,int stack_dep,int line);  //将域结构为valu
 void check_decfun();
 int push_stack();
 int pop_stack();
+void add_ReadandWrite();
 void Program(node* root);
 void ExtDefList(node* root);
 void ExtDef(node* root);
@@ -87,4 +88,5 @@ int CompareType(Type left,Type right);
 void debug(char* s);
 void eprintf(int error_number,int line,char* message);
 void debugi(char* s,int d);
+
 #endif

@@ -6,6 +6,7 @@ HashNode stack[STACK_SIZE+1];
 node* declare_func[100];
 extern int semantic_de;
 extern int sdep;
+extern int intercode;
 //TODO:错误15涉及到压到不同层栈的问题，还没有解决
 
 unsigned int hash_fun(char* name){
@@ -47,9 +48,6 @@ HashNode get(char* name){
 }
 
 HashNode add_sym(FieldList value,int stack_dep,int line){
-    if(strcmp(value->name,"Stack")==0){
-        
-    }
     debug("add_sym begin");
     int pos=hash_fun(value->name);
     debugi("hash pos",pos); 
@@ -131,12 +129,55 @@ void check_decfun(){
 }
 
 
+void add_ReadandWrite(){
+    FieldList read_field=(FieldList)malloc(sizeof(struct FieldList_));
+    FieldList write_field=(FieldList)malloc(sizeof(struct FieldList_));
+    assert(read_field&&write_field);
+
+    read_field->name="read";
+    read_field->tail=NULL;
+    Type read_type=(Type)malloc(sizeof(struct Type_));
+    assert(read_type);
+    read_field->type=read_type;
+    read_type->kind=FUNCTION;
+    read_type->u.function.declare=1;
+    read_type->u.function.param=NULL;
+    read_type->u.function.paramnum=0;
+    Type readret_type=(Type)malloc(sizeof(struct Type_));
+    read_type->u.function.ret=readret_type;
+    readret_type->kind=BASIC;
+    readret_type->u.basirc=INT;
+    add_sym(read_field,0,0);
+    
+    write_field->name="write";
+    write_field->tail=NULL;
+    Type write_type=(Type)malloc(sizeof(struct Type_));
+    assert(write_type);
+    write_field->type=write_type;
+    write_type->kind=FUNCTION;
+    write_type->u.function.declare=1;
+    write_type->u.function.paramnum=1;
+    write_type->u.function.ret=NULL;
+    FieldList writeparam_field=(FieldList)malloc(sizeof(struct FieldList_));
+    assert(writeparam_field);
+    write_type->u.function.param=writeparam_field;
+    writeparam_field->name="n";
+    writeparam_field->tail=NULL;
+    Type writeparam_type=(Type)malloc(sizeof(struct Type_));
+    assert(writeparam_type);
+    writeparam_field->type=writeparam_type;
+    writeparam_type->kind=BASIC;
+    writeparam_type->u.basirc=INT;
+    add_sym(write_field,0,0);
+    return;   
+}
 
 
 void Program(node* root){
     debug("program");
     init_hashtab();
     init_stack();
+    if(intercode)   add_ReadandWrite();
     if(root->son!=NULL){
         ExtDefList(root->son);
     }
@@ -170,15 +211,15 @@ void ExtDef(node* root){
         son3=son2->bro;
         if(strcmp(son3->name,"CompSt")==0){ 
             //ExtDef->Specifier FunDef CompSt ： 函数定义
-            push_stack();
+            if(!intercode)  push_stack();
             FunDec(son2,specifier_type,0);
             CompSt(son3,specifier_type);
-            pop_stack();
+            if(!intercode)  pop_stack();
         }
         else{ //ExtDef->Specifier FunDef ：函数声明
-            push_stack();
+            if(!intercode)  push_stack();
             FunDec(son2,specifier_type,1);
-            pop_stack();
+            if(!intercode)  pop_stack();
         }
     }else if(strcmp(son2->name,"SEMI")==0){
         //这个其实不用做什么？
@@ -271,12 +312,12 @@ Type StructSpecifier(node* root){
             add_sym(hash_struct_field,0,line);//添加结构体名字的定义信息
         }
         if(strcmp(deflist->name,"DefList")==0){  //DefList可能没有
-            push_stack();
+            if(!intercode)  push_stack();
             FieldList deflist_field=DefList(deflist,1);
             type->u.structval=deflist_field;
             hash_type->u.structtype.structure=deflist_field;
             hash_type->u.structtype.defok=1;
-            pop_stack();
+            if(!intercode)  pop_stack();
         }
 
         
@@ -651,9 +692,9 @@ void Stmt(node* root,Type type){
         Exp(exp);
     }else if(root->son_num==1){//Stmt->CompSt
         node* compst=root->son;
-        push_stack();   //bug in E2.2
+        if(!intercode)  push_stack();   //bug in E2.2
         CompSt(compst,type);//这里应该也需要传入类型，因为可以函数中途return
-        pop_stack();
+        if(!intercode)  pop_stack();
     }else if(root->son_num==3){//Stmt->REtURN Exp Semi
         node* exp=root->son->bro;
         Type exp_type=Exp(exp);
@@ -674,9 +715,9 @@ void Stmt(node* root,Type type){
                 eprintf(7,line,"Not INT for condition of IF or WHILE");
         }
         node* stmt=exp->bro->bro;
-        push_stack();
+        if(!intercode)  push_stack();
         Stmt(stmt,type);
-        pop_stack();
+        if(!intercode)  pop_stack();
     }else if(root->son_num==7){
         node* exp=root->son->bro->bro;
         Type exp_type=NULL;
@@ -686,13 +727,13 @@ void Stmt(node* root,Type type){
                 eprintf(7,line,"Not INT for condition of IF ELSE");
         }
         node* stmt1=exp->bro->bro;
-        push_stack();
+        if(!intercode)  push_stack();
         Stmt(stmt1,type);
-        pop_stack();
+        if(!intercode)  pop_stack();
         node* stmt2=stmt1->bro->bro;
-        push_stack();
+        if(!intercode)  push_stack();
         Stmt(stmt2,type);
-        pop_stack();
+        if(!intercode)  pop_stack();
     }
     return ;
 }

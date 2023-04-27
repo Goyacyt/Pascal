@@ -8,18 +8,19 @@ typedef struct InterCode_* InterCode;
 typedef struct InterCodeList_* InterCodeList;
 typedef struct ArgList_* ArgList;
 struct Operand_{
-    enum{OP_VARIABLE,OP_CONSTANT,OP_ADDR,OP_FUNCTION,OP_TEMP,OP_LABEL,OP_ARRAY,OP_STRUCTURE}kind;
+    enum{OP_VARIABLE,OP_CONSTANT,OP_TEMP,OP_LABEL,OP_FUNCTIONNAME,OP_ARRAYNAME,
+    OP_STRUCTURENAME,OP_ADDRESS}kind;
     union{
         char *name;
         int no;
         int number;
-        Type type;
     };
+    Type type;  //for array and structture
 };
 
 struct InterCode_{
-    enum{IR_LABEL,IR_FUNCTIONNAME,IR_ASSIGN,IR_ADD,IR_SUB,IR_MUL,IR_DIV,IR_GOTO,IR_IFGOTO,IR_RETURN,
-    IR_DEC,IR_ARG,IR_CALL,IR_PARAM,IR_READ,IR_WRITE}kind;
+    enum{IR_GETVAL,IR_GETADDR,IR_LABEL,IR_ASSIGN,IR_ADD,IR_SUB,IR_MUL,IR_DIV,IR_GOTO,IR_IFGOTO,
+    IR_FUNCTIONNAME,IR_RETURN,IR_DEC,IR_ARG,IR_CALL,IR_PARAM,IR_READ,IR_WRITE}kind;
     union{
         Operand one; //LABEL,FUNCTION,GOTO,RETURN,ARG,PARAM,READ,WRITE
         struct {Operand left,right;}two;  //ASSIGN,GETADDR,GETVALUE,PASSIGN,CALL
@@ -38,19 +39,20 @@ extern InterCodeList irlist_head;
 
 struct ArgList_{
     Operand arg;
-    Operand next;
+    ArgList next;
 };
-ArgList arglist_head;
+extern ArgList arglist_head;
 
 
-void init_intercodelist();
+void init_irlist();
 InterCodeList insert_ir(InterCode ir);
-InterCodeList get_intercodelist(InterCode ir);
-void del_intercode(InterCode ir);
+InterCodeList get_irlist(InterCode ir);
+void del_ir(InterCode ir);
 Operand gen_op(int kind,char *name,int number);
 void print_op(Operand op);
 InterCode gen_ir(int kind,Operand op1,Operand op2,Operand op3);
 void print_ir(InterCode ir);
+void print_irlist();
 int get_size(Type type);
 FieldList get_struname_field(node* root);
 FieldList get_arrname_field(node* root);
