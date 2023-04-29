@@ -303,6 +303,7 @@ Type StructSpecifier(node* root){
         hash_struct_field->name=struct_name;
         type->kind=STRUCTURE;
         hash_type->kind=STRUCTURE_NAME;
+        
         hash_struct_field->type=hash_type;
                
         type->u.structval=NULL;
@@ -319,8 +320,6 @@ Type StructSpecifier(node* root){
             hash_type->u.structtype.defok=1;
             if(!intercode)  pop_stack();
         }
-
-        
     }else if(root->son_num=2){  //StructSpecifier->STRUCT Tag
         node* son2=root->son->bro;
         char* struct_name=Tag(son2);

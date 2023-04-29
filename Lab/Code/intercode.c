@@ -443,7 +443,6 @@ void translate_FunDec(node* root){
 }
 
 void translate_CompSt(node* root){
-    //这里面有两个可以为空的指针:deflist 和stmtlist不进行检查就可能把rc当作stmtlist或者deflist
     assert(root->son_num==3||root->son_num==4);
     node* son2=root->son->bro;
     if(strcmp(son2->name,"DefList")==0){    //CompSt->{ DefList StmtList }
@@ -523,11 +522,11 @@ Operand translate_VarDec(node* root){
     HashNode this=get(id);
     assert(this!=NULL);
     FieldList vardec_field=this->value;
-    Operand id_op=NULL;      
+    Operand id_op=NULL;
 
     InterCode vardec_ir=(InterCode)malloc(sizeof(struct InterCode_));
     assert(vardec_ir!=NULL);
-    if(root->son_num==1){       //VarDec->ID
+    if(root->son_num==1){       //VarDec->ID VarDec只在declaration里面使用，所以可以放心地添加dec[size]语句？
         switch(vardec_field->type->kind){
             case BASIC:
                 id_op=gen_op(OP_VARIABLE,vardec_field->name,-1);
@@ -551,7 +550,7 @@ Operand translate_VarDec(node* root){
             }
     }
     else if(root->son_num==4){ //VarDec->VarDec [ INT ]
-        id_op=translate_VarDec(root->son);
+        id_op=translate_VarDec(root->son);//
     }
     else    assert(0);
     return id_op;
