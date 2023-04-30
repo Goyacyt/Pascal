@@ -1,0 +1,25 @@
+FUNCTION add :
+PARAM structuretemp
+addr2 := structuretemp + #0
+addr4 := structuretemp + #4
+t4 := *addr2
+t5 := *addr4
+t1 := t4 + t5
+RETURN t1
+FUNCTION main :
+DEC structureop 8
+addr7 := &structureop
+addr6 := addr7 + #0
+t8 := #1
+*addr6 := t8
+addr10 := &structureop
+addr9 := addr10 + #4
+t11 := #2
+*addr9 := t11
+ARG &structureop
+t14 := CALL add
+n := t14
+WRITE n
+t16 := #0
+t18 := #0
+RETURN t18

@@ -1,0 +1,115 @@
+FUNCTION mod :
+PARAM i
+PARAM j
+t4 := i / j
+t3 := t4 * j
+t1 := i - t3
+RETURN t1
+FUNCTION quick_power_mod :
+PARAM x
+PARAM y
+PARAM k
+t8 := #1
+res := t8
+t10 := #0
+IF x <= t10 GOTO label1
+GOTO label5
+LABEL label5 :
+t12 := #0
+IF y <= t12 GOTO label1
+GOTO label4
+LABEL label4 :
+t14 := #0
+IF k <= t14 GOTO label1
+GOTO label2
+LABEL label1 :
+t16 := #1
+t15 := #0 - t16
+RETURN t15
+GOTO label3
+LABEL label2 :
+ARG k
+ARG x
+t19 := CALL mod
+x := t19
+LABEL label6 :
+t23 := #0
+IF y != t23 GOTO label7
+GOTO label8
+LABEL label7 :
+t27 := #2
+ARG t27
+ARG y
+t24 := CALL mod
+t25 := #1
+IF t24 == t25 GOTO label9
+GOTO label10
+LABEL label9 :
+t31 := res * x
+ARG k
+ARG t31
+t30 := CALL mod
+res := t30
+LABEL label10 :
+t35 := #0
+t39 := #2
+ARG t39
+ARG y
+t36 := CALL mod
+t37 := #1
+IF t36 == t37 GOTO label11
+GOTO label12
+LABEL label11 :
+t35 := #1
+LABEL label12 :
+t44 := #2
+t42 := y / t44
+y := t42
+t48 := x * x
+ARG k
+ARG t48
+t47 := CALL mod
+x := t47
+GOTO label6
+LABEL label8 :
+RETURN res
+LABEL label3 :
+FUNCTION main :
+DEC arrayinput 12
+t53 := #0
+cnt := t53
+LABEL label13 :
+t55 := #3
+IF cnt < t55 GOTO label14
+GOTO label15
+LABEL label14 :
+t60 := cnt * #4
+addr3 := &arrayinput
+addr2 := addr3 + t60
+READ t58
+*addr2 := t58
+t65 := #1
+t63 := cnt + t65
+cnt := t63
+GOTO label13
+LABEL label15 :
+t69 := #0
+t70 := t69 * #4
+addr6 := &arrayinput
+addr5 := addr6 + t70
+t72 := #1
+t73 := t72 * #4
+addr9 := &arrayinput
+addr8 := addr9 + t73
+t75 := #2
+t76 := t75 * #4
+addr12 := &arrayinput
+addr11 := addr12 + t76
+ARG addr11
+ARG addr8
+ARG addr5
+t67 := CALL quick_power_mod
+WRITE t67
+t66 := #0
+t77 := #0
+RETURN t77

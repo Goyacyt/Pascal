@@ -1,0 +1,183 @@
+FUNCTION main :
+t1 := #3
+cnum := t1
+DEC arraycharges 12
+t2 := #100
+amount := t2
+DEC arraydp 404
+t3 := #1
+valid := t3
+t4 := #0
+i := t4
+t5 := #0
+j := t5
+LABEL label1 :
+IF i < cnum GOTO label2
+GOTO label3
+LABEL label2 :
+t12 := i * #4
+addr3 := &arraycharges
+addr2 := addr3 + t12
+READ t10
+*addr2 := t10
+t16 := i * #4
+addr6 := &arraycharges
+addr5 := addr6 + t16
+t17 := *addr5
+t14 := #0
+IF t17 <= t14 GOTO label4
+GOTO label5
+LABEL label4 :
+t20 := #0
+valid := t20
+LABEL label5 :
+t21 := #0
+t25 := i * #4
+addr9 := &arraycharges
+addr8 := addr9 + t25
+t26 := *addr8
+t23 := #0
+IF t26 <= t23 GOTO label6
+GOTO label7
+LABEL label6 :
+t21 := #1
+LABEL label7 :
+t31 := #1
+t29 := i + t31
+i := t29
+GOTO label1
+LABEL label3 :
+t33 := #0
+IF valid == t33 GOTO label8
+GOTO label9
+LABEL label8 :
+t36 := #1
+t35 := #0 - t36
+WRITE t35
+t34 := #0
+t37 := #0
+RETURN t37
+LABEL label9 :
+t38 := #0
+t40 := #0
+IF valid == t40 GOTO label10
+GOTO label11
+LABEL label10 :
+t38 := #1
+LABEL label11 :
+t44 := #0
+t45 := t44 * #4
+addr12 := &arraydp
+addr11 := addr12 + t45
+t43 := #0
+*addr11 := t43
+t48 := #1
+i := t48
+LABEL label12 :
+t52 := #1
+t50 := amount + t52
+IF i < t50 GOTO label13
+GOTO label14
+LABEL label13 :
+t57 := i * #4
+addr15 := &arraydp
+addr14 := addr15 + t57
+t59 := #1
+t55 := amount + t59
+*addr14 := t55
+t64 := #1
+t62 := i + t64
+i := t62
+GOTO label12
+LABEL label14 :
+t67 := #0
+i := t67
+LABEL label15 :
+IF i < cnum GOTO label16
+GOTO label17
+LABEL label16 :
+t72 := i * #4
+addr18 := &arraycharges
+addr17 := addr18 + t72
+chg := addr17
+j := chg
+LABEL label18 :
+t79 := #1
+t77 := amount + t79
+IF j < t77 GOTO label19
+GOTO label20
+LABEL label19 :
+t84 := j - chg
+t87 := t84 * #4
+addr21 := &arraydp
+addr20 := addr21 + t87
+t83 := #1
+t88 := *addr20
+t80 := t88 + t83
+t90 := j * #4
+addr24 := &arraydp
+addr23 := addr24 + t90
+t91 := *addr23
+IF t80 < t91 GOTO label21
+GOTO label22
+LABEL label21 :
+t96 := j * #4
+addr27 := &arraydp
+addr26 := addr27 + t96
+t99 := j - chg
+t102 := t99 * #4
+addr30 := &arraydp
+addr29 := addr30 + t102
+t98 := #1
+t103 := *addr29
+t94 := t103 + t98
+*addr26 := t94
+LABEL label22 :
+t104 := #0
+t109 := j - chg
+t112 := t109 * #4
+addr33 := &arraydp
+addr32 := addr33 + t112
+t108 := #1
+t113 := *addr32
+t105 := t113 + t108
+t115 := j * #4
+addr36 := &arraydp
+addr35 := addr36 + t115
+t116 := *addr35
+IF t105 < t116 GOTO label23
+GOTO label24
+LABEL label23 :
+t104 := #1
+LABEL label24 :
+t121 := #1
+t119 := j + t121
+j := t119
+GOTO label18
+LABEL label20 :
+t126 := #1
+t124 := i + t126
+i := t124
+GOTO label15
+LABEL label17 :
+t130 := amount * #4
+addr39 := &arraydp
+addr38 := addr39 + t130
+t131 := *addr38
+IF t131 > amount GOTO label25
+GOTO label26
+LABEL label25 :
+t134 := #1
+t133 := #0 - t134
+WRITE t133
+t132 := #0
+GOTO label27
+LABEL label26 :
+t138 := amount * #4
+addr42 := &arraydp
+addr41 := addr42 + t138
+WRITE *addr41
+t135 := #0
+LABEL label27 :
+t139 := #0
+RETURN t139

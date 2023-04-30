@@ -1,0 +1,39 @@
+FUNCTION bit_and :
+PARAM aop1
+PARAM aop2
+t2 := #0
+IF aop1 == t2 GOTO label1
+GOTO label2
+LABEL label1 :
+t3 := #0
+RETURN t3
+GOTO label3
+LABEL label2 :
+RETURN aop2
+LABEL label3 :
+FUNCTION bit_or :
+PARAM oop1
+PARAM oop2
+t6 := #0
+IF oop1 == t6 GOTO label4
+GOTO label5
+LABEL label4 :
+RETURN oop2
+GOTO label6
+LABEL label5 :
+t8 := #1
+RETURN t8
+LABEL label6 :
+FUNCTION bit_not :
+PARAM nop
+t10 := #0
+IF nop == t10 GOTO label7
+GOTO label8
+LABEL label7 :
+t11 := #1
+RETURN t11
+GOTO label9
+LABEL label8 :
+t12 := #0
+RETURN t12
+parser: intercode.c:990: translate_Exp: Assertion `0' failed.

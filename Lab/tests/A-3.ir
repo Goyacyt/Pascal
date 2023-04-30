@@ -1,0 +1,85 @@
+FUNCTION main :
+t1 := #0
+line := t1
+t2 := #0
+cnt := t2
+t3 := #0
+m := t3
+t4 := #0
+n := t4
+t5 := #1
+numtor := t5
+t6 := #1
+denomtor := t6
+READ t9
+k := t9
+t11 := #0
+IF k <= t11 GOTO label1
+GOTO label2
+LABEL label1 :
+t14 := #1
+t13 := #0 - t14
+WRITE t13
+t12 := #0
+t15 := #0
+RETURN t15
+LABEL label2 :
+t16 := #0
+t18 := #0
+IF k <= t18 GOTO label3
+GOTO label4
+LABEL label3 :
+t16 := #1
+LABEL label4 :
+LABEL label5 :
+IF cnt < k GOTO label6
+GOTO label7
+LABEL label6 :
+t25 := #1
+t23 := line + t25
+line := t23
+t28 := cnt + line
+cnt := t28
+GOTO label5
+LABEL label7 :
+t35 := cnt - line
+t33 := k - t35
+m := t33
+n := line
+WRITE n
+t41 := #0
+WRITE m
+t43 := #0
+t47 := #0
+cnt := t47
+LABEL label8 :
+IF cnt < m GOTO label9
+GOTO label10
+LABEL label9 :
+t52 := numtor * n
+numtor := t52
+t59 := #1
+t57 := n - t59
+n := t57
+t64 := #1
+t62 := cnt + t64
+cnt := t62
+GOTO label8
+LABEL label10 :
+LABEL label11 :
+t66 := #0
+IF m > t66 GOTO label12
+GOTO label13
+LABEL label12 :
+t69 := denomtor * m
+denomtor := t69
+t76 := #1
+t74 := m - t76
+m := t74
+GOTO label11
+LABEL label13 :
+t78 := numtor / denomtor
+WRITE t78
+t77 := #0
+t81 := #0
+RETURN t81

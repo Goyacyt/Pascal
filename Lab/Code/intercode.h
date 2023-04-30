@@ -8,14 +8,18 @@ typedef struct InterCode_* InterCode;
 typedef struct InterCodeList_* InterCodeList;
 typedef struct ArgList_* ArgList;
 struct Operand_{
-    enum{OP_VARIABLE,OP_CONSTANT,OP_TEMP,OP_LABEL,OP_FUNCTIONNAME,OP_ARRAYNAME,
-    OP_STRUCTURENAME,OP_ADDRESS}kind;
+    enum{OP_VARIABLE,OP_CONSTANT,OP_TEMP,OP_TEMP_OFFSET,OP_LABEL,OP_FUNCTIONNAME,OP_ARRAYNAME,
+    OP_STRUCTURENAME,OP_ADDRESS,OP_ADDRESS_LEFT,}kind;
     union{
         char *name;
         int no;//OP LABEL ADDRESS
         int number;//CONSTANT
     };
-    Type type;  //for array and structture
+    struct{
+        Type type;  //for array and structture
+        int param;  //是不是函数参数
+        int offset;
+    }optype;
 };
 
 struct InterCode_{
@@ -41,7 +45,7 @@ struct ArgList_{
     Operand arg;
     ArgList next;
 };
-extern ArgList arglist_head;
+//extern ArgList arglist_head;
 
 
 void init_irlist();
@@ -71,5 +75,6 @@ void translate_StmtList(node* root);
 void translate_Stmt(node* root);
 void translate_Cond(node* root,Operand label_true,Operand label_false);
 void translate_Exp(node* root,Operand place);
-void translate_Args(node* root);
+ArgList translate_Args(node* root);
+void traverse_arglist(ArgList arglist);
 #endif

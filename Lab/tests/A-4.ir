@@ -1,0 +1,84 @@
+FUNCTION main :
+DEC arraycatalan 44
+t1 := #11
+n := t1
+t5 := #0
+t6 := t5 * #4
+addr3 := &arraycatalan
+addr2 := addr3 + t6
+t4 := #1
+*addr2 := t4
+t10 := #1
+t11 := t10 * #4
+addr6 := &arraycatalan
+addr5 := addr6 + t11
+t9 := #1
+*addr5 := t9
+t14 := #2
+i := t14
+LABEL label1 :
+IF i < n GOTO label2
+GOTO label3
+LABEL label2 :
+t21 := i * #4
+addr9 := &arraycatalan
+addr8 := addr9 + t21
+t19 := #0
+*addr8 := t19
+t26 := #1
+t24 := i + t26
+i := t24
+GOTO label1
+LABEL label3 :
+t29 := #2
+i := t29
+LABEL label4 :
+IF i < n GOTO label5
+GOTO label6
+LABEL label5 :
+t34 := #0
+j := t34
+LABEL label7 :
+IF j < i GOTO label8
+GOTO label9
+LABEL label8 :
+t41 := i * #4
+addr12 := &arraycatalan
+addr11 := addr12 + t41
+t45 := i * #4
+addr15 := &arraycatalan
+addr14 := addr15 + t45
+t49 := j * #4
+addr18 := &arraycatalan
+addr17 := addr18 + t49
+t51 := i - j
+t52 := #1
+t50 := t51 - t52
+t55 := t50 * #4
+addr21 := &arraycatalan
+addr20 := addr21 + t55
+t56 := *addr17
+t57 := *addr20
+t43 := t56 * t57
+t58 := *addr14
+t39 := t58 + t43
+*addr11 := t39
+t63 := #1
+t61 := j + t63
+j := t61
+GOTO label7
+LABEL label9 :
+t68 := #1
+t66 := i + t68
+i := t66
+GOTO label4
+LABEL label6 :
+t73 := #1
+t71 := n - t73
+t74 := t71 * #4
+addr24 := &arraycatalan
+addr23 := addr24 + t74
+WRITE *addr23
+t69 := #0
+t75 := #0
+RETURN t75

@@ -1,0 +1,162 @@
+FUNCTION cal_bmi :
+PARAM structureg
+addr2 := structureg + #16
+addr4 := structureg + #12
+addr6 := structureg + #8
+addr8 := structureg + #8
+t8 := *addr6
+t9 := *addr8
+t5 := t8 * t9
+t10 := *addr4
+t3 := t10 / t5
+*addr2 := t3
+t11 := #0
+RETURN t11
+FUNCTION cal_avg_bmi :
+PARAM structuref
+t12 := #0
+c := t12
+t13 := #0
+sum := t13
+LABEL label1 :
+t15 := #5
+IF c < t15 GOTO label2
+GOTO label3
+LABEL label2 :
+addr11 := structuref + #0
+t19 := c * #20
+addr12 := addr11 + t19
+ARG addr12
+t16 := CALL cal_bmi
+addr16 := structuref + #0
+t26 := c * #20
+addr17 := addr16 + t26
+addr19 := &addr17
+addr18 := addr19 + #16
+t27 := *addr18
+t22 := sum + t27
+sum := t22
+t32 := #1
+t30 := c + t32
+c := t30
+GOTO label1
+LABEL label3 :
+addr21 := structuref + #100
+t37 := #5
+t35 := sum / t37
+*addr21 := t35
+t38 := #0
+RETURN t38
+FUNCTION main :
+DEC arraygf 1040
+t41 := #0
+i := t41
+LABEL label4 :
+t43 := #10
+IF i < t43 GOTO label5
+GOTO label6
+LABEL label5 :
+t46 := #0
+j := t46
+LABEL label7 :
+t48 := #5
+IF j < t48 GOTO label8
+GOTO label9
+LABEL label8 :
+t53 := i * #104
+addr27 := &arraygf
+addr26 := addr27 + t53
+addr29 := &addr26
+addr28 := addr29 + #0
+t55 := j * #20
+addr30 := addr28 + t55
+addr32 := &addr30
+addr31 := addr32 + #0
+t59 := #2
+t56 := i / t59
+t51 := t56 + j
+*addr31 := t51
+t64 := i * #104
+addr38 := &arraygf
+addr37 := addr38 + t64
+addr40 := &addr37
+addr39 := addr40 + #0
+t66 := j * #20
+addr41 := addr39 + t66
+addr43 := &addr41
+addr42 := addr43 + #4
+t72 := #2
+t69 := i / t72
+t70 := #20
+t67 := t69 + t70
+t62 := t67 + j
+*addr42 := t62
+t77 := i * #104
+addr49 := &arraygf
+addr48 := addr49 + t77
+addr51 := &addr48
+addr50 := addr51 + #0
+t79 := j * #20
+addr52 := addr50 + t79
+addr54 := &addr52
+addr53 := addr54 + #8
+t85 := #2
+t82 := i / t85
+t83 := #2
+t80 := t82 + t83
+t75 := t80 + j
+*addr53 := t75
+t90 := i * #104
+addr60 := &arraygf
+addr59 := addr60 + t90
+addr62 := &addr59
+addr61 := addr62 + #0
+t92 := j * #20
+addr63 := addr61 + t92
+addr65 := &addr63
+addr64 := addr65 + #12
+t98 := #2
+t95 := i / t98
+t96 := #90
+t93 := t95 + t96
+t101 := j * j
+t99 := t101 * j
+t94 := t99 * j
+t88 := t93 + t94
+*addr64 := t88
+t109 := #1
+t107 := j + t109
+j := t107
+GOTO label7
+LABEL label9 :
+t113 := i * #104
+addr68 := &arraygf
+addr67 := addr68 + t113
+ARG addr67
+t110 := CALL cal_avg_bmi
+t118 := #1
+t116 := i + t118
+i := t116
+GOTO label4
+LABEL label6 :
+t121 := #0
+i := t121
+LABEL label10 :
+t123 := #10
+IF i < t123 GOTO label11
+GOTO label12
+LABEL label11 :
+t127 := i * #104
+addr72 := &arraygf
+addr71 := addr72 + t127
+addr74 := &addr71
+addr73 := addr74 + #100
+WRITE *addr73
+t124 := #0
+t132 := #1
+t130 := i + t132
+i := t130
+GOTO label10
+LABEL label12 :
+t133 := #0
+RETURN t133

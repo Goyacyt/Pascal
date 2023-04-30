@@ -1,0 +1,65 @@
+FUNCTION add :
+PARAM arraytemp
+t4 := #0
+t5 := t4 * #4
+addr2 := arraytemp + t5
+t6 := #1
+t7 := t6 * #4
+addr4 := arraytemp + t7
+t8 := *addr2
+t9 := *addr4
+t1 := t8 + t9
+RETURN t1
+FUNCTION main :
+DEC arrayop 8
+DEC arrayr 8
+t10 := #0
+i := t10
+t11 := #0
+j := t11
+LABEL label1 :
+t13 := #2
+IF i < t13 GOTO label2
+GOTO label3
+LABEL label2 :
+LABEL label4 :
+t15 := #2
+IF j < t15 GOTO label5
+GOTO label6
+LABEL label5 :
+t20 := j * #4
+addr7 := &arrayop
+addr6 := addr7 + t20
+t18 := i + j
+*addr6 := t18
+t27 := #1
+t25 := j + t27
+j := t25
+GOTO label4
+LABEL label6 :
+t31 := #0
+t32 := t31 * #8
+addr11 := &arrayr
+addr10 := addr11 + t32
+t34 := i * #4
+addr12 := addr10 + t34
+ARG &arrayop
+t30 := CALL add
+*addr12 := t30
+t38 := #0
+t39 := t38 * #8
+addr16 := &arrayr
+addr15 := addr16 + t39
+t41 := i * #4
+addr17 := addr15 + t41
+WRITE *addr17
+t36 := #0
+t46 := #1
+t44 := i + t46
+i := t44
+t49 := #0
+j := t49
+GOTO label1
+LABEL label3 :
+t50 := #0
+RETURN t50

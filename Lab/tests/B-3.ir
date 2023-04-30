@@ -1,0 +1,298 @@
+FUNCTION main :
+t1 := #5
+n := t1
+DEC arrayarr 20
+DEC arraytmp 20
+t4 := #0
+i := t4
+LABEL label1 :
+IF i < n GOTO label2
+GOTO label3
+LABEL label2 :
+t11 := i * #4
+addr3 := &arrayarr
+addr2 := addr3 + t11
+READ t9
+*addr2 := t9
+t16 := #1
+t14 := i + t16
+i := t14
+GOTO label1
+LABEL label3 :
+t19 := #1
+intv := t19
+LABEL label4 :
+IF intv < n GOTO label5
+GOTO label6
+LABEL label5 :
+t24 := #0
+i := t24
+LABEL label7 :
+t29 := #2
+t28 := t29 * intv
+t26 := n - t28
+IF i <= t26 GOTO label8
+GOTO label9
+LABEL label8 :
+s1 := i
+t36 := s1 + intv
+e1 := t36
+cur1 := s1
+s2 := e1
+t47 := s2 + intv
+e2 := t47
+cur2 := s2
+LABEL label10 :
+IF cur1 < e1 GOTO label13
+GOTO label12
+LABEL label13 :
+IF cur2 < e2 GOTO label11
+GOTO label12
+LABEL label11 :
+t60 := cur1 * #4
+addr6 := &arrayarr
+addr5 := addr6 + t60
+t61 := *addr5
+t63 := cur2 * #4
+addr9 := &arrayarr
+addr8 := addr9 + t63
+t64 := *addr8
+IF t61 < t64 GOTO label14
+GOTO label15
+LABEL label14 :
+t69 := i * #4
+addr12 := &arraytmp
+addr11 := addr12 + t69
+t71 := cur1 * #4
+addr15 := &arrayarr
+addr14 := addr15 + t71
+t72 := *addr14
+*addr11 := t72
+t77 := #1
+t75 := cur1 + t77
+cur1 := t75
+GOTO label16
+LABEL label15 :
+t82 := i * #4
+addr18 := &arraytmp
+addr17 := addr18 + t82
+t84 := cur2 * #4
+addr21 := &arrayarr
+addr20 := addr21 + t84
+t85 := *addr20
+*addr17 := t85
+t90 := #1
+t88 := cur2 + t90
+cur2 := t88
+LABEL label16 :
+t95 := #1
+t93 := i + t95
+i := t93
+GOTO label10
+LABEL label12 :
+LABEL label17 :
+IF cur1 < e1 GOTO label18
+GOTO label19
+LABEL label18 :
+t102 := i * #4
+addr24 := &arraytmp
+addr23 := addr24 + t102
+t104 := cur1 * #4
+addr27 := &arrayarr
+addr26 := addr27 + t104
+t105 := *addr26
+*addr23 := t105
+t110 := #1
+t108 := cur1 + t110
+cur1 := t108
+t115 := #1
+t113 := i + t115
+i := t113
+GOTO label17
+LABEL label19 :
+LABEL label20 :
+IF cur2 < e2 GOTO label21
+GOTO label22
+LABEL label21 :
+t122 := i * #4
+addr30 := &arraytmp
+addr29 := addr30 + t122
+t124 := cur2 * #4
+addr33 := &arrayarr
+addr32 := addr33 + t124
+t125 := *addr32
+*addr29 := t125
+t130 := #1
+t128 := cur2 + t130
+cur2 := t128
+t135 := #1
+t133 := i + t135
+i := t133
+GOTO label20
+LABEL label22 :
+GOTO label7
+LABEL label9 :
+t136 := i + intv
+IF t136 < n GOTO label23
+GOTO label24
+LABEL label23 :
+s1 := i
+t145 := s1 + intv
+e1 := t145
+cur1 := s1
+s2 := e1
+e2 := n
+cur2 := s2
+LABEL label26 :
+IF cur1 < e1 GOTO label29
+GOTO label28
+LABEL label29 :
+IF cur2 < e2 GOTO label27
+GOTO label28
+LABEL label27 :
+t167 := cur1 * #4
+addr36 := &arrayarr
+addr35 := addr36 + t167
+t168 := *addr35
+t170 := cur2 * #4
+addr39 := &arrayarr
+addr38 := addr39 + t170
+t171 := *addr38
+IF t168 < t171 GOTO label30
+GOTO label31
+LABEL label30 :
+t176 := i * #4
+addr42 := &arraytmp
+addr41 := addr42 + t176
+t178 := cur1 * #4
+addr45 := &arrayarr
+addr44 := addr45 + t178
+t179 := *addr44
+*addr41 := t179
+t184 := #1
+t182 := cur1 + t184
+cur1 := t182
+t189 := #1
+t187 := i + t189
+i := t187
+GOTO label32
+LABEL label31 :
+t194 := i * #4
+addr48 := &arraytmp
+addr47 := addr48 + t194
+t196 := cur2 * #4
+addr51 := &arrayarr
+addr50 := addr51 + t196
+t197 := *addr50
+*addr47 := t197
+t202 := #1
+t200 := cur2 + t202
+cur2 := t200
+t207 := #1
+t205 := i + t207
+i := t205
+LABEL label32 :
+GOTO label26
+LABEL label28 :
+LABEL label33 :
+IF cur1 < e1 GOTO label34
+GOTO label35
+LABEL label34 :
+t214 := i * #4
+addr54 := &arraytmp
+addr53 := addr54 + t214
+t216 := cur1 * #4
+addr57 := &arrayarr
+addr56 := addr57 + t216
+t217 := *addr56
+*addr53 := t217
+t222 := #1
+t220 := cur1 + t222
+cur1 := t220
+t227 := #1
+t225 := i + t227
+i := t225
+GOTO label33
+LABEL label35 :
+LABEL label36 :
+IF cur2 < e2 GOTO label37
+GOTO label38
+LABEL label37 :
+t234 := i * #4
+addr60 := &arraytmp
+addr59 := addr60 + t234
+t236 := cur2 * #4
+addr63 := &arrayarr
+addr62 := addr63 + t236
+t237 := *addr62
+*addr59 := t237
+t242 := #1
+t240 := cur2 + t242
+cur2 := t240
+t247 := #1
+t245 := i + t247
+i := t245
+GOTO label36
+LABEL label38 :
+GOTO label25
+LABEL label24 :
+LABEL label39 :
+IF i < n GOTO label40
+GOTO label41
+LABEL label40 :
+t254 := i * #4
+addr66 := &arraytmp
+addr65 := addr66 + t254
+t256 := i * #4
+addr69 := &arrayarr
+addr68 := addr69 + t256
+t257 := *addr68
+*addr65 := t257
+t262 := #1
+t260 := i + t262
+i := t260
+GOTO label39
+LABEL label41 :
+LABEL label25 :
+t265 := #0
+i := t265
+LABEL label42 :
+IF i < n GOTO label43
+GOTO label44
+LABEL label43 :
+t272 := i * #4
+addr72 := &arrayarr
+addr71 := addr72 + t272
+t274 := i * #4
+addr75 := &arraytmp
+addr74 := addr75 + t274
+t275 := *addr74
+*addr71 := t275
+t280 := #1
+t278 := i + t280
+i := t278
+GOTO label42
+LABEL label44 :
+t285 := #2
+t283 := intv * t285
+intv := t283
+GOTO label4
+LABEL label6 :
+t288 := #0
+i := t288
+LABEL label45 :
+IF i < n GOTO label46
+GOTO label47
+LABEL label46 :
+t294 := i * #4
+addr78 := &arrayarr
+addr77 := addr78 + t294
+WRITE *addr77
+t291 := #0
+t299 := #1
+t297 := i + t299
+i := t297
+GOTO label45
+LABEL label47 :
+t300 := #0
+RETURN t300

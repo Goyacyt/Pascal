@@ -1,0 +1,171 @@
+FUNCTION dot_product :
+PARAM arrayu
+PARAM arrayv
+t8 := #0
+t9 := t8 * #4
+addr2 := arrayu + t9
+t10 := #0
+t11 := t10 * #4
+addr4 := arrayv + t11
+t12 := *addr2
+t13 := *addr4
+t4 := t12 * t13
+t16 := #1
+t17 := t16 * #4
+addr6 := arrayu + t17
+t18 := #1
+t19 := t18 * #4
+addr8 := arrayv + t19
+t20 := *addr6
+t21 := *addr8
+t5 := t20 * t21
+t2 := t4 + t5
+t24 := #2
+t25 := t24 * #4
+addr10 := arrayu + t25
+t26 := #2
+t27 := t26 * #4
+addr12 := arrayv + t27
+t28 := *addr10
+t29 := *addr12
+t3 := t28 * t29
+t1 := t2 + t3
+RETURN t1
+FUNCTION cross_product :
+PARAM arrayx
+PARAM arrayy
+PARAM arrayz
+t33 := #0
+t34 := t33 * #4
+addr14 := arrayz + t34
+t39 := #1
+t40 := t39 * #4
+addr16 := arrayx + t40
+t41 := #2
+t42 := t41 * #4
+addr18 := arrayy + t42
+t43 := *addr16
+t44 := *addr18
+t35 := t43 * t44
+t47 := #2
+t48 := t47 * #4
+addr20 := arrayx + t48
+t49 := #1
+t50 := t49 * #4
+addr22 := arrayy + t50
+t51 := *addr20
+t52 := *addr22
+t36 := t51 * t52
+t32 := t35 - t36
+*addr14 := t32
+t56 := #1
+t57 := t56 * #4
+addr24 := arrayz + t57
+t62 := #2
+t63 := t62 * #4
+addr26 := arrayx + t63
+t64 := #0
+t65 := t64 * #4
+addr28 := arrayy + t65
+t66 := *addr26
+t67 := *addr28
+t58 := t66 * t67
+t70 := #0
+t71 := t70 * #4
+addr30 := arrayx + t71
+t72 := #2
+t73 := t72 * #4
+addr32 := arrayy + t73
+t74 := *addr30
+t75 := *addr32
+t59 := t74 * t75
+t55 := t58 - t59
+*addr24 := t55
+t79 := #2
+t80 := t79 * #4
+addr34 := arrayz + t80
+t85 := #0
+t86 := t85 * #4
+addr36 := arrayx + t86
+t87 := #1
+t88 := t87 * #4
+addr38 := arrayy + t88
+t89 := *addr36
+t90 := *addr38
+t81 := t89 * t90
+t93 := #1
+t94 := t93 * #4
+addr40 := arrayx + t94
+t95 := #0
+t96 := t95 * #4
+addr42 := arrayy + t96
+t97 := *addr40
+t98 := *addr42
+t82 := t97 * t98
+t78 := t81 - t82
+*addr34 := t78
+t99 := #0
+RETURN t99
+FUNCTION main :
+DEC arrayops 24
+DEC arrayres 12
+t102 := #0
+i := t102
+LABEL label1 :
+t104 := #2
+IF i < t104 GOTO label2
+GOTO label3
+LABEL label2 :
+t107 := #0
+j := t107
+LABEL label4 :
+t109 := #3
+IF j < t109 GOTO label5
+GOTO label6
+LABEL label5 :
+t114 := i * #12
+addr46 := &arrayops
+addr45 := addr46 + t114
+t116 := j * #4
+addr47 := addr45 + t116
+t122 := #1
+t119 := i + t122
+t124 := #1
+t120 := i + t124
+t117 := t119 * t120
+t128 := #1
+t125 := j + t128
+t130 := #1
+t126 := j + t130
+t118 := t125 * t126
+t112 := t117 + t118
+*addr47 := t112
+t135 := #1
+t133 := j + t135
+j := t133
+GOTO label4
+LABEL label6 :
+t140 := #1
+t138 := i + t140
+i := t138
+GOTO label1
+LABEL label3 :
+t143 := #0
+t144 := t143 * #12
+addr50 := &arrayops
+addr49 := addr50 + t144
+t146 := #1
+t147 := t146 * #12
+addr53 := &arrayops
+addr52 := addr53 + t147
+ARG &arrayres
+ARG addr52
+ARG addr49
+t141 := CALL cross_product
+ARG &arrayres
+ARG &arrayres
+t150 := CALL dot_product
+WRITE t150
+t149 := #0
+t153 := #0
+RETURN t153

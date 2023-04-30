@@ -1,0 +1,99 @@
+FUNCTION main :
+READ t3
+x1 := t3
+READ t6
+y1 := t6
+READ t9
+x2 := t9
+READ t12
+y2 := t12
+READ t15
+u1 := t15
+READ t18
+v1 := t18
+READ t21
+u2 := t21
+READ t24
+v2 := t24
+IF x1 == x2 GOTO label1
+GOTO label6
+LABEL label6 :
+IF y1 == y2 GOTO label1
+GOTO label5
+LABEL label5 :
+IF u1 == u2 GOTO label1
+GOTO label4
+LABEL label4 :
+IF v1 == v2 GOTO label1
+GOTO label2
+LABEL label1 :
+t35 := #1
+t34 := #0 - t35
+WRITE t34
+t33 := #0
+GOTO label3
+LABEL label2 :
+IF x1 < x2 GOTO label7
+GOTO label8
+LABEL label7 :
+l1 := x1
+r1 := x2
+GOTO label9
+LABEL label8 :
+l1 := x2
+r1 := x1
+LABEL label9 :
+IF y1 < y2 GOTO label10
+GOTO label11
+LABEL label10 :
+t1 := y2
+b1 := y1
+GOTO label12
+LABEL label11 :
+t1 := y1
+b1 := y2
+LABEL label12 :
+IF u1 < u2 GOTO label13
+GOTO label14
+LABEL label13 :
+l2 := u1
+r2 := u2
+GOTO label15
+LABEL label14 :
+l2 := u2
+r2 := u1
+LABEL label15 :
+IF v1 < v2 GOTO label16
+GOTO label17
+LABEL label16 :
+t2 := v2
+b2 := v1
+GOTO label18
+LABEL label17 :
+t2 := v1
+b2 := v2
+LABEL label18 :
+IF l2 >= r1 GOTO label19
+GOTO label24
+LABEL label24 :
+IF r2 <= l1 GOTO label19
+GOTO label23
+LABEL label23 :
+IF b2 >= t1 GOTO label19
+GOTO label22
+LABEL label22 :
+IF t2 <= b1 GOTO label19
+GOTO label20
+LABEL label19 :
+t101 := #0
+WRITE t101
+t100 := #0
+GOTO label21
+LABEL label20 :
+t103 := #1
+WRITE t103
+t102 := #0
+LABEL label21 :
+LABEL label3 :
+t104 := #0
+RETURN t104

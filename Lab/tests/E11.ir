@@ -1,0 +1,36 @@
+FUNCTION main :
+DEC structureg 16
+t1 := #0
+bmi := t1
+addr3 := &structureg
+addr2 := addr3 + #0
+t4 := #0
+*addr2 := t4
+addr6 := &structureg
+addr5 := addr6 + #4
+t7 := #20
+*addr5 := t7
+addr9 := &structureg
+addr8 := addr9 + #8
+t10 := #2
+*addr8 := t10
+addr12 := &structureg
+addr11 := addr12 + #12
+t13 := #90
+*addr11 := t13
+addr15 := &structureg
+addr14 := addr15 + #12
+addr18 := &structureg
+addr17 := addr18 + #8
+addr21 := &structureg
+addr20 := addr21 + #8
+t21 := *addr17
+t22 := *addr20
+t18 := t21 * t22
+t23 := *addr14
+t16 := t23 / t18
+bmi := t16
+WRITE bmi
+t24 := #0
+t26 := #0
+RETURN t26

@@ -13,7 +13,7 @@ int main()
 {
     int n;
     struct Operands op;
-    op.o1;
+    op.o1=1;
     op.o2=2;
     n=add(op);
     write(n);

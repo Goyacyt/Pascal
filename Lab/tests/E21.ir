@@ -1,0 +1,95 @@
+FUNCTION main :
+t1 := #5
+n := t1
+DEC arraym 100
+DEC arrayrs 100
+t4 := #0
+i := t4
+LABEL label1 :
+IF i < n GOTO label2
+GOTO label3
+LABEL label2 :
+t9 := #0
+j := t9
+LABEL label4 :
+IF j < n GOTO label5
+GOTO label6
+LABEL label5 :
+t16 := i * #20
+addr4 := &arraym
+addr3 := addr4 + t16
+t18 := j * #4
+addr5 := addr3 + t18
+t19 := i * i
+t14 := t19 + j
+*addr5 := t14
+t27 := #1
+t25 := j + t27
+j := t25
+GOTO label4
+LABEL label6 :
+t32 := #1
+t30 := i + t32
+i := t30
+GOTO label1
+LABEL label3 :
+t35 := #0
+i := t35
+LABEL label7 :
+IF i < n GOTO label8
+GOTO label9
+LABEL label8 :
+t40 := #0
+j := t40
+LABEL label10 :
+IF j < n GOTO label11
+GOTO label12
+LABEL label11 :
+t47 := j * #20
+addr9 := &arraym
+addr8 := addr9 + t47
+t49 := i * #4
+addr10 := addr8 + t49
+t51 := i * #20
+addr14 := &arraym
+addr13 := addr14 + t51
+t53 := j * #4
+addr15 := addr13 + t53
+t54 := *addr15
+*addr10 := t54
+t59 := #1
+t57 := j + t59
+j := t57
+GOTO label10
+LABEL label12 :
+t64 := #1
+t62 := i + t64
+i := t62
+GOTO label7
+LABEL label9 :
+t67 := #0
+sum := t67
+t70 := #0
+i := t70
+LABEL label13 :
+IF i < n GOTO label14
+GOTO label15
+LABEL label14 :
+t78 := #0
+t79 := t78 * #20
+addr19 := &arraym
+addr18 := addr19 + t79
+t81 := i * #4
+addr20 := addr18 + t81
+t82 := *addr20
+t75 := sum + t82
+sum := t75
+t87 := #1
+t85 := i + t87
+i := t85
+GOTO label13
+LABEL label15 :
+WRITE sum
+t88 := #0
+t90 := #0
+RETURN t90

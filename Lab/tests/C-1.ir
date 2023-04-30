@@ -1,0 +1,39 @@
+FUNCTION fact :
+PARAM m
+t2 := #0
+IF m <= t2 GOTO label1
+GOTO label2
+LABEL label1 :
+t3 := #1
+RETURN t3
+GOTO label3
+LABEL label2 :
+t9 := #1
+t7 := m - t9
+ARG t7
+t5 := CALL fact
+t4 := t5 * m
+RETURN t4
+LABEL label3 :
+FUNCTION isqrt :
+PARAM n
+t10 := #0
+i := t10
+LABEL label4 :
+IF i < n GOTO label5
+GOTO label6
+LABEL label5 :
+t13 := i * i
+IF t13 <= n GOTO label9
+GOTO label8
+LABEL label9 :
+t22 := #1
+t19 := i + t22
+t24 := #1
+t20 := i + t24
+t17 := t19 * t20
+IF t17 > n GOTO label7
+GOTO label8
+LABEL label7 :
+RETURN i
+LABparser: intercode.c:990: translate_Exp: Assertion `0' failed.

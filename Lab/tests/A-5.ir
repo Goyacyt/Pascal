@@ -1,0 +1,44 @@
+FUNCTION add :
+PARAM ai
+PARAM aj
+t1 := ai + aj
+RETURN t1
+FUNCTION sub :
+PARAM si
+PARAM sj
+t4 := si - sj
+RETURN t4
+FUNCTION mul :
+PARAM mi
+PARAM mj
+t7 := mi * mj
+RETURN t7
+FUNCTION main :
+READ t12
+i := t12
+READ t15
+j := t15
+READ t18
+k := t18
+READ t21
+l := t21
+ARG j
+ARG i
+t26 := CALL sub
+ARG j
+ARG i
+t29 := CALL sub
+ARG t29
+ARG t26
+t25 := CALL mul
+ARG l
+ARG k
+t32 := CALL add
+ARG t32
+ARG t25
+t24 := CALL add
+res := t24
+WRITE res
+t35 := #0
+t37 := #0
+RETURN t37

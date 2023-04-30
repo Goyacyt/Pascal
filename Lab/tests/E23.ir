@@ -1,0 +1,229 @@
+FUNCTION merge :
+PARAM arraya
+PARAM l
+PARAM m
+PARAM r
+DEC arrayla 40
+DEC arrayra 40
+t5 := #1
+t3 := l - t5
+t1 := m - t3
+n1 := t1
+t6 := r - m
+n2 := t6
+t11 := #0
+i := t11
+LABEL label1 :
+IF i < n1 GOTO label2
+GOTO label3
+LABEL label2 :
+t18 := i * #4
+addr3 := &arrayla
+addr2 := addr3 + t18
+t19 := l + i
+t22 := t19 * #4
+addr5 := arraya + t22
+t23 := *addr5
+*addr2 := t23
+t28 := #1
+t26 := i + t28
+i := t26
+GOTO label1
+LABEL label3 :
+t31 := #0
+j := t31
+LABEL label4 :
+IF j < n2 GOTO label5
+GOTO label6
+LABEL label5 :
+t38 := j * #4
+addr8 := &arrayra
+addr7 := addr8 + t38
+t43 := #1
+t40 := m + t43
+t39 := t40 + j
+t44 := t39 * #4
+addr10 := arraya + t44
+t45 := *addr10
+*addr7 := t45
+t50 := #1
+t48 := j + t50
+j := t48
+GOTO label4
+LABEL label6 :
+t53 := #0
+i := t53
+t56 := #0
+j := t56
+k := l
+LABEL label7 :
+IF i < n1 GOTO label10
+GOTO label9
+LABEL label10 :
+IF j < n2 GOTO label8
+GOTO label9
+LABEL label8 :
+t67 := i * #4
+addr13 := &arrayla
+addr12 := addr13 + t67
+t68 := *addr12
+t70 := j * #4
+addr16 := &arrayra
+addr15 := addr16 + t70
+t71 := *addr15
+IF t68 <= t71 GOTO label11
+GOTO label12
+LABEL label11 :
+t76 := k * #4
+addr18 := arraya + t76
+t78 := i * #4
+addr21 := &arrayla
+addr20 := addr21 + t78
+t79 := *addr20
+*addr18 := t79
+t84 := #1
+t82 := i + t84
+i := t82
+GOTO label13
+LABEL label12 :
+t89 := k * #4
+addr23 := arraya + t89
+t91 := j * #4
+addr26 := &arrayra
+addr25 := addr26 + t91
+t92 := *addr25
+*addr23 := t92
+t97 := #1
+t95 := j + t97
+j := t95
+LABEL label13 :
+t102 := #1
+t100 := k + t102
+k := t100
+GOTO label7
+LABEL label9 :
+LABEL label14 :
+IF i < n1 GOTO label15
+GOTO label16
+LABEL label15 :
+t109 := k * #4
+addr28 := arraya + t109
+t111 := i * #4
+addr31 := &arrayla
+addr30 := addr31 + t111
+t112 := *addr30
+*addr28 := t112
+t117 := #1
+t115 := i + t117
+i := t115
+t122 := #1
+t120 := k + t122
+k := t120
+GOTO label14
+LABEL label16 :
+LABEL label17 :
+IF j < n2 GOTO label18
+GOTO label19
+LABEL label18 :
+t129 := k * #4
+addr33 := arraya + t129
+t131 := j * #4
+addr36 := &arrayra
+addr35 := addr36 + t131
+t132 := *addr35
+*addr33 := t132
+t137 := #1
+t135 := j + t137
+j := t135
+t142 := #1
+t140 := k + t142
+k := t140
+GOTO label17
+LABEL label19 :
+t143 := #0
+RETURN t143
+FUNCTION merge_sort :
+PARAM arrayarr
+PARAM start
+PARAM end
+t144 := #0
+mid := t144
+IF start >= end GOTO label20
+GOTO label21
+LABEL label20 :
+t147 := #0
+RETURN t147
+LABEL label21 :
+t148 := #0
+IF start >= end GOTO label22
+GOTO label23
+LABEL label22 :
+t148 := #1
+LABEL label23 :
+t156 := end - start
+t157 := #2
+t155 := t156 / t157
+t153 := start + t155
+mid := t153
+ARG mid
+ARG start
+ARG &arrayarr
+t160 := CALL merge_sort
+t168 := #1
+t166 := mid + t168
+ARG end
+ARG t166
+ARG &arrayarr
+t164 := CALL merge_sort
+ARG end
+ARG mid
+ARG start
+ARG &arrayarr
+t170 := CALL merge
+t175 := #0
+RETURN t175
+FUNCTION main :
+t176 := #6
+n := t176
+DEC arrayarray 24
+t177 := #0
+c := t177
+LABEL label24 :
+IF c < n GOTO label25
+GOTO label26
+LABEL label25 :
+t184 := c * #4
+addr39 := &arrayarray
+addr38 := addr39 + t184
+READ t182
+*addr38 := t182
+t189 := #1
+t187 := c + t189
+c := t187
+GOTO label24
+LABEL label26 :
+t192 := #0
+t195 := #1
+t193 := n - t195
+ARG t193
+ARG t192
+ARG &arrayarray
+t190 := CALL merge_sort
+t198 := #0
+c := t198
+LABEL label27 :
+IF c < n GOTO label28
+GOTO label29
+LABEL label28 :
+t204 := c * #4
+addr42 := &arrayarray
+addr41 := addr42 + t204
+WRITE *addr41
+t201 := #0
+t209 := #1
+t207 := c + t209
+c := t207
+GOTO label27
+LABEL label29 :
+t210 := #0
+RETURN t210
