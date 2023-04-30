@@ -12,8 +12,8 @@ struct Operand_{
     OP_STRUCTURENAME,OP_ADDRESS}kind;
     union{
         char *name;
-        int no;
-        int number;
+        int no;//OP LABEL ADDRESS
+        int number;//CONSTANT
     };
     Type type;  //for array and structture
 };

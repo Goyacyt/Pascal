@@ -120,10 +120,10 @@ void print_op(Operand op){
             printf("addr%d",op->no);
             break;
         case OP_ARRAYNAME:
-            printf("array(%s)",op->name);
+            printf("array%s",op->name);
             break;
         case OP_STRUCTURENAME:
-            printf("structure(%s)",op->name);
+            printf("structure%s",op->name);
             break;
         default:
             printf("operand kind=%d\n",op->kind);
@@ -179,8 +179,12 @@ InterCode gen_ir(int kind,Operand op1,Operand op2,Operand op3){
         case IR_GETADDR:
             ir->u.two.left=op1;
             ir->u.two.right=op2;
-            break;       
-        defalut:
+            break;
+        case IR_CALL:
+            ir->u.two.left=op2;
+            ir->u.two.right=op1;
+            break;
+        default:
             assert(0);
     }
     return ir;
@@ -195,9 +199,9 @@ void print_ir(InterCode ir){
             print_op(ir->u.two.right);
             break;
         case IR_GETADDR:
-            print_op(ir->u.two.left);
-            printf(" := &");
             print_op(ir->u.two.right);
+            printf(" := &");
+            print_op(ir->u.two.left);
             break;
         case IR_LABEL:
             printf("LABEL ");
@@ -210,6 +214,12 @@ void print_ir(InterCode ir){
             assert(ir->u.one->kind==OP_FUNCTIONNAME);
             print_op(ir->u.one);
             printf(" :");
+            break;
+        case IR_CALL:
+            print_op(ir->u.two.left);
+            printf(" := ");
+            printf("CALL ");
+            print_op(ir->u.two.right);
             break;
         case IR_READ:
             printf("READ ");
@@ -282,7 +292,7 @@ void print_ir(InterCode ir){
             print_op(ir->u.dec.var);
             printf(" %d",ir->u.dec.size);
             break;
-        defalut:
+        default:
             assert(0);
     }
     printf("\n");
@@ -571,8 +581,9 @@ void translate_StmtList(node* root){
 void translate_Stmt(node* root){
     if(root->son_num==2){           //Stmt->Exp SEMI
         node* exp=root->son;
-        Operand t=gen_op(OP_TEMP,NULL,-1);
-        translate_Exp(exp,t);
+        //Operand t=gen_op(OP_TEMP,NULL,-1);
+        translate_Exp(exp,NULL);
+        //TODO: 不需要传入这个t吧？
     }else if(root->son_num==1){     //Stmt->CompSt
         node* compst=root->son;
         translate_CompSt(compst);
@@ -640,10 +651,10 @@ void translate_Stmt(node* root){
         InterCode label3_ir=gen_ir(IR_LABEL,label3,NULL,NULL);
         InterCode goto_ir=gen_ir(IR_GOTO,label3,NULL,NULL);
 
-        translate_Cond(exp,label2,label3);
+        translate_Cond(exp,label1,label2);
         insert_ir(label1_ir);
         translate_Stmt(stmt1);
-        insert_ir(goto_ir);
+        insert_ir(goto_ir);//goto label3
         insert_ir(label2_ir);
         translate_Stmt(stmt2);
         insert_ir(label3_ir);        
@@ -698,8 +709,10 @@ void translate_Cond(node* root,Operand label_true,Operand label_false){
         translate_Cond(exp,label_false,label_true);
     }
     else{
+        assert(strcmp(root->name,"Exp")==0);
         Operand t=gen_op(OP_TEMP,NULL,-1);
         Operand c=gen_op(OP_CONSTANT,NULL,0);
+        translate_Exp(root,t);
         InterCode ifgoto_ir=(InterCode)malloc(sizeof(struct InterCode_));;
         assert(ifgoto_ir!=NULL);
         ifgoto_ir->kind=IR_IFGOTO;
@@ -707,6 +720,10 @@ void translate_Cond(node* root,Operand label_true,Operand label_false){
         ifgoto_ir->u.ifgoto.op1=t;
         ifgoto_ir->u.ifgoto.op2=c;
         sscanf("!=","%s",ifgoto_ir->u.ifgoto.relop);
+        //TODO不确定
+        InterCode goto_ir=gen_ir(IR_GOTO,label_false,NULL,NULL);
+        insert_ir(ifgoto_ir);
+        insert_ir(goto_ir);
     }
 }
 
@@ -740,7 +757,8 @@ void translate_Exp(node* root,Operand place){
                     place->type=id_field->type;
                     place->name=idchar;
                     break;
-                defalut: assert(0);
+                default: 
+                    assert(0);
             }
             // Operand id_op=gen_op(OP_VARIABLE,ID(id_node),-1);
             // InterCode assign_ir=gen_ir(IR_ASSIGN,place,id_op,NULL);
@@ -760,7 +778,6 @@ void translate_Exp(node* root,Operand place){
             InterCode neg_ir=gen_ir(IR_SUB,c,t1,place);
             translate_Exp(exp,t1);
             insert_ir(neg_ir);
-
         }
         else if(strcmp(root->son->name,"NOT")==0){   //Exp->NOT Exp
             node* exp=root;
@@ -768,13 +785,13 @@ void translate_Exp(node* root,Operand place){
             Operand label2=gen_op(OP_LABEL,NULL,-1);
             Operand c0=gen_op(OP_CONSTANT,NULL,0);
             Operand c1=gen_op(OP_CONSTANT,NULL,1);
-            InterCode assign0_ir=gen_ir(IR_ASSIGN,place,c0,NULL);
+            InterCode assign0_ir=gen_ir(IR_ASSIGN,place,c0,NULL);//place=0
             InterCode label1_ir=gen_ir(IR_LABEL,label1,NULL,NULL);
-            InterCode assign1_ir=gen_ir(IR_ASSIGN,place,c1,NULL);
+            InterCode assign1_ir=gen_ir(IR_ASSIGN,place,c1,NULL);//place=1
             InterCode label2_ir=gen_ir(IR_LABEL,label2,NULL,NULL);
 
             insert_ir(assign0_ir);
-            translate_Cond(exp,label1,label2);
+            translate_Cond(exp,label2,label1);
             insert_ir(label1_ir);
             insert_ir(assign1_ir);
             insert_ir(label2_ir);
@@ -806,15 +823,15 @@ void translate_Exp(node* root,Operand place){
             Operand t1=gen_op(OP_TEMP,NULL,-1);
             Operand t2=gen_op(OP_TEMP,NULL,-1);
             translate_Exp(exp1,t1);
-            translate_Exp(exp2,t2);
+            translate_Exp(exp2,t2);//TODO结构体还没看
             InterCode assign_ir=gen_ir(IR_ASSIGN,t1,t2,NULL);
             insert_ir(assign_ir);
         }
         else if(strcmp(root->son->bro->name,"PLUS")==0){
             node* exp1=root->son;
             node* exp2=exp1->bro->bro;
-            Operand t1=gen_op(OP_LABEL,NULL,-1);
-            Operand t2=gen_op(OP_LABEL,NULL,-1);
+            Operand t1=gen_op(OP_TEMP,NULL,-1);
+            Operand t2=gen_op(OP_TEMP,NULL,-1);
             InterCode add_ir=gen_ir(IR_ADD,t1,t2,place);
 
             translate_Exp(exp1,t1);
@@ -824,8 +841,8 @@ void translate_Exp(node* root,Operand place){
         else if(strcmp(root->son->bro->name,"MINUS")==0){
             node* exp1=root->son;
             node* exp2=exp1->bro->bro;
-            Operand t1=gen_op(OP_LABEL,NULL,-1);
-            Operand t2=gen_op(OP_LABEL,NULL,-1);
+            Operand t1=gen_op(OP_TEMP,NULL,-1);
+            Operand t2=gen_op(OP_TEMP,NULL,-1);
             InterCode sub_ir=gen_ir(IR_SUB,t1,t2,place);
 
             translate_Exp(exp1,t1);
@@ -835,8 +852,8 @@ void translate_Exp(node* root,Operand place){
         else if(strcmp(root->son->bro->name,"STAR")==0){
             node* exp1=root->son;
             node* exp2=exp1->bro->bro;
-            Operand t1=gen_op(OP_LABEL,NULL,-1);
-            Operand t2=gen_op(OP_LABEL,NULL,-1);
+            Operand t1=gen_op(OP_TEMP,NULL,-1);
+            Operand t2=gen_op(OP_TEMP,NULL,-1);
             InterCode mul_ir=gen_ir(IR_MUL,t1,t2,place);
 
             translate_Exp(exp1,t1);
@@ -846,8 +863,8 @@ void translate_Exp(node* root,Operand place){
         else if(strcmp(root->son->bro->name,"DIV")==0){
             node* exp1=root->son;
             node* exp2=exp1->bro->bro;
-            Operand t1=gen_op(OP_LABEL,NULL,-1);
-            Operand t2=gen_op(OP_LABEL,NULL,-1);
+            Operand t1=gen_op(OP_TEMP,NULL,-1);
+            Operand t2=gen_op(OP_TEMP,NULL,-1);
             InterCode div_ir=gen_ir(IR_DIV,t1,t2,place);
             translate_Exp(exp1,t1);
             translate_Exp(exp2,t2);
@@ -855,15 +872,16 @@ void translate_Exp(node* root,Operand place){
         }
 
         else if(strcmp(root->son->name,"ID")==0){   //Exp->ID ( )
-            node* funct_name=root->son;
-            HashNode funct_hashnode=get(ID(funct_name));
+            node* funct_node=root->son;
+            HashNode funct_hashnode=get(ID(funct_node));
             assert(funct_hashnode!=NULL);
             FieldList funct_field=funct_hashnode->value;
             InterCode call_ir=NULL;
             if(strcmp(funct_field->name,"read")==0)
-                call_ir=gen_ir(IR_READ,gen_op(OP_TEMP,NULL,-1),NULL,NULL);
+                call_ir=gen_ir(IR_READ,place,NULL,NULL);
+                //place不用处理
             else{
-                call_ir=gen_ir(IR_FUNCTIONNAME,gen_op(OP_FUNCTIONNAME,funct_field->name,-1),NULL,NULL);
+                call_ir=gen_ir(IR_CALL,gen_op(OP_FUNCTIONNAME,funct_field->name,-1),place,NULL);
             }
             insert_ir(call_ir);
         }
@@ -880,7 +898,7 @@ void translate_Exp(node* root,Operand place){
 
             FieldList structmb_field=base_op->type->u.structval;
             int off=0;
-            while((structmb_field!=NULL)&&(strcmp(structmb_field->name,id_char)==0)){
+            while((structmb_field!=NULL)&&(strcmp(structmb_field->name,id_char)!=0)){
                 off+=get_size(structmb_field->type);
                 structmb_field=structmb_field->tail;
             }
@@ -893,15 +911,16 @@ void translate_Exp(node* root,Operand place){
                 assert(base_op->type->kind==STRUCTURE);
                 base_op=get_address(base_op);
             }
-            else
+            else{
+                //为什么会到这里？
                 assert(base_op->kind==OP_ADDRESS);
-            
+            }
             Operand offset=gen_op(OP_CONSTANT,NULL,off);
             insert_ir(gen_ir(IR_ADD,base_op,offset,place));
         }
 
         else if(strcmp(root->son->name,"LP")==0){    //Exp->(Exp)
-            translate_Exp(root->son,place);
+            translate_Exp(root->son->bro,place);
         }
         else assert(0);
     }
@@ -914,9 +933,10 @@ void translate_Exp(node* root,Operand place){
             FieldList funct_field=funct_hashnode->value;
             Operand functname_op=gen_op(OP_FUNCTIONNAME,funct_field->name,-1);
 
-            if(arglist_head!=NULL){
+            if(arglist_head!=NULL){//全局变量！！！？
                 ArgList arglist=arglist_head->next;
                 while(arglist!=NULL){
+                    //把前一个函数分配的arglist都释放掉？
                     ArgList freearg=arglist;
                     arglist=arglist->next;
                     free(freearg);
@@ -932,12 +952,13 @@ void translate_Exp(node* root,Operand place){
             }
             else{
                 ArgList arglist=arglist_head;
+                //TODO: 这里顺序是反的，传参应该从最后一个往前传
                 while(arglist!=NULL){
                     call_ir=gen_ir(IR_ARG,arglist->arg,NULL,NULL);
                     arglist=arglist->next;
                     insert_ir(call_ir);
                 }
-                call_ir=gen_ir(IR_FUNCTIONNAME,functname_op,NULL,NULL);
+                call_ir=gen_ir(IR_CALL,functname_op,place,NULL);
                 insert_ir(call_ir);
             }
         }
@@ -958,12 +979,18 @@ void translate_Exp(node* root,Operand place){
                 assert(base_op->type->kind==ARRAY);
                 base_op=get_address(base_op);
             }
-            else    assert(base_op->kind==OP_ADDRESS);
+            else{
+                //why？
+                assert(base_op->kind==OP_ADDRESS);
+            }
 
 
             Operand index_op=gen_op(OP_TEMP,NULL,-1);   //偏移值
             translate_Exp(exp2,index_op);
-            if(index_op->kind==OP_ADDRESS)  index_op=get_value(index_op);
+            if(index_op->kind==OP_ADDRESS){
+                //why?第二个exp有可能是地址变量吗？
+                index_op=get_value(index_op);
+            }
 
             Operand offset=gen_op(OP_TEMP,NULL,-1); //[]内总偏移量
             Operand intvl=gen_op(OP_CONSTANT,NULL,get_size(base_op->type)); //数组元素宽度
@@ -994,12 +1021,13 @@ void translate_Args(node* root) {
         assert(argnode!=NULL);
         argnode->arg=temp;
         argnode->next=NULL;
-        while(arglist->next==NULL){
+        while(arglist->next!=NULL){
             arglist=arglist->next;
         }
         arglist->next=argnode;
     }
     else{
+        //arglist_head是空，这是第一个参数
         arglist_head=(ArgList)malloc(sizeof(struct ArgList_));
         assert(arglist_head);
         arglist_head->arg=temp;

@@ -168,6 +168,10 @@ void add_ReadandWrite(){
     writeparam_field->type=writeparam_type;
     writeparam_type->kind=BASIC;
     writeparam_type->u.basirc=INT;
+    Type writeret_type=(Type)malloc(sizeof(struct Type_));
+    write_type->u.function.ret=writeret_type;
+    writeret_type->kind=BASIC;
+    writeret_type->u.basirc=INT;
     add_sym(write_field,0,0);
     return;   
 }
