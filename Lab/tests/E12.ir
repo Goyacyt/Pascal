@@ -25,36 +25,32 @@ LABEL label2 :
 t20 := i * #20
 addr12 := &arraygiants
 addr11 := addr12 + t20
-addr14 := &addr11
-addr13 := addr14 + #0
+addr13 := addr11 + #0
 *addr13 := i
 t25 := i * #20
-addr18 := &arraygiants
-addr17 := addr18 + t25
-addr20 := &addr17
-addr19 := addr20 + #4
+addr17 := &arraygiants
+addr16 := addr17 + t25
+addr18 := addr16 + #4
 t26 := #20
 t23 := t26 + i
-*addr19 := t23
+*addr18 := t23
 t32 := i * #20
-addr24 := &arraygiants
-addr23 := addr24 + t32
-addr26 := &addr23
-addr25 := addr26 + #8
+addr22 := &arraygiants
+addr21 := addr22 + t32
+addr23 := addr21 + #8
 t33 := #2
 t30 := t33 + i
-*addr25 := t30
+*addr23 := t30
 t39 := i * #20
-addr30 := &arraygiants
-addr29 := addr30 + t39
-addr32 := &addr29
-addr31 := addr32 + #12
+addr27 := &arraygiants
+addr26 := addr27 + t39
+addr28 := addr26 + #12
 t40 := #90
 t44 := i * i
 t42 := t44 * i
 t41 := t42 * i
 t37 := t40 + t41
-*addr31 := t37
+*addr28 := t37
 t52 := #1
 t50 := i + t52
 i := t50
@@ -67,9 +63,9 @@ IF i < n GOTO label5
 GOTO label6
 LABEL label5 :
 t61 := i * #20
-addr35 := &arraygiants
-addr34 := addr35 + t61
-ARG addr34
+addr31 := &arraygiants
+addr30 := addr31 + t61
+ARG addr30
 t58 := CALL cal_bmi
 t66 := #1
 t64 := i + t66
@@ -83,16 +79,16 @@ IF i < n GOTO label8
 GOTO label9
 LABEL label8 :
 t75 := i * #20
-addr39 := &arraygiants
-addr38 := addr39 + t75
-addr41 := &addr38
-addr40 := addr41 + #16
-WRITE *addr40
+addr35 := &arraygiants
+addr34 := addr35 + t75
+addr36 := addr34 + #16
+t76 := *addr36
+WRITE t76
 t72 := #0
-t80 := #1
-t78 := i + t80
-i := t78
+t81 := #1
+t79 := i + t81
+i := t79
 GOTO label7
 LABEL label9 :
-t81 := #0
-RETURN t81
+t82 := #0
+RETURN t82

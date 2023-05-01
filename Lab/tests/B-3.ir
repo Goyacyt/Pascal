@@ -287,12 +287,13 @@ LABEL label46 :
 t294 := i * #4
 addr78 := &arrayarr
 addr77 := addr78 + t294
-WRITE *addr77
+t295 := *addr77
+WRITE t295
 t291 := #0
-t299 := #1
-t297 := i + t299
-i := t297
+t300 := #1
+t298 := i + t300
+i := t298
 GOTO label45
 LABEL label47 :
-t300 := #0
-RETURN t300
+t301 := #0
+RETURN t301

@@ -154,76 +154,71 @@ LABEL label20 :
 t147 := #0
 RETURN t147
 LABEL label21 :
-t148 := #0
-IF start >= end GOTO label22
-GOTO label23
-LABEL label22 :
-t148 := #1
-LABEL label23 :
-t156 := end - start
-t157 := #2
-t155 := t156 / t157
-t153 := start + t155
-mid := t153
+t153 := end - start
+t154 := #2
+t152 := t153 / t154
+t150 := start + t152
+mid := t150
 ARG mid
 ARG start
-ARG &arrayarr
-t160 := CALL merge_sort
-t168 := #1
-t166 := mid + t168
+ARG arrayarr
+t157 := CALL merge_sort
+t165 := #1
+t163 := mid + t165
 ARG end
-ARG t166
-ARG &arrayarr
-t164 := CALL merge_sort
+ARG t163
+ARG arrayarr
+t161 := CALL merge_sort
 ARG end
 ARG mid
 ARG start
-ARG &arrayarr
-t170 := CALL merge
-t175 := #0
-RETURN t175
+ARG arrayarr
+t167 := CALL merge
+t172 := #0
+RETURN t172
 FUNCTION main :
-t176 := #6
-n := t176
+t173 := #6
+n := t173
 DEC arrayarray 24
-t177 := #0
-c := t177
-LABEL label24 :
-IF c < n GOTO label25
-GOTO label26
-LABEL label25 :
-t184 := c * #4
-addr39 := &arrayarray
-addr38 := addr39 + t184
-READ t182
-*addr38 := t182
-t189 := #1
-t187 := c + t189
-c := t187
+t174 := #0
+c := t174
+LABEL label22 :
+IF c < n GOTO label23
 GOTO label24
-LABEL label26 :
-t192 := #0
-t195 := #1
-t193 := n - t195
-ARG t193
-ARG t192
+LABEL label23 :
+t181 := c * #4
+addr39 := &arrayarray
+addr38 := addr39 + t181
+READ t179
+*addr38 := t179
+t186 := #1
+t184 := c + t186
+c := t184
+GOTO label22
+LABEL label24 :
+t189 := #0
+t192 := #1
+t190 := n - t192
+ARG t190
+ARG t189
 ARG &arrayarray
-t190 := CALL merge_sort
-t198 := #0
-c := t198
-LABEL label27 :
-IF c < n GOTO label28
-GOTO label29
-LABEL label28 :
-t204 := c * #4
-addr42 := &arrayarray
-addr41 := addr42 + t204
-WRITE *addr41
-t201 := #0
-t209 := #1
-t207 := c + t209
-c := t207
+t187 := CALL merge_sort
+t195 := #0
+c := t195
+LABEL label25 :
+IF c < n GOTO label26
 GOTO label27
-LABEL label29 :
-t210 := #0
-RETURN t210
+LABEL label26 :
+t201 := c * #4
+addr42 := &arrayarray
+addr41 := addr42 + t201
+t202 := *addr41
+WRITE t202
+t198 := #0
+t207 := #1
+t205 := c + t207
+c := t205
+GOTO label25
+LABEL label27 :
+t208 := #0
+RETURN t208

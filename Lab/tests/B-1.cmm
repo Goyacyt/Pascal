@@ -1,6 +1,8 @@
+
 int mod(int i, int j) {
     return i - i / j * j;
 }
+
 
 int quick_power_mod(int x, int y, int k) {
     int res = 1;

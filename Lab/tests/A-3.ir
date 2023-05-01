@@ -24,62 +24,55 @@ t12 := #0
 t15 := #0
 RETURN t15
 LABEL label2 :
-t16 := #0
-t18 := #0
-IF k <= t18 GOTO label3
-GOTO label4
 LABEL label3 :
-t16 := #1
-LABEL label4 :
-LABEL label5 :
-IF cnt < k GOTO label6
-GOTO label7
-LABEL label6 :
-t25 := #1
-t23 := line + t25
-line := t23
-t28 := cnt + line
-cnt := t28
+IF cnt < k GOTO label4
 GOTO label5
-LABEL label7 :
-t35 := cnt - line
-t33 := k - t35
-m := t33
+LABEL label4 :
+t22 := #1
+t20 := line + t22
+line := t20
+t25 := cnt + line
+cnt := t25
+GOTO label3
+LABEL label5 :
+t32 := cnt - line
+t30 := k - t32
+m := t30
 n := line
 WRITE n
-t41 := #0
+t38 := #0
 WRITE m
-t43 := #0
-t47 := #0
-cnt := t47
-LABEL label8 :
-IF cnt < m GOTO label9
-GOTO label10
-LABEL label9 :
-t52 := numtor * n
-numtor := t52
-t59 := #1
-t57 := n - t59
-n := t57
-t64 := #1
-t62 := cnt + t64
-cnt := t62
+t40 := #0
+t44 := #0
+cnt := t44
+LABEL label6 :
+IF cnt < m GOTO label7
 GOTO label8
-LABEL label10 :
-LABEL label11 :
-t66 := #0
-IF m > t66 GOTO label12
-GOTO label13
-LABEL label12 :
-t69 := denomtor * m
-denomtor := t69
-t76 := #1
-t74 := m - t76
-m := t74
+LABEL label7 :
+t49 := numtor * n
+numtor := t49
+t56 := #1
+t54 := n - t56
+n := t54
+t61 := #1
+t59 := cnt + t61
+cnt := t59
+GOTO label6
+LABEL label8 :
+LABEL label9 :
+t63 := #0
+IF m > t63 GOTO label10
 GOTO label11
-LABEL label13 :
-t78 := numtor / denomtor
-WRITE t78
-t77 := #0
-t81 := #0
-RETURN t81
+LABEL label10 :
+t66 := denomtor * m
+denomtor := t66
+t73 := #1
+t71 := m - t73
+m := t71
+GOTO label9
+LABEL label11 :
+t75 := numtor / denomtor
+WRITE t75
+t74 := #0
+t78 := #0
+RETURN t78

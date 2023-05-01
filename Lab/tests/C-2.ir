@@ -36,4 +36,151 @@ GOTO label9
 LABEL label8 :
 t12 := #0
 RETURN t12
-parser: intercode.c:990: translate_Exp: Assertion `0' failed.
+LABEL label9 :
+FUNCTION mod :
+PARAM mop1
+PARAM mop2
+t16 := mop1 / mop2
+t15 := t16 * mop2
+t13 := mop1 - t15
+RETURN t13
+FUNCTION and :
+PARAM m
+PARAM n
+t20 := #32
+isize := t20
+DEC arrayam 128
+DEC arrayan 128
+DEC arrayres 128
+t21 := #0
+i := t21
+t22 := #0
+mn := t22
+t24 := #0
+IF m <= t24 GOTO label10
+GOTO label12
+LABEL label12 :
+t26 := #0
+IF n <= t26 GOTO label10
+GOTO label11
+LABEL label10 :
+t27 := #0
+RETURN t27
+LABEL label11 :
+LABEL label13 :
+IF i < isize GOTO label14
+GOTO label15
+LABEL label14 :
+t34 := i * #4
+addr3 := &arrayam
+addr2 := addr3 + t34
+t32 := #0
+*addr2 := t32
+t39 := i * #4
+addr6 := &arrayan
+addr5 := addr6 + t39
+t37 := #0
+*addr5 := t37
+t44 := i * #4
+addr9 := &arrayres
+addr8 := addr9 + t44
+t42 := #0
+*addr8 := t42
+t49 := #1
+t47 := i + t49
+i := t47
+GOTO label13
+LABEL label15 :
+t52 := #0
+i := t52
+LABEL label16 :
+IF i < isize GOTO label17
+GOTO label18
+LABEL label17 :
+t59 := i * #4
+addr12 := &arrayam
+addr11 := addr12 + t59
+t61 := #2
+ARG t61
+ARG m
+t57 := CALL mod
+*addr11 := t57
+t66 := i * #4
+addr15 := &arrayan
+addr14 := addr15 + t66
+t68 := #2
+ARG t68
+ARG n
+t64 := CALL mod
+*addr14 := t64
+t73 := #2
+t71 := m / t73
+m := t71
+t78 := #2
+t76 := n / t78
+n := t76
+t83 := #1
+t81 := i + t83
+i := t81
+GOTO label16
+LABEL label18 :
+t86 := #0
+i := t86
+LABEL label19 :
+IF i < isize GOTO label20
+GOTO label21
+LABEL label20 :
+t93 := i * #4
+addr18 := &arrayres
+addr17 := addr18 + t93
+t96 := i * #4
+addr21 := &arrayam
+addr20 := addr21 + t96
+t97 := *addr20
+t100 := i * #4
+addr24 := &arrayan
+addr23 := addr24 + t100
+t101 := *addr23
+ARG t101
+ARG t97
+t91 := CALL bit_and
+*addr17 := t91
+t106 := #1
+t104 := i + t106
+i := t104
+GOTO label19
+LABEL label21 :
+t111 := #1
+t109 := isize - t111
+i := t109
+LABEL label22 :
+t113 := #0
+IF i >= t113 GOTO label23
+GOTO label24
+LABEL label23 :
+t120 := #2
+t117 := mn * t120
+t122 := i * #4
+addr27 := &arrayres
+addr26 := addr27 + t122
+t123 := *addr26
+t116 := t117 + t123
+mn := t116
+t128 := #1
+t126 := i - t128
+i := t126
+GOTO label22
+LABEL label24 :
+RETURN mn
+FUNCTION main :
+READ t130
+x := t130
+READ t131
+y := t131
+ARG y
+ARG x
+t133 := CALL and
+WRITE t133
+t132 := #0
+t136 := #0
+RETURN t136

@@ -285,7 +285,7 @@ void print_ir(InterCode ir){
             printf("ARG ");
             Operand this=ir->u.one;
             if(this->kind==OP_ARRAYNAME||this->kind==STRUCTURE_NAME){
-                if(this->optype.param==isPARAM){
+                if(this->optype.param==notPARAM){
                     printf("&");
                 }
             }
@@ -546,7 +546,10 @@ void translate_Dec(node* root){
         Operand id_op=translate_VarDec(vardec); 
         Operand temp=gen_op(OP_TEMP,NULL,-1);
         translate_Exp(exp,temp);
-
+        if(temp->kind==OP_ADDRESS||temp->kind==OP_ARRAYNAME||temp->kind==OP_STRUCTURENAME){
+            temp=get_value(temp);
+        }
+        //这种情况会出现吗？
         if(id_op->kind==OP_ADDRESS||id_op->kind==OP_ARRAYNAME||id_op->kind==OP_STRUCTURENAME)
             id_op=get_value(id_op);
         InterCode dec_ir=gen_ir(IR_ASSIGN,id_op,temp,NULL);
@@ -642,9 +645,6 @@ void translate_Stmt(node* root){
             translate_Stmt(stmt);
             InterCode label2_ir=gen_ir(IR_LABEL,label2,NULL,NULL);      
             insert_ir(label2_ir);
-
-            Operand t=gen_op(OP_TEMP,NULL,-1);
-            translate_Exp(exp,t);
         }
         else if(strcmp(root->son->name,"WHILE")==0){     //Stmt -> WHILE ( exp ) Stmt
             node* exp=root->son->bro->bro;
@@ -973,12 +973,13 @@ void translate_Exp(node* root,Operand place){
             if(base_op->kind==OP_STRUCTURENAME){
                 assert(exp->son->type==TYPE_ID);
                 assert(base_op->optype.type->kind==STRUCTURE);
-                if(base_op->optype.param==notPARAM)    base_op=get_address(base_op);
-            }
-            else{
-                //TODO:why?
+                if(base_op->optype.param==notPARAM){
+                    base_op=get_address(base_op);
+                }
+            }else{
+                //结构数组或者是。。。
                 assert(base_op->kind==OP_ADDRESS);
-                if(base_op->optype.param==notPARAM)    base_op=get_address(base_op);
+                //if(base_op->optype.param==notPARAM)    base_op=get_address(base_op);
             }
             Operand offset=gen_op(OP_CONSTANT,NULL,off);
             insert_ir(gen_ir(IR_ADD,base_op,offset,place));
@@ -997,8 +998,8 @@ void translate_Exp(node* root,Operand place){
             assert(funct_hashnode!=NULL);
             FieldList funct_field=funct_hashnode->value;
             Operand functname_op=gen_op(OP_FUNCTIONNAME,funct_field->name,-1);
-
-            ArgList arglist=translate_Args(args);
+            FieldList arg_field=funct_field->type->u.function.param;
+            ArgList arglist=translate_Args(args,arg_field);
             InterCode call_ir=NULL;
             if(strcmp(funct_field->name,"write")==0){
                 call_ir=gen_ir(IR_WRITE,arglist->arg,NULL,NULL);
@@ -1034,7 +1035,6 @@ void translate_Exp(node* root,Operand place){
                 index_op=get_value(index_op);
             }
             */
-            
             Operand offset=gen_op(OP_TEMP,NULL,-1); //[]内总偏移量
             Operand intvl=gen_op(OP_CONSTANT,NULL,get_size(base_op->optype.type->u.array.elem));
             if(index_op->kind==OP_CONSTANT){
@@ -1056,20 +1056,23 @@ void translate_Exp(node* root,Operand place){
         else    assert(0);
     }
 }
-ArgList translate_Args(node* root) {
+ArgList translate_Args(node* root,FieldList arg_field) {
     ArgList arglist_now=(ArgList)malloc(sizeof(struct ArgList_));
     assert(root->son_num == 1 || root->son_num == 3);
     node* exp=root->son;
 
     Operand temp=gen_op(OP_TEMP,NULL,-1);
     translate_Exp(exp,temp);
-    temp->optype.param=isPARAM;
+    if(temp->kind==OP_ADDRESS&&arg_field->type->kind==BASIC){
+        temp=get_value(temp);
+    }
+    //temp->optype.param=notPARAM;
     arglist_now->arg=temp;
     arglist_now->next=NULL;
     if(root->son_num==1){
         
     }else if(root->son_num==3){    //Args->Exp COMMA Args
-        ArgList arglist_2=translate_Args(exp->bro->bro);
+        ArgList arglist_2=translate_Args(exp->bro->bro,arg_field->tail);
         arglist_now->next=arglist_2;
     }else{
         assert(0);

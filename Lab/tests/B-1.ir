@@ -51,65 +51,57 @@ ARG t31
 t30 := CALL mod
 res := t30
 LABEL label10 :
-t35 := #0
 t39 := #2
-ARG t39
-ARG y
-t36 := CALL mod
-t37 := #1
-IF t36 == t37 GOTO label11
-GOTO label12
-LABEL label11 :
-t35 := #1
-LABEL label12 :
-t44 := #2
-t42 := y / t44
-y := t42
-t48 := x * x
+t37 := y / t39
+y := t37
+t43 := x * x
 ARG k
-ARG t48
-t47 := CALL mod
-x := t47
+ARG t43
+t42 := CALL mod
+x := t42
 GOTO label6
 LABEL label8 :
 RETURN res
 LABEL label3 :
 FUNCTION main :
 DEC arrayinput 12
-t53 := #0
-cnt := t53
-LABEL label13 :
-t55 := #3
-IF cnt < t55 GOTO label14
-GOTO label15
-LABEL label14 :
-t60 := cnt * #4
-addr3 := &arrayinput
-addr2 := addr3 + t60
-READ t58
-*addr2 := t58
-t65 := #1
-t63 := cnt + t65
-cnt := t63
+t48 := #0
+cnt := t48
+LABEL label11 :
+t50 := #3
+IF cnt < t50 GOTO label12
 GOTO label13
-LABEL label15 :
-t69 := #0
-t70 := t69 * #4
+LABEL label12 :
+t55 := cnt * #4
+addr3 := &arrayinput
+addr2 := addr3 + t55
+READ t53
+*addr2 := t53
+t60 := #1
+t58 := cnt + t60
+cnt := t58
+GOTO label11
+LABEL label13 :
+t64 := #0
+t65 := t64 * #4
 addr6 := &arrayinput
-addr5 := addr6 + t70
-t72 := #1
-t73 := t72 * #4
+addr5 := addr6 + t65
+t66 := *addr5
+t68 := #1
+t69 := t68 * #4
 addr9 := &arrayinput
-addr8 := addr9 + t73
-t75 := #2
-t76 := t75 * #4
+addr8 := addr9 + t69
+t70 := *addr8
+t72 := #2
+t73 := t72 * #4
 addr12 := &arrayinput
-addr11 := addr12 + t76
-ARG addr11
-ARG addr8
-ARG addr5
-t67 := CALL quick_power_mod
-WRITE t67
-t66 := #0
-t77 := #0
-RETURN t77
+addr11 := addr12 + t73
+t74 := *addr11
+ARG t74
+ARG t70
+ARG t66
+t62 := CALL quick_power_mod
+WRITE t62
+t61 := #0
+t75 := #0
+RETURN t75

@@ -36,4 +36,89 @@ IF t17 > n GOTO label7
 GOTO label8
 LABEL label7 :
 RETURN i
-LABparser: intercode.c:990: translate_Exp: Assertion `0' failed.
+LABEL label8 :
+t30 := #1
+t28 := i + t30
+i := t28
+GOTO label4
+LABEL label6 :
+t32 := #1
+t31 := #0 - t32
+RETURN t31
+FUNCTION mod :
+PARAM k1
+PARAM k2
+t34 := #0
+IF k1 < t34 GOTO label10
+GOTO label13
+LABEL label13 :
+t36 := #0
+IF k2 <= t36 GOTO label10
+GOTO label11
+LABEL label10 :
+t38 := #1
+t37 := #0 - t38
+RETURN t37
+GOTO label12
+LABEL label11 :
+t42 := k1 / k2
+t41 := t42 * k2
+t39 := k1 - t41
+RETURN t39
+LABEL label12 :
+FUNCTION is_prime :
+PARAM l
+t46 := #2
+j := t46
+ARG l
+t47 := CALL isqrt
+end := t47
+LABEL label14 :
+IF j <= end GOTO label15
+GOTO label16
+LABEL label15 :
+ARG j
+ARG l
+t51 := CALL mod
+t52 := #0
+IF t51 == t52 GOTO label17
+GOTO label18
+LABEL label17 :
+t55 := #0
+RETURN t55
+LABEL label18 :
+t60 := #1
+t58 := j + t60
+j := t58
+GOTO label14
+LABEL label16 :
+t61 := #1
+RETURN t61
+FUNCTION main :
+t62 := #2
+c := t62
+READ t63
+d := t63
+LABEL label19 :
+ARG d
+t65 := CALL fact
+IF c < t65 GOTO label20
+GOTO label21
+LABEL label20 :
+ARG c
+t67 := CALL is_prime
+ARG c
+t67 := CALL is_prime
+IF t67 != #0 GOTO label22
+GOTO label23
+LABEL label22 :
+WRITE c
+t70 := #0
+LABEL label23 :
+t76 := #1
+t74 := c + t76
+c := t74
+GOTO label19
+LABEL label21 :
+t77 := #0
+RETURN t77

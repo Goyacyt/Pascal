@@ -78,7 +78,8 @@ t71 := n - t73
 t74 := t71 * #4
 addr24 := &arraycatalan
 addr23 := addr24 + t74
-WRITE *addr23
+t75 := *addr23
+WRITE t75
 t69 := #0
-t75 := #0
-RETURN t75
+t76 := #0
+RETURN t76

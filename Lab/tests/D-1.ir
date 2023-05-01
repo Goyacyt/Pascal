@@ -34,4 +34,227 @@ t20 := c1 + t24
 t17 := t19 * t20
 IF t17 > i2 GOTO label7
 GOTO label8
-LABEL label7 parser: intercode.c:990: translate_Exp: Assertion `0' failed.
+LABEL label7 :
+RETURN c1
+LABEL label8 :
+t30 := #1
+t28 := c1 + t30
+c1 := t28
+GOTO label4
+LABEL label6 :
+t32 := #1
+t31 := #0 - t32
+RETURN t31
+FUNCTION mod :
+PARAM i3
+PARAM i4
+t36 := i3 / i4
+t35 := t36 * i4
+t33 := i3 - t35
+RETURN t33
+FUNCTION main :
+t40 := #1331
+a := t40
+t41 := #1217
+b := t41
+t43 := #22121
+t42 := #0 - t43
+c := t42
+t44 := #5
+d := t44
+t51 := #7
+t48 := b * t51
+t46 := t48 / a
+t54 := #1990
+t56 := #9
+t57 := #10
+t55 := t56 * t57
+t52 := t54 + t55
+t59 := #23
+t53 := b + t59
+t47 := t52 / t53
+t45 := t46 + t47
+i := t45
+t65 := #2000
+t66 := #1
+t63 := t65 - t66
+t64 := #10
+t61 := t63 * t64
+t71 := #2
+t72 := #10
+t70 := t71 * t72
+t67 := b + t70
+t68 := #3
+t62 := t67 + t68
+t60 := t61 / t62
+j := t60
+t73 := #0
+k := t73
+t74 := #0
+l := t74
+t75 := #0
+m := t75
+DEC arrayarr 4000
+LABEL label10 :
+ARG b
+t79 := CALL isqrt
+ARG t79
+t78 := CALL isqrt
+ARG t78
+t77 := CALL fact
+IF k < t77 GOTO label11
+GOTO label12
+LABEL label11 :
+t85 := k * #4
+addr3 := &arrayarr
+addr2 := addr3 + t85
+t88 := #4
+ARG t88
+ARG k
+t86 := CALL mod
+ARG t86
+t83 := CALL fact
+*addr2 := t83
+t97 := #4
+t94 := k / t97
+t95 := #4
+t93 := t94 * t95
+t91 := k + t93
+a := t91
+t106 := #4
+t103 := k / t106
+t104 := #4
+t102 := t103 * t104
+t100 := a + t102
+a := t100
+t115 := #4
+t112 := k / t115
+t113 := #4
+t111 := t112 * t113
+t109 := a + t111
+a := t109
+t124 := #4
+t121 := k / t124
+t122 := #4
+t120 := t121 * t122
+t118 := a + t120
+a := t118
+LABEL label13 :
+t127 := d * d
+t126 := t127 * d
+IF c < t126 GOTO label14
+GOTO label15
+LABEL label14 :
+t145 := #10
+ARG t145
+ARG a
+t142 := CALL mod
+t143 := #10
+t140 := t142 + t143
+t138 := t140 + c
+t139 := #1
+t136 := t138 + t139
+t134 := t136 + i
+t133 := t134 - j
+c := t133
+GOTO label13
+LABEL label15 :
+ARG c
+t152 := CALL isqrt
+t154 := #10
+ARG t154
+ARG t152
+t151 := CALL mod
+ARG t151
+t150 := CALL fact
+t148 := c + t150
+c := t148
+t159 := #1
+t157 := k + t159
+k := t157
+GOTO label10
+LABEL label12 :
+t162 := #0
+k := t162
+LABEL label16 :
+t164 := #10
+IF k < t164 GOTO label17
+GOTO label18
+LABEL label17 :
+t167 := #0
+l := t167
+LABEL label19 :
+t169 := #10
+IF l < t169 GOTO label20
+GOTO label21
+LABEL label20 :
+t171 := #0
+IF k == t171 GOTO label25
+GOTO label23
+LABEL label25 :
+t173 := #0
+IF l == t173 GOTO label22
+GOTO label23
+LABEL label22 :
+t176 := #1
+m := t176
+GOTO label24
+LABEL label23 :
+t179 := #0
+m := t179
+LABEL label24 :
+LABEL label26 :
+t181 := #10
+IF m < t181 GOTO label27
+GOTO label28
+LABEL label27 :
+t197 := #10
+t194 := k * t197
+t195 := #10
+t192 := t194 * t195
+t199 := #10
+t193 := l * t199
+t190 := t192 + t193
+t189 := t190 + m
+t200 := t189 * #4
+addr6 := &arrayarr
+addr5 := addr6 + t200
+t201 := *addr5
+t185 := d + t201
+t212 := #10
+t209 := k * t212
+t210 := #10
+t207 := t209 * t210
+t214 := #10
+t208 := l * t214
+t205 := t207 + t208
+t203 := t205 + m
+t204 := #1
+t202 := t203 - t204
+t215 := t202 * #4
+addr9 := &arrayarr
+addr8 := addr9 + t215
+t216 := *addr8
+t184 := t185 - t216
+d := t184
+t221 := #1
+t219 := m + t221
+m := t219
+GOTO label26
+LABEL label28 :
+t226 := #1
+t224 := l + t226
+l := t224
+GOTO label19
+LABEL label21 :
+t231 := #1
+t229 := k + t231
+k := t229
+GOTO label16
+LABEL label18 :
+t234 := d + c
+k := t234
+WRITE k
+t237 := #0
+t239 := #0
+RETURN t239

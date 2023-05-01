@@ -75,6 +75,6 @@ void translate_StmtList(node* root);
 void translate_Stmt(node* root);
 void translate_Cond(node* root,Operand label_true,Operand label_false);
 void translate_Exp(node* root,Operand place);
-ArgList translate_Args(node* root);
+ArgList translate_Args(node* root,FieldList arg_field);
 void traverse_arglist(ArgList arglist);
 #endif
