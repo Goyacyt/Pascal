@@ -2,6 +2,7 @@
 InterCodeList irlist_head;
 //ArgList arglist_head=NULL;
 extern int intercode_de;
+extern FILE* irout;
 static int temp_no=1;
 static int label_no=1;
 static int address_no=1;
@@ -100,36 +101,36 @@ Operand gen_op(int kind,char *name,int number){
 void print_op(Operand op){
     switch(op->kind){
         case OP_VARIABLE:
-            printf("%s",op->name);
+            fprintf(irout,"%s",op->name);
             break;
         case OP_CONSTANT:            
-            printf("#");
-            printf("%d",op->number);
+            fprintf(irout,"#");
+            fprintf(irout,"%d",op->number);
             break;
         case OP_FUNCTIONNAME:
-            printf("%s",op->name);
+            fprintf(irout,"%s",op->name);
             break;
         case OP_TEMP:
-            printf("t");
-            printf("%d",op->no);
+            fprintf(irout,"t");
+            fprintf(irout,"%d",op->no);
             break;
         case OP_LABEL:
-            printf("label%d",op->no);
+            fprintf(irout,"label%d",op->no);
             break;
         case OP_ADDRESS:
-            printf("addr%d",op->no);
+            fprintf(irout,"addr%d",op->no);
             break;
         case OP_ADDRESS_LEFT:
-            printf("*addr%d",op->no);
+            fprintf(irout,"*addr%d",op->no);
             break;
         case OP_ARRAYNAME:
-            printf("array%s",op->name);
+            fprintf(irout,"array%s",op->name);
             break;
         case OP_STRUCTURENAME:
-            printf("structure%s",op->name);
+            fprintf(irout,"structure%s",op->name);
             break;
         default:
-            printf("operand kind=%d\n",op->kind);
+            fprintf(irout,"operand kind=%d\n",op->kind);
             assert(0);
     }
     return;
@@ -198,116 +199,116 @@ void print_ir(InterCode ir){
     switch (ir->kind){
         case IR_GETVAL:
             print_op(ir->u.two.left);
-            printf(" := *");
+            fprintf(irout," := *");
             print_op(ir->u.two.right);
             break;
         case IR_GETADDR:
             print_op(ir->u.two.left);
-            printf(" := &");
+            fprintf(irout," := &");
             print_op(ir->u.two.right);
             break;
         case IR_LABEL:
-            printf("LABEL ");
+            fprintf(irout,"LABEL ");
             assert(ir->u.one->kind==OP_LABEL);
             print_op(ir->u.one);
-            printf(" :");
+            fprintf(irout," :");
             break;
         case IR_FUNCTIONNAME:
-            printf("FUNCTION ");
+            fprintf(irout,"FUNCTION ");
             assert(ir->u.one->kind==OP_FUNCTIONNAME);
             print_op(ir->u.one);
-            printf(" :");
+            fprintf(irout," :");
             break;
         case IR_CALL:
             print_op(ir->u.two.left);
-            printf(" := ");
-            printf("CALL ");
+            fprintf(irout," := ");
+            fprintf(irout,"CALL ");
             print_op(ir->u.two.right);
             break;
         case IR_READ:
-            printf("READ ");
+            fprintf(irout,"READ ");
             print_op(ir->u.one);
             break;
         case IR_WRITE:
-            printf("WRITE ");
+            fprintf(irout,"WRITE ");
             if(ir->u.one->kind==OP_ADDRESS){
-                printf("*");
+                fprintf(irout,"*");
             }
             print_op(ir->u.one);
             break;
         case IR_RETURN:
-            printf("RETURN ");
+            fprintf(irout,"RETURN ");
             print_op(ir->u.one);
             break;
         case IR_GOTO:
-            printf("GOTO ");
+            fprintf(irout,"GOTO ");
             assert(ir->u.one->kind==OP_LABEL);
             print_op(ir->u.one);
             break;
         case IR_PARAM:
-            printf("PARAM ");
+            fprintf(irout,"PARAM ");
             print_op(ir->u.one);
             break;
         case IR_ASSIGN:
             print_op(ir->u.two.left);
-            printf(" := ");
+            fprintf(irout," := ");
             print_op(ir->u.two.right);
             break;
         case IR_ADD:
             print_op(ir->u.three.result);
-            printf(" := ");
+            fprintf(irout," := ");
             print_op(ir->u.three.op1);
-            printf(" + ");
+            fprintf(irout," + ");
             print_op(ir->u.three.op2);
             break;
         case IR_SUB:
             print_op(ir->u.three.result);
-            printf(" := ");
+            fprintf(irout," := ");
             print_op(ir->u.three.op1);
-            printf(" - ");
+            fprintf(irout," - ");
             print_op(ir->u.three.op2);
             break;
         case IR_MUL:
             print_op(ir->u.three.result);
-            printf(" := ");
+            fprintf(irout," := ");
             print_op(ir->u.three.op1);
-            printf(" * ");
+            fprintf(irout," * ");
             print_op(ir->u.three.op2);
             break;
         case IR_DIV:
             print_op(ir->u.three.result);
-            printf(" := ");
+            fprintf(irout," := ");
             print_op(ir->u.three.op1);
-            printf(" / ");
+            fprintf(irout," / ");
             print_op(ir->u.three.op2);
             break;
         case IR_ARG:
-            printf("ARG ");
+            fprintf(irout,"ARG ");
             Operand this=ir->u.one;
             if(this->kind==OP_ARRAYNAME||this->kind==STRUCTURE_NAME){
                 if(this->optype.param==notPARAM){
-                    printf("&");
+                    fprintf(irout,"&");
                 }
             }
             print_op(this);
             break;
         case IR_IFGOTO:
-            printf("IF ");
+            fprintf(irout,"IF ");
             print_op(ir->u.ifgoto.op1);
-            printf(" %s ",ir->u.ifgoto.relop);
+            fprintf(irout," %s ",ir->u.ifgoto.relop);
             print_op(ir->u.ifgoto.op2);
-            printf(" GOTO ");
+            fprintf(irout," GOTO ");
             print_op(ir->u.ifgoto.label);
             break;
         case IR_DEC:
-            printf("DEC ");
+            fprintf(irout,"DEC ");
             print_op(ir->u.dec.var);
-            printf(" %d",ir->u.dec.size);
+            fprintf(irout," %d",ir->u.dec.size);
             break;
         default:
             assert(0);
     }
-    printf("\n");
+    fprintf(irout,"\n");
     return;
 }
 

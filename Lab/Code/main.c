@@ -6,6 +6,7 @@ int yylex();    //词法分析
 int yyparse();  //对输入文件语法分析
 void yyrestart(FILE *file); //重置yyin指针为开头
 extern FILE* yyin;
+FILE* irout;
 int sim;
 extern int yydebug;                // bison debug mode
 int semantic_de;
@@ -47,6 +48,15 @@ int main(int argc, char** argv){
 		print_tree(root, 0);
 	}
     Program(root);
-	translate_Program(root);
+	if(argc<=2){
+		perror("losing iroutput file......\n");
+		return 1;
+	}else if(argc>2){
+		if (!(irout=fopen(argv[2],"w"))){
+			perror(argv[2]);
+			return 1;
+		}
+		translate_Program(root);
+	}
     return 0;
 }
