@@ -620,7 +620,7 @@ void translate_Stmt(node* root){
         node* exp=root->son;
         Operand t=gen_op(OP_TEMP,NULL,-1);
         translate_Exp(exp,t);
-        //TODO: 不需要传入这个t,之后优化的时候再说，现在先不管
+        //需要传入这个t
     }else if(root->son_num==1){     //Stmt->CompSt
         node* compst=root->son;
         translate_CompSt(compst);
@@ -757,7 +757,6 @@ void translate_Cond(node* root,Operand label_true,Operand label_false){
         if(t->kind==OP_ADDRESS||t->kind==OP_ARRAYNAME||t->kind==OP_STRUCTURENAME)
             t=get_value(t);        
         Operand c=gen_op(OP_CONSTANT,NULL,0);
-        translate_Exp(root,t);
         InterCode ifgoto_ir=(InterCode)malloc(sizeof(struct InterCode_));;
         assert(ifgoto_ir!=NULL);
         ifgoto_ir->kind=IR_IFGOTO;
@@ -849,7 +848,7 @@ void translate_Exp(node* root,Operand place){
         else    assert(0);
     }
     else if(root->son_num==3){
-        if((strcmp(root->son->bro->name,"RELOP")||(strcmp(root->son->bro->name,"AND")==0)||(strcmp(root->son->bro->name,"OR")==0))==0){ 
+        if((strcmp(root->son->bro->name,"RELOP")==0)||(strcmp(root->son->bro->name,"AND")==0)||(strcmp(root->son->bro->name,"OR")==0)){ 
             node* exp=root;
             Operand label1=gen_op(OP_LABEL,NULL,-1);
             Operand label2=gen_op(OP_LABEL,NULL,-1);
@@ -879,6 +878,7 @@ void translate_Exp(node* root,Operand place){
             //右值可以getvalue赋给一个新的temp变量，左值不可以
                 get_value_left(t1);
             insert_ir(gen_ir(IR_ASSIGN,t1,t2,NULL));
+            insert_ir(gen_ir(IR_ASSIGN,place,t2,NULL));
         }
         else if(strcmp(root->son->bro->name,"PLUS")==0){
             node* exp1=root->son;

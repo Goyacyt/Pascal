@@ -6,7 +6,7 @@
 #include<assert.h>
 #include <stdlib.h>
 #include "tree.h"
-#define HASHTAB_SIZE  0x3fff
+#define HASHTAB_SIZE  0x3fff+1
 #define STACK_SIZE  10000 //待定
 typedef struct Type_* Type;
 typedef struct FieldList_* FieldList;

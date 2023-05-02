@@ -48,15 +48,14 @@ int main(int argc, char** argv){
 		print_tree(root, 0);
 	}
     Program(root);
-	if(argc<=2){
-		perror("losing iroutput file......\n");
-		return 1;
+	if(argc==2){
+		irout=stdout;
 	}else if(argc>2){
 		if (!(irout=fopen(argv[2],"w"))){
 			perror(argv[2]);
 			return 1;
 		}
-		translate_Program(root);
 	}
+	translate_Program(root);
     return 0;
 }
