@@ -22,7 +22,8 @@
 
 //declare associativity and piority for tokens
 %right ASSIGNOP
-%left  AND OR
+%left  OR
+%left  AND
 %left  RELOP
 %left  PLUS MINUS
 %left  STAR DIV
