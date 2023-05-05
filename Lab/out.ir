@@ -1,0 +1,164 @@
+FUNCTION mod :
+PARAM a
+PARAM b
+t4 := a / b
+t3 := t4 * b
+t1 := a - t3
+RETURN t1
+FUNCTION IsLeap :
+PARAM y
+t11 := #400
+ARG t11
+ARG y
+t8 := CALL mod
+t9 := #0
+IF t8 == t9 GOTO label4
+GOTO label5
+LABEL label5 :
+t15 := #4
+ARG t15
+ARG y
+t12 := CALL mod
+t13 := #0
+IF t12 == t13 GOTO label4
+GOTO label2
+LABEL label4 :
+t19 := #100
+ARG t19
+ARG y
+t16 := CALL mod
+t17 := #0
+IF t16 != t17 GOTO label1
+GOTO label2
+LABEL label1 :
+t20 := #1
+RETURN t20
+GOTO label3
+LABEL label2 :
+t21 := #0
+RETURN t21
+LABEL label3 :
+FUNCTION main :
+t22 := #0
+days := t22
+t23 := #0
+leap := t23
+DEC arraymonthdays 20
+t27 := #0
+t28 := t27 * #4
+addr3 := &arraymonthdays
+addr2 := addr3 + t28
+t26 := #0
+*addr2 := t26
+t24 := t26
+t32 := #1
+t33 := t32 * #4
+addr6 := &arraymonthdays
+addr5 := addr6 + t33
+t31 := #31
+*addr5 := t31
+t29 := t31
+t37 := #2
+t38 := t37 * #4
+addr9 := &arraymonthdays
+addr8 := addr9 + t38
+t36 := #28
+*addr8 := t36
+t34 := t36
+t42 := #3
+t43 := t42 * #4
+addr12 := &arraymonthdays
+addr11 := addr12 + t43
+t41 := #31
+*addr11 := t41
+t39 := t41
+t47 := #4
+t48 := t47 * #4
+addr15 := &arraymonthdays
+addr14 := addr15 + t48
+t46 := #30
+*addr14 := t46
+t44 := t46
+READ t51
+year := t51
+t49 := t51
+t54 := #1900
+i := t54
+t52 := t54
+LABEL label6 :
+IF i < year GOTO label7
+GOTO label8
+LABEL label7 :
+ARG i
+t57 := CALL IsLeap
+IF t57 != #0 GOTO label9
+GOTO label10
+LABEL label9 :
+t63 := #366
+t61 := days + t63
+days := t61
+t59 := t61
+GOTO label11
+LABEL label10 :
+t68 := #365
+t66 := days + t68
+days := t66
+t64 := t66
+LABEL label11 :
+t73 := #1
+t71 := i + t73
+i := t71
+t69 := t71
+GOTO label6
+LABEL label8 :
+ARG year
+t74 := CALL IsLeap
+IF t74 != #0 GOTO label12
+GOTO label13
+LABEL label12 :
+t79 := #2
+t80 := t79 * #4
+addr18 := &arraymonthdays
+addr17 := addr18 + t80
+t78 := #29
+*addr17 := t78
+t76 := t78
+LABEL label13 :
+t83 := #1
+i := t83
+t81 := t83
+LABEL label14 :
+t85 := #5
+IF i < t85 GOTO label15
+GOTO label16
+LABEL label15 :
+t92 := i * #4
+addr21 := &arraymonthdays
+addr20 := addr21 + t92
+t93 := *addr20
+t88 := days + t93
+days := t88
+t86 := t88
+t98 := #1
+t96 := i + t98
+i := t96
+t94 := t96
+GOTO label14
+LABEL label16 :
+t103 := #7
+ARG t103
+ARG days
+t101 := CALL mod
+dayofweek := t101
+t99 := t101
+t107 := #14
+t106 := t107 - dayofweek
+motherday := t106
+t104 := t106
+t110 := #5
+WRITE t110
+t109 := #0
+WRITE motherday
+t111 := #0
+t113 := #0
+RETURN t113

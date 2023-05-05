@@ -6,6 +6,8 @@ extern FILE* irout;
 static int temp_no=1;
 static int label_no=1;
 static int address_no=1;
+static int linenum=1;
+
 void init_irlist(){
     irlist_head=(InterCodeList)malloc(sizeof(struct InterCodeList_));
     assert(irlist_head!=NULL);
@@ -99,6 +101,7 @@ Operand gen_op(int kind,char *name,int number){
 }
 
 void print_op(Operand op){
+#ifndef DE
     switch(op->kind){
         case OP_VARIABLE:
             fprintf(irout,"%s",op->name);
@@ -134,6 +137,43 @@ void print_op(Operand op){
             assert(0);
     }
     return;
+#else   
+    switch(op->kind){
+        case OP_VARIABLE:
+            printf("%s",op->name);
+            break;
+        case OP_CONSTANT:            
+            printf("#");
+            printf("%d",op->number);
+            break;
+        case OP_FUNCTIONNAME:
+            printf("%s",op->name);
+            break;
+        case OP_TEMP:
+            printf("t");
+            printf("%d",op->no);
+            break;
+        case OP_LABEL:
+            printf("label%d",op->no);
+            break;
+        case OP_ADDRESS:
+            printf("addr%d",op->no);
+            break;
+        case OP_ADDRESS_LEFT:
+            printf("*addr%d",op->no);
+            break;
+        case OP_ARRAYNAME:
+            printf("array%s",op->name);
+            break;
+        case OP_STRUCTURENAME:
+            printf("structure%s",op->name);
+            break;
+        default:
+            printf("operand kind=%d\n",op->kind);
+            assert(0);
+    }
+    return;
+#endif
 }
 InterCode gen_ir(int kind,Operand op1,Operand op2,Operand op3){
     InterCode ir=(InterCode)malloc(sizeof(struct InterCode_));
@@ -196,6 +236,7 @@ InterCode gen_ir(int kind,Operand op1,Operand op2,Operand op3){
 
 
 void print_ir(InterCode ir){
+#ifndef DE
     switch (ir->kind){
         case IR_GETVAL:
             print_op(ir->u.two.left);
@@ -310,6 +351,126 @@ void print_ir(InterCode ir){
     }
     fprintf(irout,"\n");
     return;
+#else
+    printf("%d:  ",linenum);
+    if(linenum==555)
+        printf(RED"stop!\n"NONE);
+    linenum++;
+    switch (ir->kind){
+        case IR_GETVAL:
+            print_op(ir->u.two.left);
+            printf(" := *");
+            print_op(ir->u.two.right);
+            break;
+        case IR_GETADDR:
+            print_op(ir->u.two.left);
+            printf(" := &");
+            print_op(ir->u.two.right);
+            break;
+        case IR_LABEL:
+            printf("LABEL ");
+            assert(ir->u.one->kind==OP_LABEL);
+            print_op(ir->u.one);
+            printf(" :");
+            break;
+        case IR_FUNCTIONNAME:
+            printf("FUNCTION ");
+            assert(ir->u.one->kind==OP_FUNCTIONNAME);
+            print_op(ir->u.one);
+            printf(" :");
+            break;
+        case IR_CALL:
+            print_op(ir->u.two.left);
+            printf(" := ");
+            printf("CALL ");
+            print_op(ir->u.two.right);
+            break;
+        case IR_READ:
+            printf("READ ");
+            print_op(ir->u.one);
+            break;
+        case IR_WRITE:
+            printf("WRITE ");
+            if(ir->u.one->kind==OP_ADDRESS){
+                printf("*");
+            }
+            print_op(ir->u.one);
+            break;
+        case IR_RETURN:
+            printf("RETURN ");
+            print_op(ir->u.one);
+            break;
+        case IR_GOTO:
+            printf("GOTO ");
+            assert(ir->u.one->kind==OP_LABEL);
+            print_op(ir->u.one);
+            break;
+        case IR_PARAM:
+            printf("PARAM ");
+            print_op(ir->u.one);
+            break;
+        case IR_ASSIGN:
+            print_op(ir->u.two.left);
+            printf(" := ");
+            print_op(ir->u.two.right);
+            break;
+        case IR_ADD:
+            print_op(ir->u.three.result);
+            printf(" := ");
+            print_op(ir->u.three.op1);
+            printf(" + ");
+            print_op(ir->u.three.op2);
+            break;
+        case IR_SUB:
+            print_op(ir->u.three.result);
+            printf(" := ");
+            print_op(ir->u.three.op1);
+            printf(" - ");
+            print_op(ir->u.three.op2);
+            break;
+        case IR_MUL:
+            print_op(ir->u.three.result);
+            printf(" := ");
+            print_op(ir->u.three.op1);
+            printf(" * ");
+            print_op(ir->u.three.op2);
+            break;
+        case IR_DIV:
+            print_op(ir->u.three.result);
+            printf(" := ");
+            print_op(ir->u.three.op1);
+            printf(" / ");
+            print_op(ir->u.three.op2);
+            break;
+        case IR_ARG:
+            printf("ARG ");
+            Operand this=ir->u.one;
+            if(this->kind==OP_ARRAYNAME||this->kind==STRUCTURE_NAME){
+                if(this->optype.param==notPARAM){
+                    printf("&");
+                }
+            }
+            print_op(this);
+            break;
+        case IR_IFGOTO:
+            printf("IF ");
+            print_op(ir->u.ifgoto.op1);
+            printf(" %s ",ir->u.ifgoto.relop);
+            print_op(ir->u.ifgoto.op2);
+            printf(" GOTO ");
+            print_op(ir->u.ifgoto.label);
+            break;
+        case IR_DEC:
+            printf("DEC ");
+            print_op(ir->u.dec.var);
+            printf(" %d",ir->u.dec.size);
+            break;
+        default:
+            assert(0);
+    }
+    printf("\n");
+    return;
+#endif
 }
 
 int get_size(Type type){ 
@@ -348,6 +509,7 @@ void get_value_left(Operand addr){
     assert(addr->kind==OP_ADDRESS||addr->kind==OP_ARRAYNAME||addr->kind==OP_STRUCTURENAME);
     addr->kind=OP_ADDRESS_LEFT;
 }
+
 
 Operand get_address(Operand value){ //addr_op:=&value
     assert(value->kind==OP_ADDRESS||value->kind==OP_ARRAYNAME||value->kind==OP_STRUCTURENAME);
@@ -620,7 +782,7 @@ void translate_Stmt(node* root){
         node* exp=root->son;
         Operand t=gen_op(OP_TEMP,NULL,-1);
         translate_Exp(exp,t);
-        //TODO: 不需要传入这个t,之后优化的时候再说，现在先不管
+        //需要传入这个t
     }else if(root->son_num==1){     //Stmt->CompSt
         node* compst=root->son;
         translate_CompSt(compst);
@@ -757,7 +919,6 @@ void translate_Cond(node* root,Operand label_true,Operand label_false){
         if(t->kind==OP_ADDRESS||t->kind==OP_ARRAYNAME||t->kind==OP_STRUCTURENAME)
             t=get_value(t);        
         Operand c=gen_op(OP_CONSTANT,NULL,0);
-        translate_Exp(root,t);
         InterCode ifgoto_ir=(InterCode)malloc(sizeof(struct InterCode_));;
         assert(ifgoto_ir!=NULL);
         ifgoto_ir->kind=IR_IFGOTO;
@@ -840,7 +1001,7 @@ void translate_Exp(node* root,Operand place){
             InterCode label2_ir=gen_ir(IR_LABEL,label2,NULL,NULL);
 
             insert_ir(assign0_ir);
-            translate_Cond(exp,label2,label1);
+            translate_Cond(exp,label1,label2);
             insert_ir(label1_ir);
             insert_ir(assign1_ir);
             insert_ir(label2_ir);
@@ -849,7 +1010,7 @@ void translate_Exp(node* root,Operand place){
         else    assert(0);
     }
     else if(root->son_num==3){
-        if((strcmp(root->son->bro->name,"RELOP")||(strcmp(root->son->bro->name,"AND")==0)||(strcmp(root->son->bro->name,"OR")==0))==0){ 
+        if((strcmp(root->son->bro->name,"RELOP")==0)||(strcmp(root->son->bro->name,"AND")==0)||(strcmp(root->son->bro->name,"OR")==0)){ 
             node* exp=root;
             Operand label1=gen_op(OP_LABEL,NULL,-1);
             Operand label2=gen_op(OP_LABEL,NULL,-1);
@@ -875,10 +1036,11 @@ void translate_Exp(node* root,Operand place){
             translate_Exp(exp2,t2);
             if(t2->kind==OP_ADDRESS||t2->kind==OP_ARRAYNAME||t2->kind==OP_STRUCTURENAME)
                 t2=get_value(t2);
-            if(t1->kind==OP_ADDRESS||t1->kind==OP_ARRAYNAME||t1->kind==OP_STRUCTURENAME)
-            //右值可以getvalue赋给一个新的temp变量，左值不可以
+            if(t1->kind==OP_ADDRESS||t1->kind==OP_ARRAYNAME||t1->kind==OP_STRUCTURENAME) //右值可以getvalue赋给一个新的temp变量，左值不可以
                 get_value_left(t1);
+
             insert_ir(gen_ir(IR_ASSIGN,t1,t2,NULL));
+            insert_ir(gen_ir(IR_ASSIGN,place,t2,NULL));
         }
         else if(strcmp(root->son->bro->name,"PLUS")==0){
             node* exp1=root->son;
