@@ -479,6 +479,7 @@ int get_size(Type type){
     int size=0;
     switch(type->kind){
         case STRUCTURE:
+            ;
             FieldList strumb_field=type->u.structval;
             while(strumb_field!=NULL){
                 size+=get_size(strumb_field->type);
@@ -486,6 +487,7 @@ int get_size(Type type){
             }
             break;
         case ARRAY:
+            ;
             Type arrmb_type=type->u.array.elem;
             size=get_size(arrmb_type)*type->u.array.size;
             break;
