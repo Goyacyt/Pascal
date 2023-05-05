@@ -35,7 +35,7 @@ syntax-c: $(YFILE)
 .PHONY: clean test
 
 test:
-	./parser ../Test3/test3.cmm
+	./parser ../TestTools/tests/2020-Advanced-A-42.cmm
 
 test-all:
 	./parser ../Test2/inputs/test15.cmm

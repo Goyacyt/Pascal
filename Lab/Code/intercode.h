@@ -7,9 +7,10 @@ typedef struct Operand_* Operand;
 typedef struct InterCode_* InterCode;
 typedef struct InterCodeList_* InterCodeList;
 typedef struct ArgList_* ArgList;
+//#define DE
 struct Operand_{
     enum{OP_VARIABLE,OP_CONSTANT,OP_TEMP,OP_TEMP_OFFSET,OP_LABEL,OP_FUNCTIONNAME,OP_ARRAYNAME,
-    OP_STRUCTURENAME,OP_ADDRESS,OP_ADDRESS_LEFT,}kind;
+    OP_STRUCTURENAME,OP_ADDRESS,OP_ADDRESS_LEFT}kind;
     union{
         char *name;
         int no;//OP LABEL ADDRESS
