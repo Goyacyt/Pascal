@@ -7,6 +7,7 @@ int yyparse();  //对输入文件语法分析
 void yyrestart(FILE *file); //重置yyin指针为开头
 extern FILE* yyin;
 FILE* irout;
+FILE* mipsout;
 int sim;
 extern int yydebug;                // bison debug mode
 int semantic_de;
@@ -56,6 +57,7 @@ int main(int argc, char** argv){
 			return 1;
 		}
 	}
-	translate_Program(root);
+	//translate_Program(root);
+	
     return 0;
 }

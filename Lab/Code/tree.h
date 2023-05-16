@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-
+#include<stdbool.h>
 #define YYSTYPE node*
 
 //#define NONE "\033[m"

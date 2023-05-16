@@ -1,5 +1,5 @@
 #include "intercode.h"
-InterCodeList irlist_head;
+
 //ArgList arglist_head=NULL;
 extern int intercode_de;
 extern FILE* irout;
@@ -72,9 +72,6 @@ Operand gen_op(int kind,char *name,int number){
         case OP_CONSTANT:
             op->number=number;
             break;
-        case OP_FUNCTIONNAME:
-            op->name=name;
-            break;
         case OP_TEMP:
             op->no=temp_no;
             temp_no++;
@@ -145,9 +142,6 @@ void print_op(Operand op){
         case OP_CONSTANT:            
             printf("#");
             printf("%d",op->number);
-            break;
-        case OP_FUNCTIONNAME:
-            printf("%s",op->name);
             break;
         case OP_TEMP:
             printf("t");
@@ -327,7 +321,7 @@ void print_ir(InterCode ir){
             fprintf(irout,"ARG ");
             Operand this=ir->u.one;
             if(this->kind==OP_ARRAYNAME||this->kind==STRUCTURE_NAME){
-                if(this->optype.param==notPARAM){
+                if(this->optype.isparam==notPARAM){
                     fprintf(irout,"&");
                 }
             }
@@ -446,7 +440,7 @@ void print_ir(InterCode ir){
             printf("ARG ");
             Operand this=ir->u.one;
             if(this->kind==OP_ARRAYNAME||this->kind==STRUCTURE_NAME){
-                if(this->optype.param==notPARAM){
+                if(this->optype.isparam==notPARAM){
                     printf("&");
                 }
             }
@@ -610,12 +604,20 @@ void translate_FunDec(node* root){
     char* fun_name=ID(id);
     HashNode this=get(fun_name);
     assert(this!=NULL);
-    Operand funcname_op=gen_op(OP_FUNCTIONNAME,fun_name,-1);
-    InterCode funcname_ir=gen_ir(IR_FUNCTIONNAME,funcname_op,NULL,NULL);
-    insert_ir(funcname_ir);
     FieldList function_field=this->value;
     assert(function_field->type->kind==FUNCTION&&function_field->type->u.function.declare==DEFINED);
     assert(function_field!=NULL);
+
+    Operand functname_op=(Operand)malloc(sizeof(struct Operand_));
+    assert(functname_op!=NULL);
+    functname_op->kind=OP_FUNCTIONNAME;            
+    functname_op->name=function_field->name;
+    functname_op->function.param=function_field->type->u.function.param;
+    functname_op->function.paramnum=function_field->type->u.function.paramnum;
+
+    InterCode funcname_ir=gen_ir(IR_FUNCTIONNAME,functname_op,NULL,NULL);
+    insert_ir(funcname_ir);
+
     if(root->son_num==4){   //FunDec->ID ( VarList )
         node* varlist=id->bro->bro;
         FieldList varlist_field=function_field->type->u.function.param;
@@ -628,11 +630,11 @@ void translate_FunDec(node* root){
                     break;
                 case STRUCTURE:
                     param=gen_op(OP_STRUCTURENAME,varlist_field->name,-1);
-                    param->optype.param=isPARAM;
+                    param->optype.isparam=isPARAM;
                     break;
                 case ARRAY:
                     param=gen_op(OP_ARRAYNAME,varlist_field->name,-1);
-                    param->optype.param=isPARAM;
+                    param->optype.isparam=isPARAM;
                     break;
             }
             InterCode funparam_ir=gen_ir(IR_PARAM,param,NULL,NULL); //[PARAM op]
@@ -741,7 +743,7 @@ Operand translate_VarDec(node* root){
                 break;
             case STRUCTURE:
                 id_op=gen_op(OP_STRUCTURENAME,vardec_field->name,-1);
-                id_op->optype.param=notPARAM;
+                id_op->optype.isparam=notPARAM;
                 vardec_ir->kind=IR_DEC;
                 vardec_ir->u.dec.size=get_size(vardec_field->type);
                 vardec_ir->u.dec.var=id_op;
@@ -749,7 +751,7 @@ Operand translate_VarDec(node* root){
                 break;
             case ARRAY:
                 id_op=gen_op(OP_ARRAYNAME,vardec_field->name,-1);
-                id_op->optype.param=notPARAM;
+                id_op->optype.isparam=notPARAM;
                 vardec_ir->kind=IR_DEC;
                 vardec_ir->u.dec.size=get_size(vardec_field->type);
                 vardec_ir->u.dec.var=id_op;
@@ -959,13 +961,13 @@ void translate_Exp(node* root,Operand place){
                     place->kind=OP_ARRAYNAME;
                     place->optype.type=id_field->type;
                     place->name=idchar;
-                    place->optype.param=id_field->param;
+                    place->optype.isparam=id_field->isparam;
                     break;
                 case STRUCTURE:
                     place->kind=OP_STRUCTURENAME;
                     place->optype.type=id_field->type;
                     place->name=idchar;
-                    place->optype.param=id_field->param;
+                    place->optype.isparam=id_field->isparam;
                     break;
                 default: 
                     assert(0);
@@ -1110,7 +1112,13 @@ void translate_Exp(node* root,Operand place){
                 call_ir=gen_ir(IR_READ,place,NULL,NULL);
                 //place不用处理
             else{
-                call_ir=gen_ir(IR_CALL,gen_op(OP_FUNCTIONNAME,funct_field->name,-1),place,NULL);
+                Operand functname_op=(Operand)malloc(sizeof(struct Operand_));
+                assert(functname_op!=NULL);
+                functname_op->kind=OP_FUNCTIONNAME;            
+                functname_op->name=funct_field->name;
+                functname_op->function.param=funct_field->type->u.function.param;
+                functname_op->function.paramnum=funct_field->type->u.function.paramnum;
+                call_ir=gen_ir(IR_CALL,functname_op,place,NULL);
             }
             insert_ir(call_ir);
         }
@@ -1138,7 +1146,7 @@ void translate_Exp(node* root,Operand place){
             if(base_op->kind==OP_STRUCTURENAME){
                 assert(exp->son->type==TYPE_ID);
                 assert(base_op->optype.type->kind==STRUCTURE);
-                if(base_op->optype.param==notPARAM){
+                if(base_op->optype.isparam==notPARAM){
                     base_op=get_address(base_op);
                 }
             }else{
@@ -1162,9 +1170,14 @@ void translate_Exp(node* root,Operand place){
             HashNode funct_hashnode=get(ID(funct_name));
             assert(funct_hashnode!=NULL);
             FieldList funct_field=funct_hashnode->value;
-            Operand functname_op=gen_op(OP_FUNCTIONNAME,funct_field->name,-1);
+            Operand functname_op=(Operand)malloc(sizeof(struct Operand_));
+            assert(functname_op!=NULL);
+            functname_op->kind=OP_FUNCTIONNAME;            
+            functname_op->name=funct_field->name;
+            functname_op->function.param=funct_field->type->u.function.param;
+            functname_op->function.paramnum=funct_field->type->u.function.paramnum;
             FieldList arg_field=funct_field->type->u.function.param;
-            ArgList arglist=translate_Args(args,arg_field);
+            ArgList arglist=translate_Args(args,arg_field,funct_field->type->u.function.paramnum);
             InterCode call_ir=NULL;
             if(strcmp(funct_field->name,"write")==0){
                 call_ir=gen_ir(IR_WRITE,arglist->arg,NULL,NULL);
@@ -1210,7 +1223,7 @@ void translate_Exp(node* root,Operand place){
             }
             if(base_op->kind==OP_ARRAYNAME){
                 //到了最底层
-                if(base_op->optype.param==notPARAM){
+                if(base_op->optype.isparam==notPARAM){
                     base_op=get_address(base_op);
                 }
             }else{
@@ -1221,23 +1234,24 @@ void translate_Exp(node* root,Operand place){
         else    assert(0);
     }
 }
-ArgList translate_Args(node* root,FieldList arg_field) {
+ArgList translate_Args(node* root,FieldList arg_field,int paramnum) {
     ArgList arglist_now=(ArgList)malloc(sizeof(struct ArgList_));
     assert(root->son_num == 1 || root->son_num == 3);
     node* exp=root->son;
 
     Operand temp=gen_op(OP_TEMP,NULL,-1);
+    temp->function.paramnum=paramnum;
     translate_Exp(exp,temp);
     if(temp->kind==OP_ADDRESS&&arg_field->type->kind==BASIC){
         temp=get_value(temp);
     }
-    //temp->optype.param=notPARAM;
+    //temp->optype.isparam=notPARAM;
     arglist_now->arg=temp;
     arglist_now->next=NULL;
     if(root->son_num==1){
         
     }else if(root->son_num==3){    //Args->Exp COMMA Args
-        ArgList arglist_2=translate_Args(exp->bro->bro,arg_field->tail);
+        ArgList arglist_2=translate_Args(exp->bro->bro,arg_field->tail,paramnum);
         arglist_now->next=arglist_2;
     }else{
         assert(0);

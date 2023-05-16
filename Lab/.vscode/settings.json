@@ -7,6 +7,10 @@
         "limits": "c",
         "memory": "c",
         "new": "c",
-        "functional": "c"
+        "functional": "c",
+        "*.tcc": "c",
+        "cmath": "c",
+        "type_traits": "c",
+        "typeinfo": "c"
     }
 }

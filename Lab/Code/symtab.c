@@ -2,7 +2,7 @@
 #include <string.h>
 #include "tree.h"
 HashNode hash_tab[HASHTAB_SIZE+1];
-HashNode stack[STACK_SIZE+1];
+HashNode sym_stack[STACK_SIZE+1];
 node* declare_func[100];
 extern int semantic_de;
 extern int sdep;
@@ -27,7 +27,7 @@ void init_hashtab(){
 void init_stack(){
     sdep=0;
     for(int i=0;i<=STACK_SIZE;i++)
-        stack[i]=NULL;
+        sym_stack[i]=NULL;
     return;
 }
 
@@ -57,10 +57,10 @@ HashNode add_sym(FieldList value,int stack_dep,int line){
     }
     //HashNode slot_head=hash_tab[pos];//hash槽的表头
     if(stack_dep>=STACK_SIZE){
-        debug("stack overflow");
+        debug("sym_stack overflow");
         assert(0);
     }
-    //HashNode stack_head=stack[stack_dep];//这一层栈的表头
+    //HashNode stack_head=sym_stack[stack_dep];//这一层栈的表头
     HashNode p = (HashNode)malloc(sizeof (struct HashNode_));
     assert(p!=NULL);
     p->first_line=line;
@@ -73,21 +73,21 @@ HashNode add_sym(FieldList value,int stack_dep,int line){
     p->slot_next=hash_tab[pos];
     hash_tab[pos]=p;
     //变量插入到这一层变量定义栈的头部也可以
-    debug("add stack");
-    p->stack_next=stack[stack_dep];
-    stack[stack_dep]=p;
+    debug("add sym_stack");
+    p->stack_next=sym_stack[stack_dep];
+    sym_stack[stack_dep]=p;
     debug("add_sym end");
     return p;
 }
 
-int push_stack(){
+int push_sym_stack(){
     sdep+=1;
     return sdep;
 }
 
-int pop_stack(){
+int pop_sym_stack(){
     //栈顶的hashnode肯定都位于hash槽的头部，一个一个删掉
-    HashNode stack_head=stack[sdep];
+    HashNode stack_head=sym_stack[sdep];
     while(stack_head!=NULL){
         char* name=stack_head->value->name;
         int pos=hash_fun(name);
@@ -105,20 +105,20 @@ int pop_stack(){
                 last=last->slot_next;
             }
             if(p==NULL){
-                printf("pop_stack error\n");
+                printf("pop_sym_stack error\n");
                 assert(0);
             }
             last->slot_next=p->slot_next;
         }
         stack_head=stack_head->stack_next;
     }
-    stack[sdep]=NULL;
+    sym_stack[sdep]=NULL;
     sdep-=1;
     return sdep;
 }
 
 void check_decfun(){
-    HashNode stack_node=stack[0];
+    HashNode stack_node=sym_stack[0];
     while(stack_node!=NULL){
         if((stack_node->value->type->kind==FUNCTION)&&
         (stack_node->value->type->u.function.declare==DECLARED))
@@ -215,15 +215,15 @@ void ExtDef(node* root){
         son3=son2->bro;
         if(strcmp(son3->name,"CompSt")==0){ 
             //ExtDef->Specifier FunDef CompSt ： 函数定义
-            if(!intercode)  push_stack();
+            if(!intercode)  push_sym_stack();
             FunDec(son2,specifier_type,0);
             CompSt(son3,specifier_type);
-            if(!intercode)  pop_stack();
+            if(!intercode)  pop_sym_stack();
         }
         else{ //ExtDef->Specifier FunDef ：函数声明
-            if(!intercode)  push_stack();
+            if(!intercode)  push_sym_stack();
             FunDec(son2,specifier_type,1);
-            if(!intercode)  pop_stack();
+            if(!intercode)  pop_sym_stack();
         }
     }else if(strcmp(son2->name,"SEMI")==0){
         //这个其实不用做什么？
@@ -317,12 +317,12 @@ Type StructSpecifier(node* root){
             add_sym(hash_struct_field,0,line);//添加结构体名字的定义信息
         }
         if(strcmp(deflist->name,"DefList")==0){  //DefList可能没有
-            if(!intercode)  push_stack();
+            if(!intercode)  push_sym_stack();
             FieldList deflist_field=DefList(deflist,1);
             type->u.structval=deflist_field;
             hash_type->u.structtype.structure=deflist_field;
             hash_type->u.structtype.defok=1;
-            if(!intercode)  pop_stack();
+            if(!intercode)  pop_sym_stack();
         }
     }else if(root->son_num=2){  //StructSpecifier->STRUCT Tag
         node* son2=root->son->bro;
@@ -617,8 +617,8 @@ FieldList VarDec(node* root,Type type,Type elemtype,int isparam){
             subtype->u.array.elem=type;
             field->type=elemtype;
         }
-        if(isparam) field->param=isPARAM;
-        else    field->param=notPARAM;
+        if(isparam) field->isparam=isPARAM;
+        else    field->isparam=notPARAM;
         add_sym(field,sdep,line);
         return field;
     }else if(root->son_num==4){ //VarDec->VarDec [ INT ]
@@ -698,9 +698,9 @@ void Stmt(node* root,Type type){
         Exp(exp);
     }else if(root->son_num==1){//Stmt->CompSt
         node* compst=root->son;
-        if(!intercode)  push_stack();   //bug in E2.2
+        if(!intercode)  push_sym_stack();   //bug in E2.2
         CompSt(compst,type);//这里应该也需要传入类型，因为可以函数中途return
-        if(!intercode)  pop_stack();
+        if(!intercode)  pop_sym_stack();
     }else if(root->son_num==3){//Stmt->REtURN Exp Semi
         node* exp=root->son->bro;
         Type exp_type=Exp(exp);
@@ -721,9 +721,9 @@ void Stmt(node* root,Type type){
                 eprintf(7,line,"Not INT for condition of IF or WHILE");
         }
         node* stmt=exp->bro->bro;
-        if(!intercode)  push_stack();
+        if(!intercode)  push_sym_stack();
         Stmt(stmt,type);
-        if(!intercode)  pop_stack();
+        if(!intercode)  pop_sym_stack();
     }else if(root->son_num==7){
         node* exp=root->son->bro->bro;
         Type exp_type=NULL;
@@ -733,13 +733,13 @@ void Stmt(node* root,Type type){
                 eprintf(7,line,"Not INT for condition of IF ELSE");
         }
         node* stmt1=exp->bro->bro;
-        if(!intercode)  push_stack();
+        if(!intercode)  push_sym_stack();
         Stmt(stmt1,type);
-        if(!intercode)  pop_stack();
+        if(!intercode)  pop_sym_stack();
         node* stmt2=stmt1->bro->bro;
-        if(!intercode)  push_stack();
+        if(!intercode)  push_sym_stack();
         Stmt(stmt2,type);
-        if(!intercode)  pop_stack();
+        if(!intercode)  pop_sym_stack();
     }
     return ;
 }

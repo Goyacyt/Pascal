@@ -38,7 +38,7 @@ struct FieldList_{
     char* name; //域名
     Type type;  //域类型
     FieldList tail; //下一域
-    enum{notPARAM,isPARAM}param;
+    enum{notPARAM,isPARAM}isparam;
 };//在结构体定义的时候，name为结构体的名字,type中的structure 指向一个新的fieldlist，从那里开始结构体里面变量的记录
 
 struct HashNode_{
@@ -51,7 +51,7 @@ struct HashNode_{
 
 
 extern HashNode hash_tab[HASHTAB_SIZE+1];
-extern HashNode stack[STACK_SIZE+1];
+extern HashNode sym_stack[STACK_SIZE+1];
 
 
 void init_hashtab();
@@ -59,8 +59,8 @@ void init_stack();
 HashNode get(char* name);  //得到符号name对应的HashNode指针,查找出来是空指针就可以报错了
 HashNode add_sym(FieldList value,int stack_dep,int line);  //将域结构为value的符号插入到符号表中，返回其对应的HashNode结构
 void check_decfun();
-int push_stack();
-int pop_stack();
+int push_sym_stack();
+int pop_sym_stack();
 void add_ReadandWrite();
 void Program(node* root);
 void ExtDefList(node* root);
