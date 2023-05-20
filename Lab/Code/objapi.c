@@ -1,4 +1,5 @@
-#include"objectcode.h"
+#include "objectcode.h"
+#include "basicblock.h"
 extern FILE* mipsout;
 
 static int arg_no=-1;
@@ -125,10 +126,47 @@ void store_reg(int reg_no){
 
 int allocate_reg();
 
+bool active(BasicBlock bb, InterCodeList irnode,Operand op){
+    InterCodeList irnode_cur=bb->last;
+    while(irnode_cur!=irnode&&irnode_cur!=irlist_head){
+        irnode_cur=irnode_cur->prev;
+        InterCode ir=irnode_cur->code;
+        switch(ir->kind){
+            case IR_PARAM:
+            case IR_ARG:
+            case IR_READ:
+            case IR_WRITE:
+            case IR_RETURN:
+            case IR_GETADDR:
+            case IR_CALL:
+                if(op==ir->u.one)
+                    return 1;
+                break;
+            case IR_ASSIGN:
+            case IR_GETVAL:
+            case IR_STOREIN:
+                if(op==ir->u.two.left)
+                    return 1;
+                else if(op==ir->u.two.right)
+                    return 1;
+                break;
+            case IR_ADD:
+            case IR_SUB:
+            case IR_MUL:
+            case IR_DIV:
+                if((op==ir->u.three.result)||(op==ir->u.three.op1)||(op==ir->u.three.op2))
+                    return 1;
+                break;
+        }
+    }
+    assert(irnode_cur==irnode);
+    return 0;
+}
+
 int get_reg(Operand op,bool inreg){
     Variable var=find_var(op);
+    assert(var);
     if(inreg){
-        assert(var);
         if(var->regno==-1){
             assert(0);
             printf("Error: Operand %s not in register\n",var->op->name);
@@ -136,12 +174,26 @@ int get_reg(Operand op,bool inreg){
         return var->regno;
     }
     else{ //可能已在可能不在reg中
+        if(var->regno>=0) //还在寄存器中
+            return var->regno;
+        for(int regno=t0;regno<=t7;regno++){
+            if(regs[regno].state==UNUSED){
+                regs[regno].state=USED;
+                regs[regno].var=var;
+                var->regno=regno;
+                return regno;
+            }
+        for(int regno=t8;regno<=t9;regno++){
+            if(regs[regno].state==UNUSED){
+                regs[regno].state=USED;
+                regs[regno].var=var;
+                var->regno=regno;
+                return regno;
+                
+            }
+        }
         
     }
-}
-
-bool var_free_after_ir(InterCode ir,Variable var){ //注意是从ir的下一个开始，irlisthead前一个截止
-
 }
 
 

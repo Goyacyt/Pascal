@@ -120,9 +120,6 @@ void print_op(Operand op){
         case OP_ADDRESS:
             fprintf(irout,"addr%d",op->no);
             break;
-        case OP_ADDRESS_LEFT:
-            fprintf(irout,"*addr%d",op->no);
-            break;
         case OP_ARRAYNAME:
             fprintf(irout,"array%s",op->name);
             break;
@@ -153,9 +150,6 @@ void print_op(Operand op){
         case OP_ADDRESS:
             printf("addr%d",op->no);
             break;
-        case OP_ADDRESS_LEFT:
-            printf("*addr%d",op->no);
-            break;
         case OP_ARRAYNAME:
             printf("array%s",op->name);
             break;
@@ -175,8 +169,6 @@ InterCode gen_ir(int kind,Operand op1,Operand op2,Operand op3){
     ir->kind=kind;
     switch (kind){
         case IR_LABEL:
-            ir->u.one=op1;
-            break;
         case IR_FUNCTIONNAME:
             ir->u.one=op1;
             break;
@@ -184,11 +176,8 @@ InterCode gen_ir(int kind,Operand op1,Operand op2,Operand op3){
             ir->u.one=op1;
             break;
         case IR_PARAM:
+        case IR_ARG:
             ir->u.one=op1;
-            break;
-        case IR_ASSIGN:
-            ir->u.two.left=op1;
-            ir->u.two.right=op2;
             break;
         case IR_ADD:
         case IR_SUB:
@@ -198,23 +187,17 @@ InterCode gen_ir(int kind,Operand op1,Operand op2,Operand op3){
             ir->u.three.op1=op1;
             ir->u.three.op2=op2;
             break;
-        case IR_ARG:
-            ir->u.one=op1;
-            break;
         case IR_READ:
-            ir->u.one=op1;
-            break;
         case IR_WRITE:
             ir->u.one=op1;
             break;
         case IR_RETURN:
             ir->u.one=op1;
             break;
+        case IR_ASSIGN:
         case IR_GETVAL:
-            ir->u.two.left=op1;
-            ir->u.two.right=op2;
-            break;
         case IR_GETADDR:
+        case IR_STOREIN:
             ir->u.two.left=op1;
             ir->u.two.right=op2;
             break;
@@ -240,6 +223,12 @@ void print_ir(InterCode ir){
         case IR_GETADDR:
             print_op(ir->u.two.left);
             fprintf(irout," := &");
+            print_op(ir->u.two.right);
+            break;
+        case IR_STOREIN:
+            fprintf(irout,"*");
+            print_op(ir->u.two.left);
+            fprintf(irout," := ");
             print_op(ir->u.two.right);
             break;
         case IR_LABEL:
@@ -501,51 +490,12 @@ Operand get_value(Operand addr){    //value_op:=*addr
     return value_op;
 }
 
-void get_value_left(Operand addr){
-    assert(addr->kind==OP_ADDRESS||addr->kind==OP_ARRAYNAME||addr->kind==OP_STRUCTURENAME);
-    addr->kind=OP_ADDRESS_LEFT;
-}
-
-
 Operand get_address(Operand value){ //addr_op:=&value
     assert(value->kind==OP_ADDRESS||value->kind==OP_ARRAYNAME||value->kind==OP_STRUCTURENAME);
     Operand addr_op=gen_op(OP_ADDRESS,NULL,-1);
     insert_ir(gen_ir(IR_GETADDR,addr_op,value,NULL));
     return addr_op;
 }
-
-// FieldList get_struname_field(node* root){  //root:exp->exp.id
-//     assert(root->son_num==3);
-//     node* struname=root->son;
-//     assert(strcmp(struname->bro->name,"DOT")==0);
-//     assert(struname->bro->bro->type==TYPE_ID);
-//     while(struname->son_num==3){
-//         struname=struname->son;
-//     }
-//     if(struname->son_num!=1) assert(0);
-//     HashNode struct_hashnode=get(ID(struname));
-//     assert(struct_hashnode!=NULL);
-//     FieldList struct_field=struct_hashnode->value;
-//     assert(struct_field->type->kind==STRUCTURE);
-//     return struct_field;
-// }
-
-// FieldList get_arrname_field(node* root){  //Exp->Exp [ INT ]
-//     assert(root->son_num==4);
-//     node* arrname=root->son;
-//     assert(strcmp(arrname->bro->name,"LB")==0);
-//     assert(arrname->bro->bro->type==TYPE_INT);
-//     while(arrname->son_num==4){
-//         arrname=arrname->son;
-//     }
-//     if(arrname->son_num!=1) assert(0);
-//     HashNode arr_hashnode=get(ID(arrname));
-//     assert(arr_hashnode!=NULL);
-//     FieldList arr_field=arr_hashnode->value;
-//     assert(arr_field->type->kind==ARRAY);
-//     return arr_field;
-// }
-
 
 void translate_Program(node* root) {    // Program -> ExtDefList
     assert(root!=NULL);
@@ -1041,10 +991,11 @@ void translate_Exp(node* root,Operand place){
             if(t2->kind==OP_ADDRESS||t2->kind==OP_ARRAYNAME||t2->kind==OP_STRUCTURENAME)
                 t2=get_value(t2);
             if(t1->kind==OP_ADDRESS||t1->kind==OP_ARRAYNAME||t1->kind==OP_STRUCTURENAME) //右值可以getvalue赋给一个新的temp变量，左值不可以
-                get_value_left(t1);
-
-            insert_ir(gen_ir(IR_ASSIGN,t1,t2,NULL));
+                insert_ir(gen_ir(IR_STOREIN,t1,t2,NULL));
+            else
+                insert_ir(gen_ir(IR_ASSIGN,t1,t2,NULL));
             insert_ir(gen_ir(IR_ASSIGN,place,t2,NULL));
+            
         }
         else if(strcmp(root->son->bro->name,"PLUS")==0){
             node* exp1=root->son;

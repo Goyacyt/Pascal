@@ -24,7 +24,7 @@ struct Regs_{
 
 struct Variable_{
     Operand op;
-    //int offset; //相对于fp的偏移量
+    int offset; //相对于fp的偏移量
     int regno;
     enum{INSTACK,INREG}state;
 };
