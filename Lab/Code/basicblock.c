@@ -1,7 +1,7 @@
 #include "basicblock.h"
 
 BasicBlock init_bb(InterCodeList irnode){
-    BasicBlock bb=(BasicBlock)malloc(sizeof(struct BasciBlock_));
+    BasicBlock bb=(BasicBlock)malloc(sizeof(struct BasicBlock_));
     assert(bb);
     bb->bb_no=bbno;
     bbno++;

@@ -4,11 +4,14 @@
 typedef struct Variable_ *Variable;
 typedef struct ObjStackNode_ *ObjStackNode;
 typedef struct VariableList_ *VariableList;
+typedef struct BlockVariables_ *BlockVariables;
 typedef struct Regs_ Regs;
 
 Regs regs[32];
 ObjStackNode objstack_head;
+ObjStackNode cur_objstack;
 VariableList varlist_head;
+
 enum{zero,at,v0,v1,a0,a1,a2,a3,t0,t1,t2,t3,t4,t5,t6,t7,s0,s1,s2,s3,s4,s5,s6,s7,t8,t9,k0,k1,gp,sp,s8,ra};
 char* regName[32]={
     "$zero","$at","$v0","$v1","$a0","$a1","$a2","$a3",
@@ -36,9 +39,12 @@ struct VariableList_{
 };
 
 struct ObjStackNode_{
-    Variable var;
+    char* functname;
+    int paramnum;
+    int stacksize;
     ObjStackNode prev;
     ObjStackNode next;
-};
+}; //非循环，头节点不保存数据。每次总在链头（头节点的下一个节点）插入
+
 
 #endif

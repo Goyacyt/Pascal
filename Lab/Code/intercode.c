@@ -562,8 +562,7 @@ void translate_FunDec(node* root){
     assert(functname_op!=NULL);
     functname_op->kind=OP_FUNCTIONNAME;            
     functname_op->name=function_field->name;
-    functname_op->function.param=function_field->type->u.function.param;
-    functname_op->function.paramnum=function_field->type->u.function.paramnum;
+    functname_op->function_field=function_field;
 
     InterCode funcname_ir=gen_ir(IR_FUNCTIONNAME,functname_op,NULL,NULL);
     insert_ir(funcname_ir);
@@ -1067,8 +1066,7 @@ void translate_Exp(node* root,Operand place){
                 assert(functname_op!=NULL);
                 functname_op->kind=OP_FUNCTIONNAME;            
                 functname_op->name=funct_field->name;
-                functname_op->function.param=funct_field->type->u.function.param;
-                functname_op->function.paramnum=funct_field->type->u.function.paramnum;
+                functname_op->function_field=funct_field;
                 call_ir=gen_ir(IR_CALL,functname_op,place,NULL);
             }
             insert_ir(call_ir);
@@ -1125,10 +1123,9 @@ void translate_Exp(node* root,Operand place){
             assert(functname_op!=NULL);
             functname_op->kind=OP_FUNCTIONNAME;            
             functname_op->name=funct_field->name;
-            functname_op->function.param=funct_field->type->u.function.param;
-            functname_op->function.paramnum=funct_field->type->u.function.paramnum;
+            functname_op->function_field=funct_field;
             FieldList arg_field=funct_field->type->u.function.param;
-            ArgList arglist=translate_Args(args,arg_field,funct_field->type->u.function.paramnum);
+            ArgList arglist=translate_Args(args,arg_field,funct_field);
             InterCode call_ir=NULL;
             if(strcmp(funct_field->name,"write")==0){
                 call_ir=gen_ir(IR_WRITE,arglist->arg,NULL,NULL);
@@ -1185,13 +1182,13 @@ void translate_Exp(node* root,Operand place){
         else    assert(0);
     }
 }
-ArgList translate_Args(node* root,FieldList arg_field,int paramnum) {
+ArgList translate_Args(node* root,FieldList arg_field,FieldList functfield) {
     ArgList arglist_now=(ArgList)malloc(sizeof(struct ArgList_));
     assert(root->son_num == 1 || root->son_num == 3);
     node* exp=root->son;
 
     Operand temp=gen_op(OP_TEMP,NULL,-1);
-    temp->function.paramnum=paramnum;
+    temp->function_field=functfield;
     translate_Exp(exp,temp);
     if(temp->kind==OP_ADDRESS&&arg_field->type->kind==BASIC){
         temp=get_value(temp);
@@ -1202,7 +1199,7 @@ ArgList translate_Args(node* root,FieldList arg_field,int paramnum) {
     if(root->son_num==1){
         
     }else if(root->son_num==3){    //Args->Exp COMMA Args
-        ArgList arglist_2=translate_Args(exp->bro->bro,arg_field->tail,paramnum);
+        ArgList arglist_2=translate_Args(exp->bro->bro,arg_field->tail,functfield);
         arglist_now->next=arglist_2;
     }else{
         assert(0);

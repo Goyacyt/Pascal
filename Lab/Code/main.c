@@ -2,12 +2,16 @@
 #include"tree.h"
 #include "symtab.h"
 #include "intercode.h"
+#include "objectcode.h"
+#include "basicblock.h"
+
 int yylex();    //词法分析
 int yyparse();  //对输入文件语法分析
 void yyrestart(FILE *file); //重置yyin指针为开头
 extern FILE* yyin;
 FILE* irout;
 FILE* mipsout;
+
 int sim;
 extern int yydebug;                // bison debug mode
 int semantic_de;
@@ -50,14 +54,15 @@ int main(int argc, char** argv){
 	}
     Program(root);
 	if(argc==2){
-		irout=stdout;
+		irout=
+		mipsout=stdout;
 	}else if(argc>2){
-		if (!(irout=fopen(argv[2],"w"))){
+		if (!(mipsout=fopen(argv[2],"w"))){
 			perror(argv[2]);
 			return 1;
 		}
 	}
-	//translate_Program(root);
-	
+	translate_Program(root);
+	travel_bbs();
     return 0;
 }
