@@ -48,7 +48,7 @@ void insert_tag(InterCodeList irnode){
 
 InterCodeList searchtag(Operand label){
     IRtag tag_tmp=tag_head;
-    IRtag res_irnode=NULL;
+    InterCodeList res_irnode=NULL;
     while(tag_tmp->nexttag){
         if(tag_tmp->nexttag->irnode->code->u.one==label){
             res_irnode=tag_tmp->nexttag->irnode;
@@ -160,7 +160,7 @@ void partition(){
     
     //连缀基本块
     cur_irnode=irlist_head->next;
-    BasicBlock cur_bb=bb_head;
+    cur_bb=bb_head;
     while(cur_irnode!=NULL){
         switch(cur_irnode->code->kind){
             case IR_IFGOTO:

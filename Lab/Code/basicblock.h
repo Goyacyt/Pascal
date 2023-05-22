@@ -28,8 +28,12 @@ struct IRtag_{
     IRtag nexttag;
 };//当扫描到一个标号类ir，加入该链表，它可能是作为某个连接的目标。首结点不存放数据
 
-
-
-
+BasicBlock init_bb(InterCodeList irnode);
+BBs init_bbs(BasicBlock bb);
+void insert_bb2bbs(BasicBlock bb, BBs bbs);
+void link(BasicBlock bbson,BasicBlock bbpar);
+InterCodeList get_jmp(InterCodeList end_irnode);
+BasicBlock search_bb(InterCode irnode);
+void partition();
 
 #endif
