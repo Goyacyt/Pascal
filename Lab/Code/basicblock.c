@@ -1,5 +1,11 @@
 #include "basicblock.h"
 
+
+BasicBlock bb_head; //第一个基本块
+IRtag tag_head;  //当扫描到一个标号类ir，加入该链表，它可能是作为某个连接的目标。首结点不存放数据
+
+static int bbno=0;
+
 BasicBlock init_bb(InterCodeList irnode){
     BasicBlock bb=(BasicBlock)malloc(sizeof(struct BasicBlock_));
     assert(bb);
@@ -9,15 +15,9 @@ BasicBlock init_bb(InterCodeList irnode){
     bb->last=NULL;   //最后一条irlist
     bb->pre=NULL;    //bb的前驱bbs群
     bb->suc=NULL;    //bb的后继bbs群
-    
-    BasicBlock tmp_bb=bb_head;
-    while(tmp_bb!=NULL){
-        if(tmp_bb->nextbb==NULL){
-            tmp_bb->nextbb=bb;
-            break;
-        }
-        tmp_bb=tmp_bb->nextbb;
-    }
+    bb->nextbb=NULL; //下一个bb
+
+    return bb;
 }
 
 BBs init_bbs(BasicBlock bb){
@@ -32,6 +32,7 @@ BBs init_bbs(BasicBlock bb){
 
 IRtag init_tag(InterCodeList irnode){
     IRtag tag=(IRtag)malloc(sizeof(struct IRtag_));
+    assert(tag);
     tag->irnode=irnode;
     tag->nexttag=NULL;
     return tag;
@@ -80,7 +81,6 @@ void link(BasicBlock bbson,BasicBlock bbpar){
     if(children==NULL){
         children=init_bbs(bbson);
         bbpar->suc=children;
-        return;
     }
     else{
         insert_bb2bbs(bbson,children->head);
@@ -91,7 +91,6 @@ void link(BasicBlock bbson,BasicBlock bbpar){
     if(parents==NULL){
         parents=init_bbs(bbpar);
         bbson->pre=parents;
-        return;
     }
     else{
         insert_bb2bbs(bbpar,parents->head);
@@ -100,8 +99,8 @@ void link(BasicBlock bbson,BasicBlock bbpar){
 }
 
 InterCodeList get_jmp(InterCodeList end_irnode){ //输入一个irnode，假如它是BB块末尾，则输出它除下一条指令外跳转到的目标irnode
+    Operand label_op=NULL;
     switch(end_irnode->code->kind){
-        Operand label_op=NULL;
         case IR_IFGOTO:
             label_op=end_irnode->code->u.ifgoto.label;
             return searchtag(label_op);
@@ -114,7 +113,7 @@ InterCodeList get_jmp(InterCodeList end_irnode){ //输入一个irnode，假如�
     }
 }
 
-BasicBlock search_bb(InterCode irnode){ //搜索irnode所在的BB
+BasicBlock search_bb(InterCodeList irnode){ //搜索首句为irnode的BB
     BasicBlock bb_tmp=bb_head;
     while(bb_tmp!=NULL){
         if(bb_tmp->first==irnode)
@@ -126,57 +125,61 @@ BasicBlock search_bb(InterCode irnode){ //搜索irnode所在的BB
 
 void partition(){
     //分割基本块
+    bb_head=NULL;
     InterCodeList cur_irnode=irlist_head->next;
     BasicBlock cur_bb=init_bb(cur_irnode);
     bb_head=cur_bb;
     tag_head=init_tag(NULL);
-    while(cur_irnode!=NULL){
-        if(cur_irnode->next==NULL){
-            cur_bb->last=cur_irnode;
-            break;
-        }
+    cur_irnode=cur_irnode->next;
+    while(cur_irnode!=irlist_head){
         switch(cur_irnode->code->kind){
             case IR_IFGOTO:
             case IR_GOTO:
             case IR_CALL:
+            case IR_READ:
+            case IR_WRITE:
             case IR_RETURN:
                 cur_bb->last=cur_irnode;
-                cur_bb=init_bb(cur_irnode->next);
-                if(cur_irnode->next->next)
+
+                if(cur_irnode->next!=irlist_head){
+                    BasicBlock new_bb=init_bb(cur_irnode->next);
+                    cur_bb->nextbb=new_bb;
+                    cur_bb=new_bb;
+
                     cur_irnode=cur_irnode->next->next;
+                }
+                else
+                    cur_irnode=cur_irnode->next;
                 break;
 
             case IR_LABEL:
             case IR_FUNCTIONNAME:
-                cur_bb=init_bb(cur_irnode);
+                BasicBlock new_bb=init_bb(cur_irnode);
+                cur_bb->nextbb=new_bb;
+                cur_bb=new_bb;
                 insert_tag(cur_irnode);
-                assert(cur_irnode->next);
                 cur_irnode=cur_irnode->next;
                 break;
             default:
                 cur_irnode=cur_irnode->next;
         }
     }
-    
+    cur_bb->last=irlist_head->prev;
+
     //连缀基本块
     cur_irnode=irlist_head->next;
     cur_bb=bb_head;
-    while(cur_irnode!=NULL){
-        switch(cur_irnode->code->kind){
-            case IR_IFGOTO:
-            case IR_GOTO:
-            case IR_CALL:
-            case IR_RETURN:
-                cur_bb=search_bb(cur_irnode);
-                BasicBlock jmp_bb=search_bb(get_jmp(cur_irnode));
-                BasicBlock next_bb=search_bb(cur_irnode);
-                link(jmp_bb,cur_bb);
-                link(next_bb,cur_bb);
-                cur_irnode=cur_irnode->next;
-                break;
-            default:
-                cur_irnode=cur_irnode->next;
+    while(cur_bb){
+        if(cur_bb->nextbb)
+            link(cur_bb->nextbb,cur_bb);
+        InterCodeList jmp_irnode=get_jmp(cur_bb->last);
+        BasicBlock jmp_bb=NULL;
+        if(jmp_irnode){
+            jmp_bb=search_bb(jmp_irnode);
+            link(jmp_bb,cur_bb);
+            assert(jmp_bb);
         }
+        cur_bb=cur_bb->nextbb;
     }
 }
 

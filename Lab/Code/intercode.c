@@ -8,6 +8,8 @@ static int label_no=1;
 static int address_no=1;
 static int linenum=1;
 
+InterCodeList irlist_head;
+
 void init_irlist(){
     irlist_head=(InterCodeList)malloc(sizeof(struct InterCodeList_));
     assert(irlist_head!=NULL);
@@ -167,6 +169,7 @@ InterCode gen_ir(int kind,Operand op1,Operand op2,Operand op3){
     InterCode ir=(InterCode)malloc(sizeof(struct InterCode_));
     assert(ir!=NULL);
     ir->kind=kind;
+    ir->linenum=linenum;
     switch (kind){
         case IR_LABEL:
         case IR_FUNCTIONNAME:
@@ -208,6 +211,7 @@ InterCode gen_ir(int kind,Operand op1,Operand op2,Operand op3){
         default:
             assert(0);
     }
+    linenum++;
     return ir;
 }
 

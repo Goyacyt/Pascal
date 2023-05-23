@@ -23,6 +23,7 @@ int haserror;
 int syntax;
 int sdep;
 int intercode;
+int objectcode;
 node* root;
 
 int main(int argc, char** argv){
@@ -36,6 +37,7 @@ int main(int argc, char** argv){
 	intercode_de=0;
     error_line=0;//记录上一个出错的行数，如果当前错误仍然在这一行，就不要输出
 	intercode=1;
+	objectcode=1;
 	if (argc==1){
 		return 1;
 	}
@@ -54,15 +56,51 @@ int main(int argc, char** argv){
 	}
     Program(root);
 	if(argc==2){
-		irout=
-		mipsout=stdout;
+		if(objectcode){
+			if(!(irout=fopen("/home/lyt/myfile/Pascal/Lab/TestTools/workdir/a.ir","w"))){
+				perror("~/myfile/Pascal/Lab/TestTools/workdir/a.ir");
+				return 1;
+			}
+			translate_Program(root);
+			fclose(irout);
+			if (!(mipsout=fopen("/home/lyt/myfile/Pascal/Lab/TestTools/workdir/a.s","w"))){
+				perror("~/myfile/Pascal/Lab/TestTools/workdir/a.s");
+				return 1;
+			}
+			gen_objectcodes();
+			fclose(mipsout);
+		}
+		else{
+			irout=stdout;
+			translate_Program(root);
+			fclose(irout);
+		}
 	}else if(argc>2){
-		if (!(mipsout=fopen(argv[2],"w"))){
-			perror(argv[2]);
-			return 1;
+		if(objectcode){
+			if(!(irout=fopen("/home/lyt/myfile/Pascal/Lab/TestTools/workdir/a.ir","w"))){
+				perror("~/myfile/Pascal/Lab/TestTools/workdir/a.ir");
+				return 1;
+			}
+			translate_Program(root);
+			fclose(irout);
+
+			if (!(mipsout=fopen(argv[2],"w"))){
+				perror(argv[2]);
+				return 1;
+			}
+			gen_objectcodes();
+			
+			fclose(mipsout);
+		}
+		else{
+			if (!(irout=fopen(argv[2],"w"))){
+				perror(argv[2]);
+				return 1;
+			}
+			translate_Program(root);
+			fclose(irout);
 		}
 	}
-	translate_Program(root);
-	travel_bbs();
+
     return 0;
 }

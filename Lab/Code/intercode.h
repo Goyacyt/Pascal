@@ -8,7 +8,7 @@ typedef struct InterCode_* InterCode;
 typedef struct InterCodeList_* InterCodeList;
 typedef struct ArgList_* ArgList;
 //#define DE
-InterCodeList irlist_head;
+
 struct Operand_{
     enum{OP_VARIABLE,OP_CONSTANT,OP_TEMP,OP_LABEL,OP_FUNCTIONNAME,OP_ARRAYNAME,
     OP_STRUCTURENAME,OP_ADDRESS}kind;
@@ -37,6 +37,7 @@ struct InterCode_{
         struct{Operand var;int size;}dec;   //DEC
         struct{Operand op1,op2,label;   char relop[5];}ifgoto; //  IFGOTO:if op1 [relop] op2 goto label
     }u;
+    int linenum;
 };
 
 struct InterCodeList_{ //线性IR双向链表
@@ -44,14 +45,12 @@ struct InterCodeList_{ //线性IR双向链表
     InterCodeList prev, next;
 };
 
-extern InterCodeList irlist_head;
-
 struct ArgList_{
     Operand arg;
     ArgList next;
 };
 //extern ArgList arglist_head;
-
+extern InterCodeList irlist_head;
 
 void init_irlist();
 InterCodeList insert_ir(InterCode ir);
