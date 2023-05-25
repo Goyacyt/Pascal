@@ -391,10 +391,17 @@ void FunDec(node* root,Type type,int declare){
         node* varlist=id->bro->bro;
         varlist_field=VarList(varlist);
         FunType->u.function.param=varlist_field;
+
+        FieldList var_field=varlist_field;
+        while(var_field){
+            FunType->u.function.paramnum++;
+            var_field=var_field->tail;
+        }
     }else{
         debug("fundec->id lp rp");
         varlist_field=NULL;
         FunType->u.function.param=varlist_field;
+        FunType->u.function.paramnum=0;
     }
     field->type=FunType;
     if(this!=NULL){

@@ -24,6 +24,7 @@ int syntax;
 int sdep;
 int intercode;
 int objectcode;
+
 node* root;
 
 int main(int argc, char** argv){
@@ -38,6 +39,7 @@ int main(int argc, char** argv){
     error_line=0;//记录上一个出错的行数，如果当前错误仍然在这一行，就不要输出
 	intercode=1;
 	objectcode=1;
+
 	if (argc==1){
 		return 1;
 	}
@@ -63,12 +65,9 @@ int main(int argc, char** argv){
 			}
 			translate_Program(root);
 			fclose(irout);
-			if (!(mipsout=fopen("/home/lyt/myfile/Pascal/Lab/TestTools/workdir/a.s","w"))){
-				perror("~/myfile/Pascal/Lab/TestTools/workdir/a.s");
-				return 1;
-			}
+			
+			mipsout=stdout;
 			gen_objectcodes();
-			fclose(mipsout);
 		}
 		else{
 			irout=stdout;

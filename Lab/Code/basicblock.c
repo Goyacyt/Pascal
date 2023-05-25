@@ -12,7 +12,7 @@ BasicBlock init_bb(InterCodeList irnode){
     bb->bb_no=bbno;
     bbno++;
     bb->first=irnode;  //第一条irlist
-    bb->last=NULL;   //最后一条irlist
+    bb->last=irnode;   //最后一条irlist
     bb->pre=NULL;    //bb的前驱bbs群
     bb->suc=NULL;    //bb的后继bbs群
     bb->nextbb=NULL; //下一个bb
@@ -41,21 +41,32 @@ IRtag init_tag(InterCodeList irnode){
 void insert_tag(InterCodeList irnode){
     IRtag tag=init_tag(irnode);
     IRtag tag_tmp=tag_head;
-    while(tag_tmp!=NULL)
+    while(tag_tmp->nexttag)
         tag_tmp=tag_tmp->nexttag;
-    tag_tmp=tag;
+    tag_tmp->nexttag=tag;
     return;
 }
+
+bool cmp_label(Operand op1,Operand op2){
+    if(op1->kind!=op2->kind)
+        return false;
+    if(op1->kind==OP_LABEL)
+        return op1->no==op2->no;
+    else if(op1->kind==OP_FUNCTIONNAME)
+        return strcmp(op1->name,op2->name)==0;
+}
+
 
 InterCodeList searchtag(Operand label){
     IRtag tag_tmp=tag_head;
     InterCodeList res_irnode=NULL;
     while(tag_tmp->nexttag){
-        if(tag_tmp->nexttag->irnode->code->u.one==label){
+        if(cmp_label(tag_tmp->nexttag->irnode->code->u.one,label)){
             res_irnode=tag_tmp->nexttag->irnode;
             tag_tmp->nexttag=tag_tmp->nexttag->nexttag;
             return res_irnode;
         }
+        tag_tmp=tag_tmp->nexttag;
     }
     assert(0);
 }
@@ -130,6 +141,8 @@ void partition(){
     BasicBlock cur_bb=init_bb(cur_irnode);
     bb_head=cur_bb;
     tag_head=init_tag(NULL);
+    if(cur_irnode->code->kind==IR_FUNCTIONNAME)
+        insert_tag(cur_irnode);
     cur_irnode=cur_irnode->next;
     while(cur_irnode!=irlist_head){
         switch(cur_irnode->code->kind){
@@ -140,16 +153,7 @@ void partition(){
             case IR_WRITE:
             case IR_RETURN:
                 cur_bb->last=cur_irnode;
-
-                if(cur_irnode->next!=irlist_head){
-                    BasicBlock new_bb=init_bb(cur_irnode->next);
-                    cur_bb->nextbb=new_bb;
-                    cur_bb=new_bb;
-
-                    cur_irnode=cur_irnode->next->next;
-                }
-                else
-                    cur_irnode=cur_irnode->next;
+                cur_irnode=cur_irnode->next;
                 break;
 
             case IR_LABEL:

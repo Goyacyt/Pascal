@@ -1,6 +1,6 @@
 #include"objectcode.h"
 #include "basicblock.h"
-#ifndef VSDEBUG
+#ifdef VSDEBUG
 extern FILE* mipsout;
 
 static int arg_no=-1;
@@ -27,6 +27,7 @@ void gen_objectcodes(){
     while(cur_bb){
         InterCodeList irnode=cur_bb->first;
         while(irnode&&(irnode!=cur_bb->last->next)){
+            fprintf(mipsout,YELLOW"%d————\n"NONE,irnode->code->linenum);
             transfer_IR(irnode);
             irnode=irnode->next;
         }
@@ -40,32 +41,32 @@ void init_environments(){
     partition();
     init_varlist();
     objstack_head=init_stacknode(NULL,-1);
-    fprintf(mipsout,".data\n");
-    fprintf(mipsout,"_prompt: .asciiz \"Enter an interger:\"\n");
-    fprintf(mipsout,"_ret: .asciiz \"\\n\"\n");
-    fprintf(mipsout,".globl main\n");
+    fprintf(mipsout,"%d:  .data\n",objlinenum++);
+    fprintf(mipsout,"%d:  _prompt: .asciiz \"Enter an interger:\"\n",objlinenum++);
+    fprintf(mipsout,"%d:  _ret: .asciiz \"\\n\"\n",objlinenum++);
+    fprintf(mipsout,"%d:  .globl main\n",objlinenum++);
 
         // read
-    fprintf(mipsout,".text\n");
-    fprintf(mipsout,"read:\n");
-    fprintf(mipsout,"  li $v0, 4\n");
-    fprintf(mipsout,"  la $a0, _prompt\n");
-    fprintf(mipsout,"  syscall\n");
-    fprintf(mipsout,"  li $v0, 5\n");
-    fprintf(mipsout,"  syscall\n");
-    fprintf(mipsout,"  jr $ra\n");
-    fprintf(mipsout,"\n");
+    fprintf(mipsout,"%d:  .text\n",objlinenum++);
+    fprintf(mipsout,"%d:  read:\n",objlinenum++);
+    fprintf(mipsout,"%d:    li $v0, 4\n",objlinenum++);
+    fprintf(mipsout,"%d:    la $a0, _prompt\n",objlinenum++);
+    fprintf(mipsout,"%d:    syscall\n",objlinenum++);
+    fprintf(mipsout,"%d:    li $v0, 5\n",objlinenum++);
+    fprintf(mipsout,"%d:    syscall\n",objlinenum++);
+    fprintf(mipsout,"%d:    jr $ra\n",objlinenum++);
+    fprintf(mipsout,"%d:  \n",objlinenum++);
 
     // write
-    fprintf(mipsout,"write:\n");
-    fprintf(mipsout,"  li $v0, 1\n");
-    fprintf(mipsout,"  syscall\n");
-    fprintf(mipsout,"  li $v0, 4\n");
-    fprintf(mipsout,"  la $a0, _ret\n");
-    fprintf(mipsout,"  syscall\n");
-    fprintf(mipsout,"  move $v0, $0\n");
-    fprintf(mipsout,"  jr $ra\n");
-    fprintf(mipsout,"\n");
+    fprintf(mipsout,"%d:  write:\n",objlinenum++);
+    fprintf(mipsout,"%d:    li $v0, 1\n",objlinenum++);
+    fprintf(mipsout,"%d:    syscall\n",objlinenum++);
+    fprintf(mipsout,"%d:    li $v0, 4\n",objlinenum++);
+    fprintf(mipsout,"%d:    la $a0, _ret\n",objlinenum++);
+    fprintf(mipsout,"%d:    syscall\n",objlinenum++);
+    fprintf(mipsout,"%d:    move $v0, $0\n",objlinenum++);
+    fprintf(mipsout,"%d:    jr $ra\n",objlinenum++);
+    fprintf(mipsout,"%d:  \n",objlinenum++);
 }
 
 bool cmp_op(Operand op1,Operand op2){
@@ -267,8 +268,8 @@ void spill_reg(int reg_no){
     assert(regs[reg_no].state==USED);
     Variable var=regs[reg_no].var;
     assert(var);
-    fprintf(mipsout,"  addi $sp, $sp, -4\n");
-    fprintf(mipsout,"  sw %s, 0($sp)\n",regName[reg_no]);
+    fprintf(mipsout,"%d:    addi $sp, $sp, -4\n",objlinenum++);
+    fprintf(mipsout,"%d:    sw %s, 0($sp)\n",objlinenum++,regName[reg_no]);
     cur_objstack->stacksize++;
     var->state=INSTACK;
     var->offset=-(cur_objstack->stacksize);
@@ -424,7 +425,7 @@ int get_reg(Operand op,InterCodeList irnode){
         regs[regno].var=var;
 
         if(var->state==INSTACK)
-            fprintf(mipsout,"  lw %s, %d($fp)\n",regName[regno],var->offset*4);
+            fprintf(mipsout,"%d:    lw %s, %d($fp)\n",objlinenum++,regName[regno],var->offset*4);
         var->state=INREG;
         var->regno=regno;
         var->offset=0;
@@ -451,11 +452,11 @@ void transfer_IR(InterCodeList irnode){
     InterCode ir=irnode->code;
     switch(ir->kind){
         case IR_LABEL:
-            fprintf(mipsout,"label%d:\n",ir->u.one->no);
+            fprintf(mipsout,"%d:  label%d:\n",objlinenum++,ir->u.one->no);
             break;
         case IR_FUNCTIONNAME:
-            fprintf(mipsout,"%s:\n",ir->u.one->name);
-            fprintf(mipsout,"  move $fp, $sp\n");
+            fprintf(mipsout,"%d:  %s:\n",objlinenum++,ir->u.one->name);
+            fprintf(mipsout,"%d:    move $fp, $sp\n",objlinenum++);
             push_objstack(ir->u.one->function_field->name,ir->u.one->function_field->type->u.function.paramnum);
             param_no=-1;
             break;
@@ -476,14 +477,14 @@ void transfer_IR(InterCodeList irnode){
             assert(paramnum>=0);
             if(arg_no==-1){
                 arg_no=0;
-                fprintf(mipsout,"  addi $sp, $sp, -%d\n",(paramnum+2)*4);
+                fprintf(mipsout,"%d:    addi $sp, $sp, -%d\n",objlinenum++,(paramnum+2)*4);
                 cur_objstack->stacksize+=paramnum+2;
                 for(int i=0;i<paramnum;i++){
                     if(regs[i+a0].state==USED){ 
                         Variable ori_a_var=regs[i+a0].var;
                         ori_a_var->state=INSTACK;
                         ori_a_var->offset=i+paramnum-2;
-                        fprintf(mipsout,"  sw %s, %d($sp)\n",regName[i+a0],(i+paramnum-2)*4); //参数寄存器入栈
+                        fprintf(mipsout,"%d:    sw %s, %d($sp)\n",objlinenum++,regName[i+a0],(i+paramnum-2)*4); //参数寄存器入栈
                     }
                 }
             }
@@ -492,13 +493,13 @@ void transfer_IR(InterCodeList irnode){
             break;
         case IR_RETURN:
             if(ir->u.one->kind==OP_CONSTANT)
-                fprintf(mipsout,"  li $v0, %d\n",ir->u.one->number);
+                fprintf(mipsout,"%d:    li $v0, %d\n",objlinenum++,ir->u.one->number);
             else{
-                fprintf(mipsout,"  move $v0, %s\n",regName[get_reg(ir->u.one,irnode)]);
+                fprintf(mipsout,"%d:    move $v0, %s\n",objlinenum++,regName[get_reg(ir->u.one,irnode)]);
                 free_inactive_var(ir->u.one,irnode);
             }
-            fprintf(mipsout,"  jr $ra\n");
-            fprintf(mipsout,"\n");
+            fprintf(mipsout,"%d:    jr $ra\n",objlinenum++);
+            fprintf(mipsout,"%d:  \n",objlinenum++);
             pop_objstack();
             break;
         case IR_READ:
@@ -508,7 +509,7 @@ void transfer_IR(InterCodeList irnode){
             transfer_IR_WRITE(irnode);
             break;
         case IR_GOTO:
-            fprintf(mipsout,"  j label%d\n",ir->u.one->no);
+            fprintf(mipsout,"%d:    j label%d\n",objlinenum++,ir->u.one->no);
             break;
         case IR_IFGOTO:
             transfer_IR_IFGOTO(irnode);
@@ -551,20 +552,20 @@ void transfer_IR_CALL(InterCodeList irnode){
     InterCode ir=irnode->code;
     //调用前
     // 保存返回地址
-    //fprintf(mipsout,"  addi $sp, $sp, -%d\n",4);
-    fprintf(mipsout,"  sw $ra, 4($sp)\n");
-    fprintf(mipsout,"  sw $fp, 0($sp)\n");
+    //fprintf(mipsout,"%d:    addi $sp, $sp, -%d\n",objlinenum++,4);
+    fprintf(mipsout,"%d:    sw $ra, 4($sp)\n",objlinenum++);
+    fprintf(mipsout,"%d:    sw $fp, 0($sp)\n",objlinenum++);
 
     // 调用函数
-    fprintf(mipsout,"  jal %s\n",ir->u.two.right->name);
+    fprintf(mipsout,"%d:    jal %s\n",objlinenum++,ir->u.two.right->name);
 
     //调用后
     // 恢复寄存器和返回地址
-    fprintf(mipsout,"  lw $sp, $fp\n");
-    fprintf(mipsout,"  lw $ra, 4($sp)\n");
-    fprintf(mipsout,"  addi $sp, $sp, %d\n",(ir->u.one->function_field->type->u.function.paramnum+2)*4);
+    fprintf(mipsout,"%d:    lw $sp, $fp\n",objlinenum++);
+    fprintf(mipsout,"%d:    lw $ra, 4($sp)\n",objlinenum++);
+    fprintf(mipsout,"%d:    addi $sp, $sp, %d\n",objlinenum++,(ir->u.one->function_field->type->u.function.paramnum+2)*4);
     cur_objstack->stacksize-=(ir->u.one->function_field->type->u.function.paramnum+2);
-    fprintf(mipsout,"  move %s, $v0\n", regName[get_reg(ir->u.two.left,irnode)]);
+    fprintf(mipsout,"%d:    move %s, $v0\n",objlinenum++, regName[get_reg(ir->u.two.left,irnode)]);
     free_inactive_var(ir->u.two.left,irnode);
     return;
 }
@@ -578,15 +579,15 @@ void transfer_IR_ARG(InterCodeList irnode){
             case OP_VARIABLE:
             case OP_TEMP:
                 if(var->state==INREG){   
-                    fprintf(mipsout,"  move %s, %s\n",regName[a0+arg_no],regName[get_reg(arg_op,irnode)]);
+                    fprintf(mipsout,"%d:    move %s, %s\n",objlinenum++,regName[a0+arg_no],regName[get_reg(arg_op,irnode)]);
                     free_inactive_var(arg_op,irnode);
                 }
                 else{
-                    fprintf(mipsout,"  lw %s, %d($fp)\n",regName[a0+arg_no],var->offset*4);
+                    fprintf(mipsout,"%d:    lw %s, %d($fp)\n",objlinenum++,regName[a0+arg_no],var->offset*4);
                 }
                 break;
             case OP_CONSTANT:
-                fprintf(mipsout,"  li %s, %d\n",regName[a0+arg_no],arg_op->number);
+                fprintf(mipsout,"%d:    li %s, %d\n",objlinenum++,regName[a0+arg_no],arg_op->number);
                 break;
             default:
                 assert(0);
@@ -596,15 +597,15 @@ void transfer_IR_ARG(InterCodeList irnode){
             case OP_VARIABLE:
             case OP_TEMP:
                 if(var->state==INREG){  
-                    fprintf(mipsout,"  sw %s, %d($sp)\n",regName[get_reg(arg_op,irnode)],arg_no-2);
+                    fprintf(mipsout,"%d:    sw %s, %d($sp)\n",objlinenum++,regName[get_reg(arg_op,irnode)],arg_no-2);
                     free_inactive_var(arg_op,irnode);
                 }
                 else{
-                    fprintf(mipsout,"  lw %s, %d($fp)\n",regName[a0+arg_no],var->offset*4);
+                    fprintf(mipsout,"%d:    lw %s, %d($fp)\n",objlinenum++,regName[a0+arg_no],var->offset*4);
                 }
                 break;
             case OP_CONSTANT:
-                fprintf(mipsout,"  li %s, %d\n",regName[a0+arg_no],arg_op->number);
+                fprintf(mipsout,"%d:    li %s, %d\n",objlinenum++,regName[a0+arg_no],arg_op->number);
                 break;
             default:
                 assert(0);
@@ -617,14 +618,14 @@ void transfer_IR_READ(InterCodeList irnode){
     spill_all();
 
     // 保存返回地址
-    fprintf(mipsout,"  addi $sp, $sp, -4\n");
-    fprintf(mipsout,"  sw $ra, 0($sp)\n");
+    fprintf(mipsout,"%d:    addi $sp, $sp, -4\n",objlinenum++);
+    fprintf(mipsout,"%d:    sw $ra, 0($sp)\n",objlinenum++);
     // 调用read函数
-    fprintf(mipsout,"  jal read\n");
+    fprintf(mipsout,"%d:    jal read\n",objlinenum++);
     // 恢复栈指针和返回地址
-    fprintf(mipsout,"  lw $ra, 0($sp)\n");
-    fprintf(mipsout,"  addi $sp, $sp, 4\n");
-    fprintf(mipsout,"  move %s, $v0\n", regName[get_reg(irnode->code->u.one,irnode)]);
+    fprintf(mipsout,"%d:    lw $ra, 0($sp)\n",objlinenum++);
+    fprintf(mipsout,"%d:    addi $sp, $sp, 4\n",objlinenum++);
+    fprintf(mipsout,"%d:    move %s, $v0\n",objlinenum++, regName[get_reg(irnode->code->u.one,irnode)]);
     free_inactive_var(irnode->code->u.one,irnode);
     return;
 }
@@ -632,16 +633,16 @@ void transfer_IR_READ(InterCodeList irnode){
 void transfer_IR_WRITE(InterCodeList irnode){
     spill_all();
    
-    fprintf(mipsout,"  move $a0, %s\n", regName[get_reg(irnode->code->u.one,irnode)]);
+    fprintf(mipsout,"%d:    move $a0, %s\n",objlinenum++, regName[get_reg(irnode->code->u.one,irnode)]);
     free_inactive_var(irnode->code->u.one,irnode);
     // 保存返回地址
-    fprintf(mipsout,"  addi $sp, $sp, -4\n");
-    fprintf(mipsout,"  sw $ra, 0($sp)\n");
+    fprintf(mipsout,"%d:    addi $sp, $sp, -4\n",objlinenum++);
+    fprintf(mipsout,"%d:    sw $ra, 0($sp)\n",objlinenum++);
     // 调用write函数
-    fprintf(mipsout,"  jal write\n");
+    fprintf(mipsout,"%d:    jal write\n",objlinenum++);
     // 恢复栈指针和返回地址
-    fprintf(mipsout,"  lw $ra, 0($sp)\n");
-    fprintf(mipsout,"  addi $sp, $sp, 4\n");
+    fprintf(mipsout,"%d:    lw $ra, 0($sp)\n",objlinenum++);
+    fprintf(mipsout,"%d:    addi $sp, $sp, 4\n",objlinenum++);
     return;
 }
 
@@ -654,32 +655,32 @@ void transfer_IR_IFGOTO(InterCodeList irnode){
     Operand label=ir->u.ifgoto.label;
 
     if(strcmp(relop,"==")==0){
-        fprintf(mipsout,"  beq %s, %s, label%d\n",regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)],label->no);
+        fprintf(mipsout,"%d:    beq %s, %s, label%d\n",objlinenum++,regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)],label->no);
         free_inactive_var(op1,irnode);
         free_inactive_var(op2,irnode);
     }
     else if(strcmp(relop,"!=")==0){
-        fprintf(mipsout,"  bne %s, %s, label%d\n",regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)],label->no);
+        fprintf(mipsout,"%d:    bne %s, %s, label%d\n",objlinenum++,regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)],label->no);
         free_inactive_var(op1,irnode);
         free_inactive_var(op2,irnode);
     }
     else if(strcmp(relop,">")==0){
-        fprintf(mipsout,"  bgt %s, %s, label%d\n",regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)],label->no);
+        fprintf(mipsout,"%d:    bgt %s, %s, label%d\n",objlinenum++,regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)],label->no);
         free_inactive_var(op1,irnode);
         free_inactive_var(op2,irnode);
     }
     else if(strcmp(relop,"<")==0){
-        fprintf(mipsout,"  blt %s, %s, label%d\n",regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)],label->no);
+        fprintf(mipsout,"%d:    blt %s, %s, label%d\n",objlinenum++,regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)],label->no);
         free_inactive_var(op1,irnode);
         free_inactive_var(op2,irnode);
     }
     else if(strcmp(relop,">=")==0){
-        fprintf(mipsout,"  bge %s, %s, label%d\n",regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)],label->no);
+        fprintf(mipsout,"%d:    bge %s, %s, label%d\n",objlinenum++,regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)],label->no);
         free_inactive_var(op1,irnode);
         free_inactive_var(op2,irnode);
     }
     else if(strcmp(relop,"<=")==0){
-        fprintf(mipsout,"  ble %s, %s, label%d\n",regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)],label->no);
+        fprintf(mipsout,"%d:    ble %s, %s, label%d\n",objlinenum++,regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)],label->no);
         free_inactive_var(op1,irnode);
         free_inactive_var(op2,irnode);
     }
@@ -693,14 +694,14 @@ void  transfer_IR_ASSIGN(InterCodeList irnode){
     InterCode ir=irnode->code;
     switch(ir->u.two.right->kind){
         case OP_CONSTANT:
-            fprintf(mipsout,"  li %s, %d\n",regName[get_reg(ir->u.two.left,irnode)],ir->u.two.right->number);
+            fprintf(mipsout,"%d:    li %s, %d\n",objlinenum++,regName[get_reg(ir->u.two.left,irnode)],ir->u.two.right->number);
             free_inactive_var(ir->u.two.left,irnode);
             break;
         case OP_VARIABLE:
         case OP_TEMP:
             int left_regno=get_reg(ir->u.two.left,irnode);
             int right_regno=get_reg(ir->u.two.right,irnode);
-            fprintf(mipsout,"  move %s, %s\n",regName[left_regno],regName[right_regno]);
+            fprintf(mipsout,"%d:    move %s, %s\n",objlinenum++,regName[left_regno],regName[right_regno]);
             free_inactive_var(ir->u.two.left,irnode);
             free_inactive_var(ir->u.two.right,irnode);
             break;
@@ -721,29 +722,29 @@ void transfer_IR_CAL(InterCodeList irnode){
         case IR_ADD:
             assert(op1->kind==OP_TEMP||op1->kind==OP_VARIABLE);
             assert(op2->kind==OP_TEMP||op2->kind==OP_VARIABLE);
-            fprintf(mipsout,"  add %s, %s, %s\n",res_regname,regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)]);
+            fprintf(mipsout,"%d:    add %s, %s, %s\n",objlinenum++,res_regname,regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)]);
             free_inactive_var(op1,irnode);
             free_inactive_var(op2,irnode);
             break;
         case IR_SUB:
             assert(op1->kind==OP_TEMP||op1->kind==OP_VARIABLE);
             assert(op2->kind==OP_TEMP||op2->kind==OP_VARIABLE);
-            fprintf(mipsout,"  sub %s, %s, %s\n",res_regname,regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)]);
+            fprintf(mipsout,"%d:    sub %s, %s, %s\n",objlinenum++,res_regname,regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)]);
             free_inactive_var(op1,irnode);
             free_inactive_var(op2,irnode);
             break;
         case IR_MUL:
             assert(op1->kind==OP_TEMP||op1->kind==OP_VARIABLE);
             assert(op2->kind==OP_TEMP||op2->kind==OP_VARIABLE);
-            fprintf(mipsout,"  mul %s, %s, %s\n",res_regname,regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)]);
+            fprintf(mipsout,"%d:    mul %s, %s, %s\n",objlinenum++,res_regname,regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)]);
             free_inactive_var(op1,irnode);
             free_inactive_var(op2,irnode);
             break;
         case IR_DIV:
             assert(op1->kind==OP_TEMP||op1->kind==OP_VARIABLE);
             assert(op2->kind==OP_TEMP||op2->kind==OP_VARIABLE);
-            fprintf(mipsout,"  div %s, %s\n",regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)]);
-            fprintf(mipsout,"  mflo %s\n",res_regname);
+            fprintf(mipsout,"%d:    div %s, %s\n",objlinenum++,regName[get_reg(op1,irnode)],regName[get_reg(op2,irnode)]);
+            fprintf(mipsout,"%d:    mflo %s\n",objlinenum++,res_regname);
             free_inactive_var(op1,irnode);
             free_inactive_var(op2,irnode);
             break;         
