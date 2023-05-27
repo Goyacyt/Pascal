@@ -113,7 +113,7 @@ void print_op(Operand op){
             fprintf(irout,"%s",op->name);
             break;
         case OP_TEMP:
-            fprintf(irout,"t");
+            fprintf(irout,"tmp");
             fprintf(irout,"%d",op->no);
             break;
         case OP_LABEL:

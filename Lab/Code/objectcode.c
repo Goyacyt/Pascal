@@ -27,12 +27,14 @@ void gen_objectcodes(){
     while(cur_bb){
         InterCodeList irnode=cur_bb->first;
         while(irnode&&(irnode!=cur_bb->last->next)){
+            printf(YELLOW"%d ————\n"NONE,irnode->code->linenum);
             transfer_IR(irnode);
             irnode=irnode->next;
         }
         assert(irnode);
         spill_all();
         cur_bb=cur_bb->nextbb;
+        printf(BLUE"********************************\n"NONE);
     }
 }
 
@@ -278,10 +280,12 @@ void spill_reg(int reg_no){
 }
 
 void spill_all(){
+    printf(GREEN"spill start\n"NONE);
     for(int regno=0;regno<32;regno++){
         if(regs[regno].state==USED)
             spill_reg(regno);
     }
+    printf(GREEN"spill end\n"NONE);
     return;
 }
 
@@ -290,6 +294,7 @@ int allocate_reg(InterCodeList irnode,Variable var){ //t0-t9全满时使用
         if(active(irnode,regs[regno].var->op)){
             spill_reg(regno);
             regs[regno].var=var;
+            printf(GREEN"spill var in %s\n"NONE,regName[regno]);
             return regno;
         }
     }
@@ -305,6 +310,7 @@ int allocate_reg(InterCodeList irnode,Variable var){ //t0-t9全满时使用
         }
     }
     spill_reg(maxdis_regno);
+    printf(GREEN"spill var in %s\n"NONE,regName[maxdis_regno]);
     regs[maxdis_regno].var=var;
     return maxdis_regno;  
 }

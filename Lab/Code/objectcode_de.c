@@ -24,22 +24,29 @@ char* regName[]={
 void gen_objectcodes(){
     init_environments();
     BasicBlock cur_bb=bb_head;
+
     while(cur_bb){
         InterCodeList irnode=cur_bb->first;
         while(irnode&&(irnode!=cur_bb->last->next)){
-            fprintf(mipsout,YELLOW"%d————\n"NONE,irnode->code->linenum);
+            printf(YELLOW"%d ————\n"NONE,irnode->code->linenum);
             transfer_IR(irnode);
             irnode=irnode->next;
         }
         assert(irnode);
         spill_all();
         cur_bb=cur_bb->nextbb;
+        printf(BLUE"********************************\n"NONE);
     }
 }
 
 void init_environments(){
     partition();
-    init_varlist();
+    varlist_head=(VariableList)malloc(sizeof(struct VariableList_));
+    assert(varlist_head);
+    varlist_head->var=NULL;
+    varlist_head->prev=varlist_head;
+    varlist_head->next=varlist_head; 
+
     objstack_head=init_stacknode(NULL,-1);
     fprintf(mipsout,"%d:  .data\n",objlinenum++);
     fprintf(mipsout,"%d:  _prompt: .asciiz \"Enter an interger:\"\n",objlinenum++);
@@ -84,21 +91,17 @@ bool cmp_op(Operand op1,Operand op2){
     }
     assert(0);
 }
-void init_varlist(){
-    varlist_head=(VariableList)malloc(sizeof(struct VariableList_));
-    assert(varlist_head);
-    varlist_head->var=NULL;
-    varlist_head->prev=varlist_head;
-    varlist_head->next=varlist_head; 
-
-    InterCodeList irnode=irlist_head->next;
-    while(irnode!=irlist_head){
-        insert_var(irnode->code,irnode->code->linenum);
+void funct_init_varlist(InterCodeList functname_irnode){
+    InterCodeList irnode=functname_irnode->next;
+    while((irnode!=irlist_head)&&(irnode->code->kind!=IR_FUNCTIONNAME)){
+        insert_var(irnode);
         irnode=irnode->next;
     }
     return;
 }
-Variable insert2varlist(Operand op,int line_number){ //若op代表的var不在变量表中，加入。常数不是变量
+
+
+Variable insert2varlist(Operand op,int line_number,int irkind){ //若op代表的var不在变量表中，加入。常数不是变量
     if(op->kind==OP_CONSTANT)
         return NULL;
     Variable var=find_var(op);
@@ -110,9 +113,15 @@ Variable insert2varlist(Operand op,int line_number){ //若op代表的var不在�
     assert(var);
     var->op=op;
     var->regno=-1;
-    var->state=UNALLOCATED;
-    var->offset=0;
+    var->state=INSTACK;
     var->last_linenum=line_number;
+
+    if(irkind==IR_PARAM){
+        cur_objstack->stackdep++;
+    }
+    cur_objstack->stackdep++;
+    var->offset=cur_objstack->stackdep;
+
     
     VariableList newnode=(VariableList)malloc(sizeof(struct VariableList_));
     newnode->var=var;
@@ -123,7 +132,9 @@ Variable insert2varlist(Operand op,int line_number){ //若op代表的var不在�
     return var;
 }
 
-void insert_var(InterCode ir,int line_number){
+void insert_var(InterCodeList irnode){
+    InterCode ir=irnode->code;
+    int line_number=ir->linenum;
     switch(ir->kind){
         case IR_STOREIN:
             insert2varlist(ir->u.two.left,line_number);
@@ -196,7 +207,7 @@ ObjStackNode init_stacknode(char *funct_name,int paramnum){
     assert(objstack);
     objstack->functname=funct_name;
     objstack->paramnum=paramnum;
-    objstack->stacksize=0;
+    objstack->stackdep=0;
     objstack->prev=NULL;
     objstack->next=NULL;
     cur_objstack=objstack;
@@ -241,7 +252,7 @@ ObjStackNode find_objstack(char* funct_name){
 void print_objstack(){
     ObjStackNode temp=objstack_head->next;
     while(temp!=NULL){
-        printf("functname:%s stackcnt:%d\n",temp->functname,temp->stacksize);
+        printf("functname:%s stackdep:%d\n",temp->functname,temp->stackdep);
         temp=temp->next;
     }
     return;
@@ -279,10 +290,12 @@ void spill_reg(int reg_no){
 }
 
 void spill_all(){
+    printf(GREEN"spill start\n"NONE);
     for(int regno=0;regno<32;regno++){
         if(regs[regno].state==USED)
             spill_reg(regno);
     }
+    printf(GREEN"spill end\n"NONE);
     return;
 }
 
@@ -291,6 +304,7 @@ int allocate_reg(InterCodeList irnode,Variable var){ //t0-t9全满时使用
         if(active(irnode,regs[regno].var->op)){
             spill_reg(regno);
             regs[regno].var=var;
+            printf(GREEN"spill var in %s\n"NONE,regName[regno]);
             return regno;
         }
     }
@@ -306,6 +320,7 @@ int allocate_reg(InterCodeList irnode,Variable var){ //t0-t9全满时使用
         }
     }
     spill_reg(maxdis_regno);
+    printf(GREEN"spill var in %s\n"NONE,regName[maxdis_regno]);
     regs[maxdis_regno].var=var;
     return maxdis_regno;  
 }
@@ -444,6 +459,7 @@ void free_inactive_var(Operand op,InterCodeList irnode){
         if(!var_active_global(irnode,var)){
             free_reg(var->regno);
             remove_var(var);
+            printf(GREEN"free reg %s\n"NONE,regName[var->regno]);
         }
     }
 }
@@ -458,6 +474,7 @@ void transfer_IR(InterCodeList irnode){
             fprintf(mipsout,"%d:  %s:\n",objlinenum++,ir->u.one->name);
             fprintf(mipsout,"%d:    move $fp, $sp\n",objlinenum++);
             push_objstack(ir->u.one->function_field->name,ir->u.one->function_field->type->u.function.paramnum);
+            funct_init_varlist(irnode);
             param_no=-1;
             break;
         case IR_CALL:

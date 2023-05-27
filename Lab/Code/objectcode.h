@@ -20,7 +20,7 @@ struct Variable_{
     Operand op;
     int offset; //相对于fp的偏移量
     int regno;
-    enum{UNALLOCATED,INSTACK,INREG}state;
+    enum{INSTACK,INREG}state;
     int last_linenum; //中间代码中最后一次出现的行号
 };
 
@@ -33,7 +33,7 @@ struct VariableList_{
 struct ObjStackNode_{
     char* functname;
     int paramnum;
-    int stacksize;
+    int stackdep;
     ObjStackNode prev;
     ObjStackNode next;
 }; //单向非循环链表，头节点不保存数据。每次总在链头（头节点的下一个节点）插入
@@ -51,9 +51,9 @@ extern Regs regs[32];
 bool cmp_op(Operand op1,Operand op2);
 void gen_objectcodes();
 void init_environments();
-void init_varlist();
-Variable insert2varlist(Operand op,int line_number);
-void insert_var(InterCode ir,int line_number);
+void blk_init_varlist();
+Variable insert2varlist(Operand op,int line_number,bool isparam);
+void insert_var(InterCodeList irnode);
 Variable find_var(Operand op);
 ObjStackNode init_stacknode(char *funct_name,int paramnum);
 void push_objstack(char *funct_name,int paramnum);

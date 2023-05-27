@@ -65,7 +65,8 @@
 
 
 int main(){
-    int i_L2787 = -348375089;
-    printf("c=%d\n",i_L2787);
+    int a[5]={4,5,6,7,8};
+    int *b=a;
+    printf("%d\n",b[1]);
     return 0;
 }

@@ -153,7 +153,16 @@ void partition(){
             case IR_WRITE:
             case IR_RETURN:
                 cur_bb->last=cur_irnode;
+
                 cur_irnode=cur_irnode->next;
+                if(cur_irnode!=irlist_head){
+                    BasicBlock new_bb=init_bb(cur_irnode);
+                    cur_bb->nextbb=new_bb;
+                    cur_bb=new_bb;
+                    if(cur_irnode->code->kind==IR_LABEL||cur_irnode->code->kind==IR_FUNCTIONNAME)
+                        insert_tag(cur_irnode);
+                    cur_irnode=cur_irnode->next;
+                }
                 break;
 
             case IR_LABEL:
