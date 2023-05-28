@@ -11,6 +11,9 @@
 #define BLUE "\033[0;32;34m"
 #define GREEN "\033[0;32;32m"
 #define YELLOW "\033[1;33m"
+#define CYAN "\033[0;36m"
+#define PURPLE "\033[0;35m"
+#define BROWN        "\033[0;33m"
 
 typedef struct NODE{
     char name[32];

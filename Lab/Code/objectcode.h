@@ -20,8 +20,7 @@ struct Variable_{
     Operand op;
     int offset; //相对于fp的偏移量
     int regno;
-    enum{INSTACK,INREG}state;
-    int last_linenum; //中间代码中最后一次出现的行号
+    enum{notINREG,INREG}state;
 };
 
 struct VariableList_{
@@ -52,7 +51,7 @@ bool cmp_op(Operand op1,Operand op2);
 void gen_objectcodes();
 void init_environments();
 void blk_init_varlist();
-Variable insert2varlist(Operand op,int line_number,bool isparam);
+Variable insert2varlist(Operand op,int param_no);
 void insert_var(InterCodeList irnode);
 Variable find_var(Operand op);
 ObjStackNode init_stacknode(char *funct_name,int paramnum);
@@ -65,15 +64,12 @@ void free_reg(int reg_no);
 void spill_reg(int reg_no);
 void spill_all();
 int allocate_reg(InterCodeList irnode,Variable var);
-bool var_active_global(InterCodeList irnode,Variable var);
-bool active(InterCodeList irnode,Operand op);
 int active_distance(InterCodeList irnode,Operand op);
 int get_reg(Operand op,InterCodeList irnode);
-void free_inactive_var(Operand op,InterCodeList irnode);
+void spill_inactive_var(Operand op,InterCodeList irnode);
 void transfer_IR(InterCodeList irnode);
-void transfer_IR_PARAM(InterCode ir,int param_no);
 void transfer_IR_CALL(InterCodeList irnode);
-void transfer_IR_ARG(InterCodeList irnode);
+void transfer_IR_ARG(InterCodeList irnode,int arg_no);
 void transfer_IR_READ(InterCodeList irnode);
 void transfer_IR_WRITE(InterCodeList irnode);
 void transfer_IR_IFGOTO(InterCodeList irnode);
