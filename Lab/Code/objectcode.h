@@ -46,12 +46,13 @@ extern BasicBlock cur_bb;
 extern char* regName[32];
 extern Regs regs[32];
 
-
+void print_ir2(InterCodeList irnode);
+void print_op2(Operand op);
 bool cmp_op(Operand op1,Operand op2);
 void gen_objectcodes();
 void init_environments();
-void blk_init_varlist();
-Variable insert2varlist(Operand op,int param_no);
+void funct_init_varlist(InterCodeList functname_irnode);
+Variable insert2varlist(Operand op,int param_no,int arrsize);
 void insert_var(InterCodeList irnode);
 Variable find_var(Operand op);
 ObjStackNode init_stacknode(char *funct_name,int paramnum);
@@ -64,7 +65,7 @@ void free_reg(int reg_no);
 void spill_reg(int reg_no);
 void spill_all();
 int allocate_reg(InterCodeList irnode,Variable var);
-int active_distance(InterCodeList irnode,Operand op);
+int active_distance(InterCodeList irnode,Variable var);
 int get_reg(Operand op,InterCodeList irnode);
 void spill_inactive_var(Operand op,InterCodeList irnode);
 void transfer_IR(InterCodeList irnode);

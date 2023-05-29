@@ -393,6 +393,7 @@ void FunDec(node* root,Type type,int declare){
         FunType->u.function.param=varlist_field;
 
         FieldList var_field=varlist_field;
+        FunType->u.function.paramnum=0;
         while(var_field){
             FunType->u.function.paramnum++;
             var_field=var_field->tail;

@@ -116,8 +116,10 @@ InterCodeList get_jmp(InterCodeList end_irnode){ //输入一个irnode，假如�
             label_op=end_irnode->code->u.ifgoto.label;
             return searchtag(label_op);
         case IR_GOTO:
-        case IR_CALL:
             label_op=end_irnode->code->u.one;
+            return searchtag(label_op);
+        case IR_CALL:
+            label_op=end_irnode->code->u.two.right;
             return searchtag(label_op);
         default:
             return NULL;
@@ -168,6 +170,7 @@ void partition(){
             case IR_LABEL:
             case IR_FUNCTIONNAME:
                 BasicBlock new_bb=init_bb(cur_irnode);
+                cur_bb->last=cur_irnode->prev;
                 cur_bb->nextbb=new_bb;
                 cur_bb=new_bb;
                 insert_tag(cur_irnode);

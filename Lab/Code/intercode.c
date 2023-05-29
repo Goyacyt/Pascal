@@ -1,5 +1,4 @@
 #include "intercode.h"
-
 //ArgList arglist_head=NULL;
 extern int intercode_de;
 extern FILE* irout;
@@ -136,30 +135,33 @@ void print_op(Operand op){
 #else   
     switch(op->kind){
         case OP_VARIABLE:
-            printf("%s",op->name);
+            printf(YELLOW"%s"NONE,op->name);
             break;
         case OP_CONSTANT:            
-            printf("#");
-            printf("%d",op->number);
+            printf(YELLOW"#"NONE);
+            printf(YELLOW"%d"NONE,op->number);
+            break;
+        case OP_FUNCTIONNAME:
+            printf(YELLOW"%s"NONE,op->name);
             break;
         case OP_TEMP:
-            printf("t");
-            printf("%d",op->no);
+            printf(YELLOW"tmp"NONE);
+            printf(YELLOW"%d"NONE,op->no);
             break;
         case OP_LABEL:
-            printf("label%d",op->no);
+            printf(YELLOW"label%d"NONE,op->no);
             break;
         case OP_ADDRESS:
-            printf("addr%d",op->no);
+            printf(YELLOW"addr%d"NONE,op->no);
             break;
         case OP_ARRAYNAME:
-            printf("array%s",op->name);
+            printf(YELLOW"array%s"NONE,op->name);
             break;
         case OP_STRUCTURENAME:
-            printf("structure%s",op->name);
+            printf(YELLOW"structure%s"NONE,op->name);
             break;
         default:
-            printf("operand kind=%d\n",op->kind);
+            printf(YELLOW"operand kind=%d\n"NONE,op->kind);
             assert(0);
     }
     return;
@@ -339,118 +341,122 @@ void print_ir(InterCode ir){
     fprintf(irout,"\n");
     return;
 #else
-    printf("%d:  ",linenum);
-    if(linenum==555)
-        printf(RED"stop!\n"NONE);
+    ir->linenum=linenum;
     linenum++;
     switch (ir->kind){
         case IR_GETVAL:
             print_op(ir->u.two.left);
-            printf(" := *");
+            printf(YELLOW" := *"NONE);
             print_op(ir->u.two.right);
             break;
         case IR_GETADDR:
             print_op(ir->u.two.left);
-            printf(" := &");
+            printf(YELLOW" := &"NONE);
+            print_op(ir->u.two.right);
+            break;
+        case IR_STOREIN:
+            printf(YELLOW"*"NONE);
+            print_op(ir->u.two.left);
+            printf(YELLOW" := "NONE);
             print_op(ir->u.two.right);
             break;
         case IR_LABEL:
-            printf("LABEL ");
+            printf(YELLOW"LABEL "NONE);
             assert(ir->u.one->kind==OP_LABEL);
             print_op(ir->u.one);
-            printf(" :");
+            printf(YELLOW" :"NONE);
             break;
         case IR_FUNCTIONNAME:
-            printf("FUNCTION ");
+            printf(YELLOW"FUNCTION "NONE);
             assert(ir->u.one->kind==OP_FUNCTIONNAME);
             print_op(ir->u.one);
-            printf(" :");
+            printf(YELLOW" :"NONE);
             break;
         case IR_CALL:
             print_op(ir->u.two.left);
-            printf(" := ");
-            printf("CALL ");
+            printf(YELLOW" := "NONE);
+            printf(YELLOW"CALL "NONE);
             print_op(ir->u.two.right);
             break;
         case IR_READ:
-            printf("READ ");
+            printf(YELLOW"READ "NONE);
             print_op(ir->u.one);
             break;
         case IR_WRITE:
-            printf("WRITE ");
+            printf(YELLOW"WRITE "NONE);
             if(ir->u.one->kind==OP_ADDRESS){
-                printf("*");
+                printf(YELLOW"*"NONE);
             }
             print_op(ir->u.one);
             break;
         case IR_RETURN:
-            printf("RETURN ");
+            printf(YELLOW"RETURN "NONE);
             print_op(ir->u.one);
             break;
         case IR_GOTO:
-            printf("GOTO ");
+            printf(YELLOW"GOTO "NONE);
             assert(ir->u.one->kind==OP_LABEL);
             print_op(ir->u.one);
             break;
         case IR_PARAM:
-            printf("PARAM ");
+            printf(YELLOW"PARAM "NONE);
             print_op(ir->u.one);
             break;
         case IR_ASSIGN:
             print_op(ir->u.two.left);
-            printf(" := ");
+            printf(YELLOW" := "NONE);
             print_op(ir->u.two.right);
             break;
         case IR_ADD:
             print_op(ir->u.three.result);
-            printf(" := ");
+            printf(YELLOW" := "NONE);
             print_op(ir->u.three.op1);
-            printf(" + ");
+            printf(YELLOW" + "NONE);
             print_op(ir->u.three.op2);
             break;
         case IR_SUB:
             print_op(ir->u.three.result);
-            printf(" := ");
+            printf(YELLOW" := "NONE);
             print_op(ir->u.three.op1);
-            printf(" - ");
+            printf(YELLOW" - "NONE);
             print_op(ir->u.three.op2);
             break;
         case IR_MUL:
             print_op(ir->u.three.result);
-            printf(" := ");
+            printf(YELLOW" := "NONE);
             print_op(ir->u.three.op1);
-            printf(" * ");
+            printf(YELLOW" * "NONE);
             print_op(ir->u.three.op2);
             break;
         case IR_DIV:
             print_op(ir->u.three.result);
-            printf(" := ");
+            printf(YELLOW" := "NONE);
             print_op(ir->u.three.op1);
-            printf(" / ");
+            printf(YELLOW" / "NONE);
             print_op(ir->u.three.op2);
             break;
         case IR_ARG:
-            printf("ARG ");
+            printf(YELLOW"ARG "NONE);
             Operand this=ir->u.one;
             if(this->kind==OP_ARRAYNAME||this->kind==STRUCTURE_NAME){
                 if(this->optype.isparam==notPARAM){
-                    printf("&");
+                    printf(YELLOW"&"NONE);
                 }
             }
             print_op(this);
             break;
         case IR_IFGOTO:
-            printf("IF ");
+            printf(YELLOW"IF "NONE);
             print_op(ir->u.ifgoto.op1);
-            printf(" %s ",ir->u.ifgoto.relop);
+            printf(YELLOW" %s "NONE,ir->u.ifgoto.relop);
             print_op(ir->u.ifgoto.op2);
-            printf(" GOTO ");
+            printf(YELLOW" GOTO "NONE);
             print_op(ir->u.ifgoto.label);
             break;
         case IR_DEC:
-            printf("DEC ");
+            printf(YELLOW"DEC "NONE);
             print_op(ir->u.dec.var);
-            printf(" %d",ir->u.dec.size);
+            printf(YELLOW" %d"NONE,ir->u.dec.size);
             break;
         default:
             assert(0);
