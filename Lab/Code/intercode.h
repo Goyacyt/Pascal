@@ -1,5 +1,7 @@
-#ifndef _INTERCODE_H_
-#define _INTERCODE_H_
+
+
+#ifndef INTERCODE_H
+#define INTERCODE_H
 #include "symtab.h"
 #include "tree.h"
 
@@ -8,9 +10,12 @@ typedef struct InterCode_* InterCode;
 typedef struct InterCodeList_* InterCodeList;
 typedef struct ArgList_* ArgList;
 //#define DE
+//#define OPTIMIZE 1
+
+
 struct Operand_{
     enum{OP_VARIABLE,OP_CONSTANT,OP_TEMP,OP_TEMP_OFFSET,OP_LABEL,OP_FUNCTIONNAME,OP_ARRAYNAME,
-    OP_STRUCTURENAME,OP_ADDRESS,OP_ADDRESS_LEFT}kind;
+    OP_STRUCTURENAME,OP_ADDRESS,OP_ADDRESS_LEFT,OP_VAL}kind;
     union{
         char *name;
         int no;//OP LABEL ADDRESS
@@ -21,6 +26,7 @@ struct Operand_{
         int param;  //是不是函数参数
         int offset;
     }optype;
+    int var_no;
 };
 
 struct InterCode_{
@@ -31,13 +37,15 @@ struct InterCode_{
         struct {Operand left,right;}two;  //ASSIGN,GETADDR,GETVALUE,PASSIGN,CALL
         struct{Operand result,op1,op2;}three;   //ADD,SUB,MUL,DIV
         struct{Operand var;int size;}dec;   //DEC
-        struct{Operand op1,op2,label;   char relop[5];}ifgoto; //  IFGOTO:if op1 [relop] op2 goto label
+        struct{Operand op1,op2,label;   char *relop;}ifgoto; //  IFGOTO:if op1 [relop] op2 goto label
     }u;
 };
 
 struct InterCodeList_{ //线性IR双向链表
     InterCode code;
     InterCodeList prev, next;
+    int block_no;
+    int ir_no;
 };
 
 extern InterCodeList irlist_head;

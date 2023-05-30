@@ -1,3 +1,5 @@
+//#define INTERCODE_C
+#ifndef INTERCODE_C
 #include "intercode.h"
 InterCodeList irlist_head;
 //ArgList arglist_head=NULL;
@@ -1255,3 +1257,5 @@ void traverse_arglist(ArgList arglist){
         insert_ir(call_ir);
     }
 }
+
+#endif
