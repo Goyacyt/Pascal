@@ -21,6 +21,7 @@ struct Variable_{
     int offset; //相对于fp的偏移量
     int regno;
     enum{notINREG,INREG}state;
+    //bool dirty;
 };
 
 struct VariableList_{
@@ -66,7 +67,7 @@ void spill_reg(int reg_no);
 void spill_all();
 int allocate_reg(InterCodeList irnode,Variable var);
 int active_distance(InterCodeList irnode,Variable var);
-int get_reg(Operand op,InterCodeList irnode);
+int get_reg(Operand op,InterCodeList irnode,int change);
 void spill_inactive_var(Operand op,InterCodeList irnode);
 void transfer_IR(InterCodeList irnode);
 void transfer_IR_CALL(InterCodeList irnode);
