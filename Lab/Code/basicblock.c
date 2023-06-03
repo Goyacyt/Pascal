@@ -168,6 +168,7 @@ void partition(){
 
             case IR_LABEL:
             case IR_FUNCTIONNAME:
+                ;
                 BasicBlock new_bb=init_bb(cur_irnode);
                 cur_bb->last=cur_irnode->prev;
                 cur_bb->nextbb=new_bb;

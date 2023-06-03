@@ -770,6 +770,7 @@ void transfer_IR(InterCodeList irnode){
             ;//assert(var->regno==-1);
             break;
         case IR_ARG:
+            ;
             InterCodeList call_irnode=irnode->next;
             while(call_irnode->code->kind!=IR_CALL)
                 call_irnode=call_irnode->next;
@@ -990,6 +991,7 @@ void  transfer_IR_ASSIGN(InterCodeList irnode){
         case OP_VARIABLE:
         case OP_TEMP:
         case OP_ADDRESS:
+            ;
             int left_regno=get_reg(ir->u.two.left,irnode,1);
             int right_regno=get_reg(ir->u.two.right,irnode,0);
             fprintf(mipsout,"    move %s, %s\n",regName[left_regno],regName[right_regno]);

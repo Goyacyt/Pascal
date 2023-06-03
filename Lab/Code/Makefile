@@ -35,12 +35,8 @@ syntax-c: $(YFILE)
 .PHONY: clean test
 
 test:
-	./parser ../TestTools/tests/2020-Advanced-A-42.cmm
-
-test-all:
-	./parser ../Test2/inputs/test15.cmm
-	./parser ../Test2/inputs/test16.cmm
-
+	./parser ../Test4/test1.cmm ../Test4/test1.s
+	
 clean:
 	rm -f parser lex.yy.c syntax.tab.c syntax.tab.h syntax.output
 	rm -f $(OBJS) $(OBJS:.o=.d)

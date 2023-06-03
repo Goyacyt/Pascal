@@ -59,10 +59,11 @@ int main(int argc, char** argv){
     Program(root);
 	if(argc==2){
 		if(objectcode){
-			if(!(irout=fopen("/home/lyt/myfile/Pascal/Lab/TestTools/workdir/a.ir","w"))){
-				perror("~/myfile/Pascal/Lab/TestTools/workdir/a.ir");
-				return 1;
-			}
+			// if(!(irout=fopen("/home/lyt/myfile/Pascal/Lab/TestTools/workdir/a.ir","w"))){
+			// 	perror("~/myfile/Pascal/Lab/TestTools/workdir/a.ir");
+			// 	return 1;
+			// }
+			irout=stdout;
 			translate_Program(root);
 			fclose(irout);
 			
@@ -76,10 +77,11 @@ int main(int argc, char** argv){
 		}
 	}else if(argc>2){
 		if(objectcode){
-			if(!(irout=fopen("/home/lyt/myfile/Pascal/Lab/TestTools/workdir/a.ir","w"))){
-				perror("~/myfile/Pascal/Lab/TestTools/workdir/a.ir");
-				return 1;
-			}
+			// if(!(irout=fopen("/home/lyt/myfile/Pascal/Lab/TestTools/workdir/a.ir","w"))){
+			// 	perror("~/myfile/Pascal/Lab/TestTools/workdir/a.ir");
+			// 	return 1;
+			// }
+			irout=stdout;
 			translate_Program(root);
 			fclose(irout);
 
