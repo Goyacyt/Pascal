@@ -63,7 +63,6 @@ InterCodeList searchtag(Operand label){
     while(tag_tmp->nexttag){
         if(cmp_label(tag_tmp->nexttag->irnode->code->u.one,label)){
             res_irnode=tag_tmp->nexttag->irnode;
-            tag_tmp->nexttag=tag_tmp->nexttag->nexttag;
             return res_irnode;
         }
         tag_tmp=tag_tmp->nexttag;

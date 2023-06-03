@@ -18,7 +18,7 @@ struct BasicBlock_ {
 
 struct BBs_ {   //基本块群,双向循环链表
     BasicBlock bb;
-    BBs prev,next,head; //下一个，上一个，链表头
+    BBs prev,next,head; //下一个，上一个，链表头head存放数据
 };
 
 struct IRtag_{

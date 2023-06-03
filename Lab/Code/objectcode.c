@@ -32,10 +32,10 @@ void gen_objectcodes(){
             transfer_IR(irnode);
             irnode=irnode->next;
         }
-        assert(irnode);
-        spill_all();
+        ;//assert(irnode);
+        //spill_all();
         cur_bb=cur_bb->nextbb;
-        printf(BLUE"********************************\n"NONE);
+        ;//printf(BLUE"********************************\n"NONE);
     }
 }
 
@@ -43,12 +43,14 @@ void init_environments(){
     partition();
 
     varlist_head=(VariableList)malloc(sizeof(struct VariableList_));
-    assert(varlist_head);
+    ;//assert(varlist_head);
     varlist_head->var=NULL;
     varlist_head->prev=varlist_head;
     varlist_head->next=varlist_head; 
 
     objstack_head=init_stacknode(NULL,-1);
+
+    init_regs();
 
     fprintf(mipsout,"  .data\n");
     fprintf(mipsout,"  _prompt: .asciiz \"Enter an interger:\"\n");
@@ -80,164 +82,160 @@ void init_environments(){
 
 
 void print_ir2(InterCodeList irnode){
-#ifdef VSDEBUG
     InterCode ir=irnode->code;
-    printf(YELLOW"%d ————    "NONE,ir->linenum);
+    ;//printf(YELLOW"%d ————    "NONE,ir->linenum);
     switch (ir->kind){
         case IR_GETVAL:
             print_op2(ir->u.two.left);
-            printf(YELLOW" := *"NONE);
+            ;//printf(YELLOW" := *"NONE);
             print_op2(ir->u.two.right);
             break;
         case IR_GETADDR:
             print_op2(ir->u.two.left);
-            printf(YELLOW" := &"NONE);
+            ;//printf(YELLOW" := &"NONE);
             print_op2(ir->u.two.right);
             break;
         case IR_STOREIN:
-            printf(YELLOW"*"NONE);
+            ;//printf(YELLOW"*"NONE);
             print_op2(ir->u.two.left);
-            printf(YELLOW" := "NONE);
+            ;//printf(YELLOW" := "NONE);
             print_op2(ir->u.two.right);
             break;
         case IR_LABEL:
-            printf(YELLOW"LABEL "NONE);
-            assert(ir->u.one->kind==OP_LABEL);
+            ;//printf(YELLOW"LABEL "NONE);
+            ;//assert(ir->u.one->kind==OP_LABEL);
             print_op2(ir->u.one);
-            printf(YELLOW" :"NONE);
+            ;//printf(YELLOW" :"NONE);
             break;
         case IR_FUNCTIONNAME:
-            printf(YELLOW"FUNCTION "NONE);
-            assert(ir->u.one->kind==OP_FUNCTIONNAME);
+            ;//printf(YELLOW"FUNCTION "NONE);
+            ;//assert(ir->u.one->kind==OP_FUNCTIONNAME);
             print_op2(ir->u.one);
-            printf(YELLOW" :"NONE);
+            ;//printf(YELLOW" :"NONE);
             break;
         case IR_CALL:
             print_op2(ir->u.two.left);
-            printf(YELLOW" := "NONE);
-            printf(YELLOW"CALL "NONE);
+            ;//printf(YELLOW" := "NONE);
+            ;//printf(YELLOW"CALL "NONE);
             print_op2(ir->u.two.right);
             break;
         case IR_READ:
-            printf(YELLOW"READ "NONE);
+            ;//printf(YELLOW"READ "NONE);
             print_op2(ir->u.one);
             break;
         case IR_WRITE:
-            printf(YELLOW"WRITE "NONE);
+            ;//printf(YELLOW"WRITE "NONE);
             if(ir->u.one->kind==OP_ADDRESS){
-                printf(YELLOW"*"NONE);
+                ;//printf(YELLOW"*"NONE);
             }
             print_op2(ir->u.one);
             break;
         case IR_RETURN:
-            printf(YELLOW"RETURN "NONE);
+            ;//printf(YELLOW"RETURN "NONE);
             print_op2(ir->u.one);
             break;
         case IR_GOTO:
-            printf(YELLOW"GOTO "NONE);
-            assert(ir->u.one->kind==OP_LABEL);
+            ;//printf(YELLOW"GOTO "NONE);
+            ;//assert(ir->u.one->kind==OP_LABEL);
             print_op2(ir->u.one);
             break;
         case IR_PARAM:
-            printf(YELLOW"PARAM "NONE);
+            ;//printf(YELLOW"PARAM "NONE);
             print_op2(ir->u.one);
             break;
         case IR_ASSIGN:
             print_op2(ir->u.two.left);
-            printf(YELLOW" := "NONE);
+            ;//printf(YELLOW" := "NONE);
             print_op2(ir->u.two.right);
             break;
         case IR_ADD:
             print_op2(ir->u.three.result);
-            printf(YELLOW" := "NONE);
+            ;//printf(YELLOW" := "NONE);
             print_op2(ir->u.three.op1);
-            printf(YELLOW" + "NONE);
+            ;//printf(YELLOW" + "NONE);
             print_op2(ir->u.three.op2);
             break;
         case IR_SUB:
             print_op2(ir->u.three.result);
-            printf(YELLOW" := "NONE);
+            ;//printf(YELLOW" := "NONE);
             print_op2(ir->u.three.op1);
-            printf(YELLOW" - "NONE);
+            ;//printf(YELLOW" - "NONE);
             print_op2(ir->u.three.op2);
             break;
         case IR_MUL:
             print_op2(ir->u.three.result);
-            printf(YELLOW" := "NONE);
+            ;//printf(YELLOW" := "NONE);
             print_op2(ir->u.three.op1);
-            printf(YELLOW" * "NONE);
+            ;//printf(YELLOW" * "NONE);
             print_op2(ir->u.three.op2);
             break;
         case IR_DIV:
             print_op2(ir->u.three.result);
-            printf(YELLOW" := "NONE);
+            ;//printf(YELLOW" := "NONE);
             print_op2(ir->u.three.op1);
-            printf(YELLOW" / "NONE);
+            ;//printf(YELLOW" / "NONE);
             print_op2(ir->u.three.op2);
             break;
         case IR_ARG:
-            printf(YELLOW"ARG "NONE);
+            ;//printf(YELLOW"ARG "NONE);
             Operand this=ir->u.one;
             if(this->kind==OP_ARRAYNAME||this->kind==STRUCTURE_NAME){
                 if(this->optype.isparam==notPARAM){
-                    printf(YELLOW"&"NONE);
+                    ;//printf(YELLOW"&"NONE);
                 }
             }
             print_op2(this);
             break;
         case IR_IFGOTO:
-            printf(YELLOW"IF "NONE);
+            ;//printf(YELLOW"IF "NONE);
             print_op2(ir->u.ifgoto.op1);
-            printf(YELLOW" %s "NONE,ir->u.ifgoto.relop);
+            ;//printf(YELLOW" %s "NONE,ir->u.ifgoto.relop);
             print_op2(ir->u.ifgoto.op2);
-            printf(YELLOW" GOTO "NONE);
+            ;//printf(YELLOW" GOTO "NONE);
             print_op2(ir->u.ifgoto.label);
             break;
         case IR_DEC:
-            printf(YELLOW"DEC "NONE);
+            ;//printf(YELLOW"DEC "NONE);
             print_op2(ir->u.dec.var);
-            printf(YELLOW" %d"NONE,ir->u.dec.size);
+            ;//printf(YELLOW" %d"NONE,ir->u.dec.size);
             break;
         default:
-            assert(0);
+            ;//assert(0);
     }
-    printf(YELLOW"    ————\n"NONE);
+    ;//printf(YELLOW"    ————\n"NONE);
     return;
-#endif
 }
 
 void print_op2(Operand op){
-#ifdef VSDEBUG 
     switch(op->kind){
         case OP_VARIABLE:
-            printf(YELLOW"%s"NONE,op->name);
+            ;//printf(YELLOW"%s"NONE,op->name);
             break;
         case OP_CONSTANT:            
-            printf(YELLOW"#"NONE);
-            printf(YELLOW"%d"NONE,op->number);
+            ;//printf(YELLOW"#"NONE);
+            ;//printf(YELLOW"%d"NONE,op->number);
             break;
         case OP_FUNCTIONNAME:
-            printf(YELLOW"%s"NONE,op->name);
+            ;//printf(YELLOW"%s"NONE,op->name);
             break;
         case OP_TEMP:
-            printf(YELLOW"tmp"NONE);
-            printf(YELLOW"%d"NONE,op->no);
+            ;//printf(YELLOW"tmp"NONE);
+            ;//printf(YELLOW"%d"NONE,op->no);
             break;
         case OP_LABEL:
-            printf(YELLOW"label%d"NONE,op->no);
+            ;//printf(YELLOW"label%d"NONE,op->no);
             break;
         case OP_ADDRESS:
-            printf(YELLOW"addr%d"NONE,op->no);
+            ;//printf(YELLOW"addr%d"NONE,op->no);
             break;
         case OP_ARRAYNAME:
-            printf(YELLOW"array%s"NONE,op->name);
+            ;//printf(YELLOW"array%s"NONE,op->name);
             break;
         default:
-            printf(YELLOW"operand kind=%d\n"NONE,op->kind);
-            assert(0);
+            ;//printf(YELLOW"operand kind=%d\n"NONE,op->kind);
+            ;//assert(0);
     }
     return;
-#endif
 }
 
 bool cmp_op(Operand op1,Operand op2){
@@ -253,9 +251,9 @@ bool cmp_op(Operand op1,Operand op2){
         case OP_ADDRESS:
             return op1->no==op2->no;
         default:
-            assert(0);
+            ;//assert(0);
     }
-    assert(0);
+    ;//assert(0);
 }
 
 void funct_init_varlist(InterCodeList functname_irnode){
@@ -273,19 +271,28 @@ Variable insert2varlist(Operand op,int param_no,int arrsize){ //若op代表的va
         return NULL;
     Variable var=find_var(op);
     if(var){
-        assert(param_no==-1);
+        ;//assert(param_no==-1);
         return var;
     }
     var=(Variable)malloc(sizeof(struct Variable_));
-    assert(var);
+    ;//assert(var);
     var->op=op;
     var->regno=-1;
     var->state=notINREG;
-
+    var->dirty=0;
+    
     if(param_no>3)
         var->offset=param_no-2;
+    else if(param_no>=0){
+        var->regno=a0+param_no;
+        var->state=INREG;
+        regs[var->regno].state=USED;
+        regs[var->regno].var=var;
+        cur_objstack->stackdep++;
+        var->offset=-(cur_objstack->stackdep);
+    }
     else if(arrsize>0){
-        assert(arrsize%4==0);
+        ;//assert(arrsize%4==0);
         cur_objstack->stackdep+=arrsize/4;
         var->offset=-(cur_objstack->stackdep);
     }
@@ -320,7 +327,7 @@ void insert_var(InterCodeList irnode){
         case IR_WRITE:
         case IR_ARG:
             if(ir->u.one->kind!=OP_CONSTANT){
-                assert(find_var(ir->u.one));
+                ;//assert(find_var(ir->u.one));
                 insert2varlist(ir->u.one,-1,-1);
             }
             break;
@@ -339,7 +346,7 @@ void insert_var(InterCodeList irnode){
         case IR_ASSIGN:
             insert2varlist(ir->u.two.left,-1,-1);
             if(ir->u.two.right->kind!=OP_CONSTANT){
-                assert(find_var(ir->u.two.right));
+                ;//assert(find_var(ir->u.two.right));
                 insert2varlist(ir->u.two.right,-1,-1);
             }
             break;
@@ -349,21 +356,21 @@ void insert_var(InterCodeList irnode){
         case IR_DIV:
             insert2varlist(ir->u.three.result,-1,-1);
             if(ir->u.three.op1->kind!=OP_CONSTANT){
-                assert(find_var(ir->u.three.op1));
+                ;//assert(find_var(ir->u.three.op1));
                 insert2varlist(ir->u.three.op1,-1,-1);
             }
             if(ir->u.three.op2->kind!=OP_CONSTANT){
-                assert(find_var(ir->u.three.op2));
+                ;//assert(find_var(ir->u.three.op2));
                 insert2varlist(ir->u.three.op2,-1,-1);
             }
             break;
         case IR_IFGOTO:
             if(ir->u.ifgoto.op1->kind!=OP_CONSTANT){
-                assert(find_var(ir->u.ifgoto.op1));
+                ;//assert(find_var(ir->u.ifgoto.op1));
                 insert2varlist(ir->u.ifgoto.op1,-1,-1);
             }
             if(ir->u.ifgoto.op2->kind!=OP_CONSTANT){
-                assert(find_var(ir->u.ifgoto.op2));
+                ;//assert(find_var(ir->u.ifgoto.op2));
                 insert2varlist(ir->u.ifgoto.op2,-1,-1);
             }
             break;
@@ -386,6 +393,14 @@ Variable find_var(Operand op){
     return NULL;
 }
 
+void set_dirty(Operand op){
+    ;//assert(op->kind!=OP_CONSTANT);
+    Variable var=find_var(op);
+    ;//assert(var);
+    var->dirty=1;
+    return;
+}
+
 int digit(int num){
     int d=0;
     if(num<0){
@@ -406,40 +421,40 @@ void print_varlist(){
         if(temp->var->op->kind==OP_VARIABLE){
             cnt+=strlen(temp->var->op->name)+digit(temp->var->offset*4)+3;
             if(cnt>=150){
-                printf("\n");
+                ;//printf("\n");
                 cnt=strlen(temp->var->op->name)+digit(temp->var->offset*4)+3;
             }
-            printf(PURPLE"%s[%d] "NONE,temp->var->op->name,temp->var->offset*4);
+            ;//printf(PURPLE"%s[%d] "NONE,temp->var->op->name,temp->var->offset*4);
         }
         else if(temp->var->op->kind==OP_TEMP){
             cnt+=3+digit(temp->var->op->no)+digit(temp->var->offset*4)+3;
             if(cnt>=150){
-                printf("\n");
+                ;//printf("\n");
                 cnt=3+digit(temp->var->op->no)+digit(temp->var->offset*4)+3;
             }
-            printf(PURPLE"tmp%d[%d] "NONE,temp->var->op->no,temp->var->offset*4);
+            ;//printf(PURPLE"tmp%d[%d] "NONE,temp->var->op->no,temp->var->offset*4);
         }
         else if(temp->var->op->kind==OP_ARRAYNAME){
             cnt+=strlen(temp->var->op->name)+digit(temp->var->offset*4)+3+4;
             if(cnt>=150){
-                printf("\n");
+                ;//printf("\n");
                 cnt=strlen(temp->var->op->name)+digit(temp->var->offset*4)+3+4;
             }
-            printf(PURPLE"arr-%s[%d] "NONE,temp->var->op->name,temp->var->offset*4);
+            ;//printf(PURPLE"arr-%s[%d] "NONE,temp->var->op->name,temp->var->offset*4);
         }
         else if(temp->var->op->kind==OP_ADDRESS){
             cnt+=4+digit(temp->var->op->no)+digit(temp->var->offset*4)+3;
             if(cnt>=150){
-                printf("\n");
+                ;//printf("\n");
                 cnt=4+digit(temp->var->op->no)+digit(temp->var->offset*4)+3;
             }
-            printf(PURPLE"addr%d[%d] "NONE,temp->var->op->no,temp->var->offset*4);
+            ;//printf(PURPLE"addr%d[%d] "NONE,temp->var->op->no,temp->var->offset*4);
         }
         else
-            assert(0);
+            ;//assert(0);
         temp=temp->next;
     }
-    printf("\n");
+    ;//printf("\n");
     return;
 }
 
@@ -455,7 +470,7 @@ void clear_varlist(){
 
 ObjStackNode init_stacknode(char *funct_name,int paramnum){
     ObjStackNode objstack=(ObjStackNode)malloc(sizeof(struct ObjStackNode_));
-    assert(objstack);
+    ;//assert(objstack);
     objstack->functname=funct_name;
     objstack->paramnum=paramnum;
     objstack->stackdep=0;
@@ -504,7 +519,7 @@ ObjStackNode find_objstack(char* funct_name){
 void print_objstack(){
     ObjStackNode temp=objstack_head->next;
     while(temp!=NULL){
-        printf("functname:%s stackdep:%d\n",temp->functname,temp->stackdep);
+        ;//printf("functname:%s stackdep:%d\n",temp->functname,temp->stackdep);
         temp=temp->next;
     }
     return;
@@ -519,22 +534,28 @@ void init_regs(){
 }
 
 void free_reg(int reg_no){
-    assert(regs[reg_no].state==USED);
+    if(reg_no==zero)
+        return;
+    ;//assert(regs[reg_no].state==USED);
     regs[reg_no].state=UNUSED;
     regs[reg_no].var=NULL;
     return;
 }
 
 void spill_reg(int reg_no){
-    assert(regs[reg_no].state==USED);
+    if(reg_no==zero)
+        return;
+    ;//assert(regs[reg_no].state==USED);
     Variable var=regs[reg_no].var;
     if(var==NULL){ //说明里面存放的类型为OP_CONSTANT
         free_reg(reg_no);
         return;
     }
-    assert(var->state==INREG);
-
-    fprintf(mipsout,"    sw %s, %d($fp)\n",regName[reg_no],var->offset*4);
+    ;//assert(var->state==INREG);
+    if(var->dirty){
+        fprintf(mipsout,"    sw %s, %d($fp)\n",regName[reg_no],var->offset*4);
+        var->dirty=0;
+    }
     var->state=notINREG;    
     var->regno=-1;
     free_reg(reg_no);
@@ -542,12 +563,12 @@ void spill_reg(int reg_no){
 }
 
 void spill_all(){
-    printf(GREEN"spill start\n"NONE);
+    ;//printf(GREEN"spill start\n"NONE);
     for(int regno=0;regno<32;regno++){
         if(regs[regno].state==USED)
             spill_reg(regno);
     }
-    printf(GREEN"spill end\n"NONE);
+    ;//printf(GREEN"spill end\n"NONE);
     return;
 }
 
@@ -559,7 +580,7 @@ int allocate_reg(InterCodeList irnode,Variable var){ //t0-t9全满时使用
         if(cur_distance+irnode->code->linenum > cur_bb->last->code->linenum){ //下一条使用op的ir已超出本bb范围
             spill_reg(regno);
             regs[regno].var=var;
-            printf(GREEN"spill var in %s\n"NONE,regName[regno]);
+            ;//printf(GREEN"spill var in %s\n"NONE,regName[regno]);
             return regno;
         }
         if(cur_distance<max_distance){
@@ -568,7 +589,7 @@ int allocate_reg(InterCodeList irnode,Variable var){ //t0-t9全满时使用
         }
     }
     spill_reg(maxdis_regno);
-    printf(GREEN"spill var in %s\n"NONE,regName[maxdis_regno]);
+    ;//printf(GREEN"spill var in %s\n"NONE,regName[maxdis_regno]);
     regs[maxdis_regno].var=var;
     return maxdis_regno;  
 }
@@ -579,7 +600,7 @@ int active_distance(InterCodeList irnode,Variable var){ //当前ir与当前bb中
         return 0x3f3f3f3f;
     Operand op=var->op;
     int distance=0;
-    irnode=irnode->next; //从下一条ir开始计
+    irnode=irnode; //从当前ir开始计
     while(irnode!=cur_bb->last->next){
         InterCode ir=irnode->code;
         switch(ir->kind){
@@ -588,32 +609,32 @@ int active_distance(InterCodeList irnode,Variable var){ //当前ir与当前bb中
             case IR_READ:
             case IR_WRITE:
             case IR_RETURN:
-                distance++;
                 if(cmp_op(op,ir->u.one))
                     return distance;
+                distance++;
                 break;
             case IR_CALL:
-                distance++;
                 if(cmp_op(op,ir->u.two.left))
                     return distance;
+                distance++;
                 break;
             case IR_GETADDR:
             case IR_GETVAL:
             case IR_STOREIN:
             case IR_ASSIGN:
-                distance++;
                 if(cmp_op(op,ir->u.two.left))
                     return distance;
                 else if(cmp_op(op,ir->u.two.right))
                     return distance;
+                distance++;
                 break;
             case IR_ADD:
             case IR_SUB:
             case IR_MUL:
             case IR_DIV:
-                distance++;
                 if(cmp_op(op,ir->u.three.result)||cmp_op(op,ir->u.three.op1)||cmp_op(op,ir->u.three.op2))
                     return distance;
+                distance++;
                 break;
             default:
                 distance++;
@@ -629,6 +650,8 @@ int get_reg(Operand op,InterCodeList irnode,int change){
     int regno=-1;
 
     if(op->kind==OP_CONSTANT){
+        if(op->number==0)
+            return zero;
         for(int r=t0;r<=t9;r++){
             if(regs[r].state==UNUSED){
                 regno=r;
@@ -639,24 +662,24 @@ int get_reg(Operand op,InterCodeList irnode,int change){
             regno=allocate_reg(irnode,NULL);
         regs[regno].state=USED;
         regs[regno].var=NULL;
-        assert(regno!=-1);
+        ;//assert(regno!=-1);
         if(!change)
             fprintf(mipsout,"    li %s, %d\n",regName[regno],op->number);
-        printf(CYAN"   %s:%d\n"NONE,regName[regno],op->number);
+        ;//printf(CYAN"   %s:%d\n"NONE,regName[regno],op->number);
         return regno;
     }
 
 
     Variable var=find_var(op);
-    assert(var);
+    ;//assert(var);
 
     if(var->state==INREG){ //还在寄存器中
-        assert(regs[var->regno].state==USED);
+        ;//assert(regs[var->regno].state==USED);
         regno=var->regno;
-        assert(regno!=-1);
+        ;//assert(regno!=-1);
     }
     else{
-        assert(var->state==notINREG);
+        ;//assert(var->state==notINREG);
         for(int r=t0;r<=t9;r++){
             if(regs[r].state==UNUSED){
                 regno=r;
@@ -670,45 +693,50 @@ int get_reg(Operand op,InterCodeList irnode,int change){
         regs[regno].var=var;
         
         if(!change){ //若需要修改，则不需要明写移到了哪个寄存器，只要直接在修改的指令写到对应寄存器即可
-            assert(op->kind==OP_TEMP||op->kind==OP_VARIABLE||op->kind==OP_ADDRESS);
+            ;//assert(op->kind==OP_TEMP||op->kind==OP_VARIABLE||op->kind==OP_ADDRESS);
             fprintf(mipsout,"    lw %s, %d($fp)\n",regName[regno],var->offset*4);
         }
         
         var->state=INREG;
         var->regno=regno;
-        assert(regno!=-1);
+        ;//assert(regno!=-1);
     }
     if(op->kind==OP_VARIABLE)
-        printf(CYAN"   %s:%s\n"NONE,regName[regno],op->name);
+        ;//printf(CYAN"   %s:%s\n"NONE,regName[regno],op->name);
     else if(op->kind==OP_TEMP)
-        printf(CYAN"   %s:tmp%d\n"NONE,regName[regno],op->no);
+        ;//printf(CYAN"   %s:tmp%d\n"NONE,regName[regno],op->no);
     else if(op->kind==OP_ADDRESS)
-        printf(CYAN"   %s:addr%d\n"NONE,regName[regno],op->no);
-    else    assert(0);
+        ;//printf(CYAN"   %s:addr%d\n"NONE,regName[regno],op->no);
+    else    ;//assert(0);
     return regno;
 }
 
 void spill_inactive_var(Operand op,InterCodeList irnode){
-    assert(op->kind!=OP_CONSTANT);
-    Variable var=find_var(op);
-    assert(var);
-    if(var->state==INREG){
-        if(irnode->code->linenum+active_distance(irnode,var) > cur_bb->last->code->linenum){
-            printf(GREEN"free reg %s\n"NONE,regName[var->regno]);
-            spill_reg(var->regno);
-        }
-    }
+    //;//assert(op->kind!=OP_CONSTANT);
+    //Variable var=find_var(op);
+    //;//assert(var);
+    // if(var->state==INREG){
+    //     if(irnode->code->linenum+active_distance(irnode,var) > cur_bb->last->code->linenum){
+    //         ;//printf(GREEN"free reg %s\n"NONE,regName[var->regno]);
+    //         spill_reg(var->regno);
+    //     }
+    // }
+    ;
 }
 
 void transfer_IR(InterCodeList irnode){
     InterCode ir=irnode->code;
     switch(ir->kind){
         case IR_LABEL:
+            spill_all();
             fprintf(mipsout,"  label%d:\n",ir->u.one->no);
             break;
         case IR_FUNCTIONNAME:
+            spill_all();
             fprintf(mipsout,"  %s:\n",ir->u.one->name);
             fprintf(mipsout,"    move $fp, $sp\n");
+            clear_varlist();
+            pop_objstack();
             push_objstack(ir->u.one->function_field->name,ir->u.one->function_field->type->u.function.paramnum);
             funct_init_varlist(irnode);
             print_varlist();
@@ -716,35 +744,54 @@ void transfer_IR(InterCodeList irnode){
             param_no=-1;
             break;
         case IR_CALL:
+            ;//assert(arg_no==-1);
+            spill_all();
             Operand funct_op=ir->u.two.right;
-            assert(arg_no==funct_op->function_field->type->u.function.paramnum);
             transfer_IR_CALL(irnode);
             arg_no=-1;
             break;
         case IR_PARAM:
-        case IR_DEC:
+            if(param_no==-1)
+                param_no=0;
             Variable var=find_var(ir->u.one);
-            assert(var);
-            assert(var->state==notINREG);
-            assert(var->regno=-1);
+            ;//assert(var);
+            var->dirty=1;
+            if(param_no<4){
+                ;//assert(var->offset<0);
+            }
+            else
+                ;//assert(var->offset==param_no-2);
+            param_no++;
+            break;
+        case IR_DEC:
+            var=find_var(ir->u.one);
+            ;//assert(var);
+            ;//assert(var->state==notINREG);
+            ;//assert(var->regno==-1);
             break;
         case IR_ARG:
+            InterCodeList call_irnode=irnode->next;
+            while(call_irnode->code->kind!=IR_CALL)
+                call_irnode=call_irnode->next;
+            ;//assert(call_irnode->code->kind==IR_CALL);
+            Operand callfunct_op=call_irnode->code->u.two.right;
+            ;//assert(callfunct_op->kind==OP_FUNCTIONNAME&&callfunct_op->function_field->type->u.function.paramnum>0);
             if(arg_no==-1)
-                arg_no=0;
+                arg_no=callfunct_op->function_field->type->u.function.paramnum-1;            
             transfer_IR_ARG(irnode,arg_no);
-            arg_no++;
+            arg_no--;
             break;
         case IR_RETURN:
+            param_no=-1;
             if(ir->u.one->kind==OP_CONSTANT)
                 fprintf(mipsout,"    li $v0, %d\n",ir->u.one->number);
             else{
                 fprintf(mipsout,"    move $v0, %s\n",regName[get_reg(ir->u.one,irnode,0)]);
                 spill_inactive_var(ir->u.one,irnode);
             }
+            spill_all();
             fprintf(mipsout,"    jr $ra\n");
             fprintf(mipsout,"  \n");
-            clear_varlist();
-            pop_objstack();
             break;
         case IR_READ:
             transfer_IR_READ(irnode);
@@ -753,23 +800,27 @@ void transfer_IR(InterCodeList irnode){
             transfer_IR_WRITE(irnode);
             break;
         case IR_GOTO:
+            spill_all();
             fprintf(mipsout,"    j label%d\n",ir->u.one->no);
             break;
         case IR_IFGOTO:
+            spill_all();
             transfer_IR_IFGOTO(irnode);
             break;
         case IR_ASSIGN:
             transfer_IR_ASSIGN(irnode);
             break;
         case IR_GETADDR: //a=&b
-            assert(ir->u.two.right->kind==OP_ARRAYNAME);
+            ;//assert(ir->u.two.right->kind==OP_ARRAYNAME);
             var=find_var(ir->u.two.right);
-            assert(var);
+            ;//assert(var);
             fprintf(mipsout,"    addi %s, $fp, %d\n",regName[get_reg(ir->u.two.left,irnode,1)],var->offset*4);
+            set_dirty(ir->u.two.left);
             spill_inactive_var(ir->u.two.left,irnode);
             break;
         case IR_GETVAL:  //a=*b
             fprintf(mipsout,"    lw %s, 0(%s)\n",regName[get_reg(ir->u.two.left,irnode,1)],regName[get_reg(ir->u.two.right,irnode,0)]);
+            set_dirty(ir->u.two.left);
             break;
         case IR_STOREIN:  //*a=b
             fprintf(mipsout,"    sw %s, 0(%s)\n",regName[get_reg(ir->u.two.right,irnode,0)],regName[get_reg(ir->u.two.left,irnode,0)]);
@@ -781,7 +832,7 @@ void transfer_IR(InterCodeList irnode){
             transfer_IR_CAL(irnode);
             break;
         default:
-            assert(0);
+            ;//assert(0);
     }
     return;
 }
@@ -802,8 +853,15 @@ void transfer_IR_CALL(InterCodeList irnode){
     fprintf(mipsout,"    move $sp, $fp\n");
     fprintf(mipsout,"    lw $fp, 0($sp)\n");
     fprintf(mipsout,"    lw $ra, 4($sp)\n");
-    fprintf(mipsout,"    addi $sp, $sp, %d\n",(ir->u.one->function_field->type->u.function.paramnum+2)*4);
+    int paramnum=ir->u.two.right->function_field->type->u.function.paramnum;
+    int stackmv=0;
+    if(paramnum<4)
+        stackmv=2;
+    else
+        stackmv=paramnum-2;
+    fprintf(mipsout,"    addi $sp, $sp, %d\n",stackmv*4);
     fprintf(mipsout,"    move %s, $v0\n", regName[get_reg(ir->u.two.left,irnode,1)]);
+    set_dirty(ir->u.two.left);
     spill_inactive_var(ir->u.two.left,irnode);
     return;
 }
@@ -828,15 +886,15 @@ void transfer_IR_ARG(InterCodeList irnode,int arg_no){
                 fprintf(mipsout,"    li %s, %d\n",regName[a0+arg_no],arg_op->number);
                 break;
             default:
-                assert(0);
+                ;//assert(0);
         }
     else{ //将参数保存到栈中
         fprintf(mipsout,"    addi $sp, $sp, -4\n");
         int arg_regno=get_reg(arg_op,irnode,0);
         fprintf(mipsout,"    sw %s, 0($sp)\n",regName[arg_regno]);
         if(arg_op->kind!=OP_CONSTANT){
-            free_reg(arg_regno);
-            printf(GREEN"free reg %s\n"NONE,regName[arg_regno]);
+            spill_reg(arg_regno);
+            //;//printf(GREEN"free reg %s\n"NONE,regName[arg_regno]);
         }
         else
             spill_inactive_var(arg_op,irnode);
@@ -855,6 +913,8 @@ void transfer_IR_READ(InterCodeList irnode){
     fprintf(mipsout,"    lw $ra, 0($sp)\n");
     fprintf(mipsout,"    addi $sp, $sp, 4\n");
     fprintf(mipsout,"    move %s, $v0\n", regName[get_reg(irnode->code->u.one,irnode,1)]);
+    set_dirty(irnode->code->u.one);
+    spill_all();
     spill_inactive_var(irnode->code->u.one,irnode);
     return;
 }
@@ -914,7 +974,7 @@ void transfer_IR_IFGOTO(InterCodeList irnode){
         spill_inactive_var(op2,irnode);
     }
     else
-        assert(0);
+        ;//assert(0);
     return;
 }   
 
@@ -924,6 +984,7 @@ void  transfer_IR_ASSIGN(InterCodeList irnode){
     switch(ir->u.two.right->kind){
         case OP_CONSTANT:
             fprintf(mipsout,"    li %s, %d\n",regName[get_reg(ir->u.two.left,irnode,1)],ir->u.two.right->number);
+            set_dirty(ir->u.two.left);
             spill_inactive_var(ir->u.two.left,irnode);
             break;
         case OP_VARIABLE:
@@ -932,11 +993,12 @@ void  transfer_IR_ASSIGN(InterCodeList irnode){
             int left_regno=get_reg(ir->u.two.left,irnode,1);
             int right_regno=get_reg(ir->u.two.right,irnode,0);
             fprintf(mipsout,"    move %s, %s\n",regName[left_regno],regName[right_regno]);
+            set_dirty(ir->u.two.left);
             spill_inactive_var(ir->u.two.left,irnode);
             spill_inactive_var(ir->u.two.right,irnode);
             break;
         default:
-            assert(0);
+            ;//assert(0);
     }
 }
 
@@ -948,16 +1010,16 @@ void transfer_IR_CAL(InterCodeList irnode){
     Operand op2=ir->u.three.op2;
     Operand result=ir->u.three.result;
     char* res_regname=regName[get_reg(result,irnode,1)];
-    assert(op1->kind!=OP_ARRAYNAME &&op2->kind!=OP_ARRAYNAME);
+    ;//assert(op1->kind!=OP_ARRAYNAME &&op2->kind!=OP_ARRAYNAME);
     switch(ir->kind){
         case IR_ADD:
             if(op1->kind==OP_CONSTANT){
-                assert(op2->kind!=OP_CONSTANT);
+                ;//assert(op2->kind!=OP_CONSTANT);
                 fprintf(mipsout,"    addi %s, %s, %d\n",res_regname,regName[get_reg(op2,irnode,0)],op1->number);
                 spill_inactive_var(op2,irnode);
             }
             else if(op2->kind==OP_CONSTANT){
-                assert(op1->kind!=OP_CONSTANT);
+                ;//assert(op1->kind!=OP_CONSTANT);
                 fprintf(mipsout,"    addi %s, %s, %d\n",res_regname,regName[get_reg(op1,irnode,0)],op2->number);
                 spill_inactive_var(op1,irnode);
             }
@@ -969,16 +1031,17 @@ void transfer_IR_CAL(InterCodeList irnode){
             break;
         case IR_SUB:
             if(op2->kind==OP_CONSTANT){
-                assert(op1->kind!=OP_CONSTANT);
+                ;//assert(op1->kind!=OP_CONSTANT);
                 fprintf(mipsout,"    addi %s, %s, -%d\n",res_regname,regName[get_reg(op1,irnode,0)],op2->number);
                 spill_inactive_var(op1,irnode);
             }
             else if(op1->kind==OP_CONSTANT){
-                assert(op2->kind!=OP_CONSTANT);
+                ;//assert(op2->kind!=OP_CONSTANT);
+                int var_regno=get_reg(op2,irnode,0);  //必须先找var的寄存器号，再找const。因为假如var需要去allocate_reg找regno，只要碰到里面放了常数的寄存器，马上就会被丢弃。可能导致同一条指令的两个操作数用了同一寄存器
                 int const_regno=get_reg(op1,irnode,0);
-                fprintf(mipsout,"    sub %s, %s, %s\n",res_regname,regName[const_regno],regName[get_reg(op2,irnode,0)]);
+                fprintf(mipsout,"    sub %s, %s, %s\n",res_regname,regName[const_regno],regName[var_regno]);
                 free_reg(const_regno);
-                printf(GREEN"free reg %s\n"NONE,regName[const_regno]);
+                ;//printf(GREEN"free reg %s\n"NONE,regName[const_regno]);
                 spill_inactive_var(op2,irnode);
             }
             else{
@@ -991,17 +1054,17 @@ void transfer_IR_CAL(InterCodeList irnode){
             if(op1->kind==OP_CONSTANT||op2->kind==OP_CONSTANT){
                 int const_regno=-1,var_regno=-1;
                 if(op1->kind==OP_CONSTANT){
-                    assert(op2->kind==OP_CONSTANT);
-                    const_regno=get_reg(op1,irnode,0);
+                    ;//assert(op2->kind==OP_CONSTANT);
                     var_regno=get_reg(op2,irnode,0);
+                    const_regno=get_reg(op1,irnode,0);
                 }
                 else{
-                    const_regno=get_reg(op2,irnode,0);
                     var_regno=get_reg(op1,irnode,0);
+                    const_regno=get_reg(op2,irnode,0);
                 }
                 fprintf(mipsout,"    mul %s, %s, %s\n",res_regname,regName[var_regno],regName[const_regno]);
                 free_reg(const_regno);
-                printf(GREEN"free reg %s\n"NONE,regName[const_regno]);
+                ;//printf(GREEN"free reg %s\n"NONE,regName[const_regno]);
                 spill_inactive_var(regs[var_regno].var->op,irnode);
             }
             else{
@@ -1011,16 +1074,17 @@ void transfer_IR_CAL(InterCodeList irnode){
             }
             break;
         case IR_DIV:
-            assert(op1->kind==OP_TEMP||op1->kind==OP_VARIABLE);
-            assert(op2->kind==OP_TEMP||op2->kind==OP_VARIABLE);
+            ;//assert(op1->kind==OP_TEMP||op1->kind==OP_VARIABLE);
+            ;//assert(op2->kind==OP_TEMP||op2->kind==OP_VARIABLE);
             fprintf(mipsout,"    div %s, %s\n",regName[get_reg(op1,irnode,0)],regName[get_reg(op2,irnode,0)]);
             fprintf(mipsout,"    mflo %s\n",res_regname);
             spill_inactive_var(op1,irnode);
             spill_inactive_var(op2,irnode);
             break;         
         default:
-            assert(0);   
+            ;//assert(0);   
     }
+    set_dirty(result);
     spill_inactive_var(result,irnode);
     return;
 }

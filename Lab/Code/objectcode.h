@@ -1,6 +1,6 @@
 #ifndef _OBJECTCODE_H_
 #define _OBJECTCODE_H_
-#define VSDEBUG
+//#define VSDEBUG
 #include "basicblock.h"
 typedef struct Variable_ *Variable;
 typedef struct ObjStackNode_ *ObjStackNode;
@@ -21,7 +21,7 @@ struct Variable_{
     int offset; //相对于fp的偏移量
     int regno;
     enum{notINREG,INREG}state;
-    //bool dirty;
+    bool dirty;
 };
 
 struct VariableList_{
@@ -56,6 +56,7 @@ void funct_init_varlist(InterCodeList functname_irnode);
 Variable insert2varlist(Operand op,int param_no,int arrsize);
 void insert_var(InterCodeList irnode);
 Variable find_var(Operand op);
+void set_dirty(Operand op);
 ObjStackNode init_stacknode(char *funct_name,int paramnum);
 void push_objstack(char *funct_name,int paramnum);
 void pop_objstack();
